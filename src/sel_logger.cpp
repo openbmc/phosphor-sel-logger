@@ -104,10 +104,11 @@ static void toHexStr(const std::vector<uint8_t> &data, std::string &hexStr)
     hexStr = stream.str();
 }
 
-static uint16_t selAddSystemRecord(const std::string &message,
-                                   const std::string &path,
-                                   const std::vector<uint8_t> &selData,
-                                   const bool &assert, const uint16_t &genId)
+template <typename... T>
+static uint16_t
+    selAddSystemRecord(const std::string &message, const std::string &path,
+                       const std::vector<uint8_t> &selData, const bool &assert,
+                       const uint16_t &genId, T &&... metadata)
 {
     // Only 3 bytes of SEL event data are allowed in a system record
     if (selData.size() > selEvtDataMaxSize)
@@ -118,12 +119,13 @@ static uint16_t selAddSystemRecord(const std::string &message,
     toHexStr(selData, selDataStr);
 
     unsigned int recordId = getNewRecordId();
-    sd_journal_send(
-        "MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
-        "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d", recordId,
-        "IPMI_SEL_RECORD_TYPE=%x", selSystemType, "IPMI_SEL_GENERATOR_ID=%x",
-        genId, "IPMI_SEL_SENSOR_PATH=%s", path.c_str(), "IPMI_SEL_EVENT_DIR=%x",
-        assert, "IPMI_SEL_DATA=%s", selDataStr.c_str(), NULL);
+    sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
+                    "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d",
+                    recordId, "IPMI_SEL_RECORD_TYPE=%x", selSystemType,
+                    "IPMI_SEL_GENERATOR_ID=%x", genId,
+                    "IPMI_SEL_SENSOR_PATH=%s", path.c_str(),
+                    "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
+                    selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
     return recordId;
 }
 

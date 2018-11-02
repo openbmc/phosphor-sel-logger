@@ -191,7 +191,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                                " Threshold=" + std::to_string(thresholdVal));
 
         selAddSystemRecord(journalMsg, std::string(msg.get_path()), eventData,
-                           assert);
+                           assert, selBMCGenID);
     };
     sdbusplus::bus::match::match thresholdEventMatcher(
         static_cast<sdbusplus::bus::bus &>(*conn),
