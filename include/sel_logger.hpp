@@ -31,8 +31,8 @@ static constexpr uint16_t selInvalidRecID = 0xFFFF;
 static constexpr size_t selEvtDataMaxSize = 3;
 static constexpr size_t selOemDataMaxSize = 13;
 
-static uint16_t selAddSystemRecord(const std::string &message,
-                                   const std::string &path,
-                                   const std::vector<uint8_t> &selData,
-                                   const bool &assert,
-                                   const uint16_t &genId = selBmcGenId);
+template <typename... T>
+static uint16_t
+    selAddSystemRecord(const std::string &message, const std::string &path,
+                       const std::vector<uint8_t> &selData, const bool &assert,
+                       const uint16_t &genId, T &&... metadata);
