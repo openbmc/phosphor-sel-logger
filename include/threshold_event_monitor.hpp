@@ -17,6 +17,7 @@
 #pragma once
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
+#include <string_view>
 
 enum class thresholdEventOffsets : uint8_t
 {
@@ -28,6 +29,8 @@ enum class thresholdEventOffsets : uint8_t
 
 static constexpr const uint8_t thresholdEventDataTriggerReadingByte2 = (1 << 6);
 static constexpr const uint8_t thresholdEventDataTriggerReadingByte3 = (1 << 4);
+
+static const std::string openBMCMessageRegistryVersion("0.1");
 
 inline static sdbusplus::bus::match::match startThresholdEventMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
@@ -181,17 +184,90 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         }
 
         // Construct a human-readable message of this event for the log
-        std::experimental::string_view sensorName(msg.get_path());
+        std::string_view sensorName(msg.get_path());
         sensorName.remove_prefix(
             std::min(sensorName.find_last_of("/") + 1, sensorName.size()));
-        std::string journalMsg(sensorName.to_string() +
-                               (assert ? " asserted " : " deasserted ") +
-                               propertiesChanged.begin()->first +
+
+        std::string threshold;
+        std::string direction;
+        std::string redfishMessageID;
+        if (event == "CriticalLow")
+        {
+            threshold = "critical low";
+            if (assert)
+            {
+                direction = "low";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdCriticalLowGoingLow";
+            }
+            else
+            {
+                direction = "high";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdCriticalLowGoingHigh";
+            }
+        }
+        else if (event == "WarningLow")
+        {
+            threshold = "warning low";
+            if (assert)
+            {
+                direction = "low";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdWarningLowGoingLow";
+            }
+            else
+            {
+                direction = "high";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdWarningLowGoingHigh";
+            }
+        }
+        else if (event == "WarningHigh")
+        {
+            threshold = "warning high";
+            if (assert)
+            {
+                direction = "high";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdWarningHighGoingHigh";
+            }
+            else
+            {
+                direction = "low";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdWarningHighGoingLow";
+            }
+        }
+        else if (event == "CriticalHigh")
+        {
+            threshold = "critical high";
+            if (assert)
+            {
+                direction = "high";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdCriticalHighGoingHigh";
+            }
+            else
+            {
+                direction = "low";
+                redfishMessageID = "OpenBMC." + openBMCMessageRegistryVersion +
+                                   ".SensorThresholdCriticalHighGoingLow";
+            }
+        }
+
+        std::string journalMsg(std::string(sensorName) + " sensor crossed a " +
+                               threshold + " threshold going " + direction +
                                ". Reading=" + std::to_string(sensorVal) +
-                               " Threshold=" + std::to_string(thresholdVal));
+                               " Threshold=" + std::to_string(thresholdVal) +
+                               ".");
 
         selAddSystemRecord(journalMsg, std::string(msg.get_path()), eventData,
-                           assert, selBMCGenID);
+                           assert, selBMCGenID, "REDFISH_MESSAGE_ID=%.*s",
+                           redfishMessageID.length(), redfishMessageID.data(),
+                           "REDFISH_MESSAGE_ARG_1=%.*s", sensorName.length(),
+                           sensorName.data(), "REDFISH_MESSAGE_ARG_2=%f",
+                           sensorVal, "REDFISH_MESSAGE_ARG_3=%f", thresholdVal);
     };
     sdbusplus::bus::match::match thresholdEventMatcher(
         static_cast<sdbusplus::bus::bus &>(*conn),
