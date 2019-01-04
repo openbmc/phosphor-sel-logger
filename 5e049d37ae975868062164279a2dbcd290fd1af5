@@ -1,0 +1,10 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Johnathan Mantey <johnathanx.mantey@intel.com>
+Code-Review+1: James Feist <james.feist@linux.intel.com>
+Code-Review+2: Jason Bills <jason.m.bills@linux.intel.com>
+Submitted-by: Jason Bills <jason.m.bills@linux.intel.com>
+Submitted-at: Fri, 04 Jan 2019 21:22:31 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/14430
+Project: openbmc/phosphor-sel-logger
+Branch: refs/heads/master
