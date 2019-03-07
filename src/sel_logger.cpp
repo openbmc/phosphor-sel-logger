@@ -20,9 +20,11 @@
 #include <experimental/string_view>
 #include <iomanip>
 #include <iostream>
+#include <pulse_event_monitor.hpp>
 #include <sdbusplus/asio/object_server.hpp>
 #include <sel_logger.hpp>
 #include <sstream>
+#include <pulse_event_monitor.hpp>
 #include <threshold_event_monitor.hpp>
 
 struct DBusInternalError final : public sdbusplus::exception_t
@@ -182,6 +184,11 @@ int main(int argc, char *argv[])
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_EVENTS
     sdbusplus::bus::match::match thresholdEventMonitor =
         startThresholdEventMonitor(conn);
+#endif
+
+#ifdef REDFISH_LOG_MONITOR_PULSE_EVENTS
+    sdbusplus::bus::match::match pulseEventMonitor =
+        startPulseEventMonitor(conn);
 #endif
 
     io.run();
