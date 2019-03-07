@@ -16,6 +16,17 @@ target_compile_definitions (
     $<$<BOOL:${SEL_LOGGER_MONITOR_THRESHOLD_EVENTS}>: -DSEL_LOGGER_MONITOR_THRESHOLD_EVENTS>
 )
 
+option (
+    REDFISH_LOG_MONITOR_PULSE_EVENTS
+    "Enable logger to monitor and automatically
+     log events to Redfish for pulse type assert-deassert sensor events"
+    OFF
+)
+target_compile_definitions (
+    sel-logger PRIVATE
+    $<$<BOOL:${REDFISH_LOG_MONITOR_PULSE_EVENTS}>: -DREDFISH_LOG_MONITOR_PULSE_EVENTS>
+)
+
 target_include_directories (sel-logger PRIVATE ${CMAKE_SOURCE_DIR})
 
 target_link_libraries (sel-logger systemd sdbusplus pthread phosphor_logging)
