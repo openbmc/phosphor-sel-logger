@@ -115,7 +115,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                                   "org.freedesktop.DBus.Properties", "GetAll");
         getSensorValue.append("xyz.openbmc_project.Sensor.Value");
         boost::container::flat_map<std::string,
-                                   sdbusplus::message::variant<double>>
+                                   sdbusplus::message::variant<double, int64_t>>
             sensorValue;
         try
         {
@@ -135,6 +135,14 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             ipmi::VariantToDoubleVisitor(), sensorValue["MinValue"]);
         double sensorVal = sdbusplus::message::variant_ns::visit(
             ipmi::VariantToDoubleVisitor(), sensorValue["Value"]);
+        double scale = 0;
+        if(sdbusplus::message::variant_ns::get_if<int64_t>(
+           &sensorValue["Value"]))
+        {
+            scale = sdbusplus::message::variant_ns::visit(
+                ipmi::VariantToDoubleVisitor(), sensorValue["Scale"]);
+            sensorVal *= std::pow(10, scale);
+        }
         try
         {
             eventData[1] = ipmi::getScaledIPMIValue(sensorVal, max, min);
@@ -158,7 +166,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             conn->new_method_call(msg.get_sender(), msg.get_path(),
                                   "org.freedesktop.DBus.Properties", "Get");
         getThreshold.append(thresholdInterface, event);
-        sdbusplus::message::variant<double> thresholdValue;
+        sdbusplus::message::variant<double, int64_t> thresholdValue;
         try
         {
             sdbusplus::message::message getThresholdResp =
@@ -173,6 +181,10 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         }
         double thresholdVal = sdbusplus::message::variant_ns::visit(
             ipmi::VariantToDoubleVisitor(), thresholdValue);
+        if(sdbusplus::message::variant_ns::get_if<int64_t>(&thresholdValue))
+        {
+            thresholdVal *= std::pow(10, scale);
+        }
         try
         {
             eventData[2] = ipmi::getScaledIPMIValue(thresholdVal, max, min);
