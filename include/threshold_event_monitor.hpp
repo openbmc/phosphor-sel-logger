@@ -113,7 +113,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             conn->new_method_call(msg.get_sender(), msg.get_path(),
                                   "org.freedesktop.DBus.Properties", "GetAll");
         getSensorValue.append("xyz.openbmc_project.Sensor.Value");
-        boost::container::flat_map<std::string, std::variant<double>>
+        boost::container::flat_map<std::string, std::variant<double, int64_t>>
             sensorValue;
         try
         {
@@ -146,6 +146,15 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             sensorVal =
                 std::visit(ipmi::VariantToDoubleVisitor(), findVal->second);
         }
+        double scale = 0;
+        auto findScale = sensorValue.find("Scale");
+        if (findScale != sensorValue.end())
+        {
+            scale =
+                std::visit(ipmi::VariantToDoubleVisitor(), findScale->second);
+
+            sensorVal *= std::pow(10, scale);
+        }
         try
         {
             eventData[1] = ipmi::getScaledIPMIValue(sensorVal, max, min);
@@ -169,7 +178,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             conn->new_method_call(msg.get_sender(), msg.get_path(),
                                   "org.freedesktop.DBus.Properties", "Get");
         getThreshold.append(thresholdInterface, event);
-        std::variant<double> thresholdValue;
+        std::variant<double, int64_t> thresholdValue;
         try
         {
             sdbusplus::message::message getThresholdResp =
@@ -184,6 +193,10 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         }
         double thresholdVal =
             std::visit(ipmi::VariantToDoubleVisitor(), thresholdValue);
+        if (findScale != sensorValue.end())
+        {
+            thresholdVal *= std::pow(10, scale);
+        }
         try
         {
             eventData[2] = ipmi::getScaledIPMIValue(thresholdVal, max, min);
