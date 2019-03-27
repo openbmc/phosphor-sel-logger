@@ -127,12 +127,25 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                       << "\n";
             return;
         }
-        double max =
-            std::visit(ipmi::VariantToDoubleVisitor(), sensorValue["MaxValue"]);
-        double min =
-            std::visit(ipmi::VariantToDoubleVisitor(), sensorValue["MinValue"]);
-        double sensorVal =
-            std::visit(ipmi::VariantToDoubleVisitor(), sensorValue["Value"]);
+        double max = 0;
+        auto findMax = sensorValue.find("MaxValue");
+        if (findMax != sensorValue.end())
+        {
+            max = std::visit(ipmi::VariantToDoubleVisitor(), findMax->second);
+        }
+        double min = 0;
+        auto findMin = sensorValue.find("MinValue");
+        if (findMin != sensorValue.end())
+        {
+            min = std::visit(ipmi::VariantToDoubleVisitor(), findMin->second);
+        }
+        double sensorVal = 0;
+        auto findVal = sensorValue.find("Value");
+        if (findVal != sensorValue.end())
+        {
+            sensorVal =
+                std::visit(ipmi::VariantToDoubleVisitor(), findVal->second);
+        }
         try
         {
             eventData[1] = ipmi::getScaledIPMIValue(sensorVal, max, min);
