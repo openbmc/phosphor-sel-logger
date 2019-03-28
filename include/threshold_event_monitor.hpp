@@ -18,6 +18,7 @@
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 #include <string_view>
+#include <variant>
 
 enum class thresholdEventOffsets : uint8_t
 {
@@ -46,13 +47,11 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
 
         // Get the event type and assertion details from the message
         std::string thresholdInterface;
-        boost::container::flat_map<std::string,
-                                   sdbusplus::message::variant<bool>>
+        boost::container::flat_map<std::string, std::variant<bool>>
             propertiesChanged;
         msg.read(thresholdInterface, propertiesChanged);
         std::string event = propertiesChanged.begin()->first;
-        bool *pval = sdbusplus::message::variant_ns::get_if<bool>(
-            &propertiesChanged.begin()->second);
+        bool *pval = std::get_if<bool>(&propertiesChanged.begin()->second);
         if (!pval)
         {
             std::cerr << "threshold event direction has invalid type\n";
@@ -114,8 +113,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             conn->new_method_call(msg.get_sender(), msg.get_path(),
                                   "org.freedesktop.DBus.Properties", "GetAll");
         getSensorValue.append("xyz.openbmc_project.Sensor.Value");
-        boost::container::flat_map<std::string,
-                                   sdbusplus::message::variant<double, int64_t>>
+        boost::container::flat_map<std::string, std::variant<double, int64_t>>
             sensorValue;
         try
         {
@@ -129,18 +127,32 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                       << "\n";
             return;
         }
-        double max = sdbusplus::message::variant_ns::visit(
-            ipmi::VariantToDoubleVisitor(), sensorValue["MaxValue"]);
-        double min = sdbusplus::message::variant_ns::visit(
-            ipmi::VariantToDoubleVisitor(), sensorValue["MinValue"]);
-        double sensorVal = sdbusplus::message::variant_ns::visit(
-            ipmi::VariantToDoubleVisitor(), sensorValue["Value"]);
-        double scale = 0;
-        if(sdbusplus::message::variant_ns::get_if<int64_t>(
-           &sensorValue["Value"]))
+        double max = 0;
+        auto findMax = sensorValue.find("MaxValue");
+        if (findMax != sensorValue.end())
         {
-            scale = sdbusplus::message::variant_ns::visit(
-                ipmi::VariantToDoubleVisitor(), sensorValue["Scale"]);
+            max = std::visit(ipmi::VariantToDoubleVisitor(), findMax->second);
+        }
+        double min = 0;
+        auto findMin = sensorValue.find("MinValue");
+        if (findMin != sensorValue.end())
+        {
+            min = std::visit(ipmi::VariantToDoubleVisitor(), findMin->second);
+        }
+        double sensorVal = 0;
+        auto findVal = sensorValue.find("Value");
+        if (findVal != sensorValue.end())
+        {
+            sensorVal =
+                std::visit(ipmi::VariantToDoubleVisitor(), findVal->second);
+        }
+        double scale = 0;
+        auto findScale = sensorValue.find("Scale");
+        if (findScale != sensorValue.end())
+        {
+            scale =
+                std::visit(ipmi::VariantToDoubleVisitor(), findScale->second);
+
             sensorVal *= std::pow(10, scale);
         }
         try
@@ -166,7 +178,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             conn->new_method_call(msg.get_sender(), msg.get_path(),
                                   "org.freedesktop.DBus.Properties", "Get");
         getThreshold.append(thresholdInterface, event);
-        sdbusplus::message::variant<double, int64_t> thresholdValue;
+        std::variant<double, int64_t> thresholdValue;
         try
         {
             sdbusplus::message::message getThresholdResp =
@@ -179,9 +191,9 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                       << msg.get_path() << "\n";
             return;
         }
-        double thresholdVal = sdbusplus::message::variant_ns::visit(
-            ipmi::VariantToDoubleVisitor(), thresholdValue);
-        if(sdbusplus::message::variant_ns::get_if<int64_t>(&thresholdValue))
+        double thresholdVal =
+            std::visit(ipmi::VariantToDoubleVisitor(), thresholdValue);
+        if (findScale != sensorValue.end())
         {
             thresholdVal *= std::pow(10, scale);
         }
