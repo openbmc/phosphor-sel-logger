@@ -266,12 +266,11 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                                " Threshold=" + std::to_string(thresholdVal) +
                                ".");
 
-        selAddSystemRecord(journalMsg, std::string(msg.get_path()), eventData,
-                           assert, selBMCGenID, "REDFISH_MESSAGE_ID=%.*s",
-                           redfishMessageID.length(), redfishMessageID.data(),
-                           "REDFISH_MESSAGE_ARG_1=%.*s", sensorName.length(),
-                           sensorName.data(), "REDFISH_MESSAGE_ARG_2=%f",
-                           sensorVal, "REDFISH_MESSAGE_ARG_3=%f", thresholdVal);
+        selAddSystemRecord(
+            journalMsg, std::string(msg.get_path()), eventData, assert,
+            selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
+            "REDFISH_MESSAGE_ARGS=%.*s,%f,%f", sensorName.length(),
+            sensorName.data(), sensorVal, thresholdVal);
     };
     sdbusplus::bus::match::match thresholdEventMatcher(
         static_cast<sdbusplus::bus::bus &>(*conn),
