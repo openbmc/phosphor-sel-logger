@@ -31,7 +31,7 @@ enum class thresholdEventOffsets : uint8_t
 static constexpr const uint8_t thresholdEventDataTriggerReadingByte2 = (1 << 6);
 static constexpr const uint8_t thresholdEventDataTriggerReadingByte3 = (1 << 4);
 
-static const std::string resourceEventMessageRegistryVersion("1.0");
+static const std::string openBMCMessageRegistryVersion("0.1");
 
 inline static sdbusplus::bus::match::match startThresholdEventMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
@@ -202,19 +202,19 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         std::string threshold;
         std::string direction;
         std::string redfishMessageID =
-            "ResourceEvent." + resourceEventMessageRegistryVersion;
+            "OpenBMC." + openBMCMessageRegistryVersion;
         if (event == "CriticalLow")
         {
             threshold = "critical low";
             if (assert)
             {
                 direction = "low";
-                redfishMessageID += ".ResourceErrorThresholdExceeded";
+                redfishMessageID += ".SensorThresholdCriticalLowGoingLow";
             }
             else
             {
                 direction = "high";
-                redfishMessageID += ".ResourceErrorThresholdCleared";
+                redfishMessageID += ".SensorThresholdCriticalLowGoingHigh";
             }
         }
         else if (event == "WarningLow")
@@ -223,12 +223,12 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             if (assert)
             {
                 direction = "low";
-                redfishMessageID += ".ResourceWarningThresholdExceeded";
+                redfishMessageID += ".SensorThresholdWarningLowGoingLow";
             }
             else
             {
                 direction = "high";
-                redfishMessageID += ".ResourceWarningThresholdCleared";
+                redfishMessageID += ".SensorThresholdWarningLowGoingHigh";
             }
         }
         else if (event == "WarningHigh")
@@ -237,12 +237,12 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             if (assert)
             {
                 direction = "high";
-                redfishMessageID += ".ResourceWarningThresholdExceeded";
+                redfishMessageID += ".SensorThresholdWarningHighGoingHigh";
             }
             else
             {
                 direction = "low";
-                redfishMessageID += ".ResourceWarningThresholdCleared";
+                redfishMessageID += ".SensorThresholdWarningHighGoingLow";
             }
         }
         else if (event == "CriticalHigh")
@@ -251,12 +251,12 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             if (assert)
             {
                 direction = "high";
-                redfishMessageID += ".ResourceErrorThresholdExceeded";
+                redfishMessageID += ".SensorThresholdCriticalHighGoingHigh";
             }
             else
             {
                 direction = "low";
-                redfishMessageID += ".ResourceErrorThresholdCleared";
+                redfishMessageID += ".SensorThresholdCriticalHighGoingLow";
             }
         }
 
@@ -271,7 +271,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                            redfishMessageID.length(), redfishMessageID.data(),
                            "REDFISH_MESSAGE_ARG_1=%.*s", sensorName.length(),
                            sensorName.data(), "REDFISH_MESSAGE_ARG_2=%f",
-                           thresholdVal);
+                           sensorVal, "REDFISH_MESSAGE_ARG_3=%f", thresholdVal);
     };
     sdbusplus::bus::match::match thresholdEventMatcher(
         static_cast<sdbusplus::bus::bus &>(*conn),
