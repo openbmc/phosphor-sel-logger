@@ -27,7 +27,7 @@ target_compile_definitions (
 
 target_include_directories (sel-logger PRIVATE ${CMAKE_SOURCE_DIR})
 
-target_link_libraries (sel-logger systemd sdbusplus pthread phosphor_logging)
+target_link_libraries (sel-logger systemd sdbusplus pthread phosphor_logging -lstdc++fs)
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
 

@@ -15,9 +15,11 @@
 */
 #include <systemd/sd-journal.h>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/container/flat_map.hpp>
 #include <boost/container/flat_set.hpp>
-#include <experimental/string_view>
+#include <filesystem>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <pulse_event_monitor.hpp>
@@ -43,44 +45,55 @@ struct DBusInternalError final : public sdbusplus::exception_t
     };
 };
 
+static bool getSELLogFiles(std::vector<std::filesystem::path> &selLogFiles)
+{
+    // Loop through the directory looking for ipmi_sel log files
+    for (const std::filesystem::directory_entry &dirEnt :
+         std::filesystem::directory_iterator(selLogDir))
+    {
+        std::string filename = dirEnt.path().filename();
+        if (boost::starts_with(filename, selLogFilename))
+        {
+            // If we find an ipmi_sel log file, save the path
+            selLogFiles.emplace_back(selLogDir / filename);
+        }
+    }
+    // As the log files rotate, they are appended with a ".#" that is higher for
+    // the older logs. Since we don't expect more than 10 log files, we
+    // can just sort the list to get them in order from newest to oldest
+    std::sort(selLogFiles.begin(), selLogFiles.end());
+
+    return !selLogFiles.empty();
+}
+
 static unsigned int initializeRecordId(void)
 {
-    int journalError = -1;
-    sd_journal *journal;
-    journalError = sd_journal_open(&journal, SD_JOURNAL_LOCAL_ONLY);
-    if (journalError < 0)
+    std::vector<std::filesystem::path> selLogFiles;
+    if (!getSELLogFiles(selLogFiles))
     {
-        std::cerr << "Failed to open journal: " << strerror(-journalError)
-                  << "\n";
-        throw DBusInternalError();
+        return selInvalidRecID;
     }
-    unsigned int recordId = selInvalidRecID;
-    char match[256] = {};
-    snprintf(match, sizeof(match), "MESSAGE_ID=%s", selMessageId);
-    sd_journal_add_match(journal, match, 0);
-    SD_JOURNAL_FOREACH_BACKWARDS(journal)
+    std::ifstream logStream(selLogFiles.front());
+    if (!logStream.is_open())
     {
-        const char *data = nullptr;
-        size_t length;
+        return selInvalidRecID;
+    }
+    std::string line;
+    std::string newestEntry;
+    while (std::getline(logStream, line))
+    {
+        newestEntry = line;
+    }
 
-        journalError = sd_journal_get_data(journal, "IPMI_SEL_RECORD_ID",
-                                           (const void **)&data, &length);
-        if (journalError < 0)
-        {
-            std::cerr << "Failed to read IPMI_SEL_RECORD_ID field: "
-                      << strerror(-journalError) << "\n";
-            continue;
-        }
-        if (journalError =
-                sscanf(data, "IPMI_SEL_RECORD_ID=%u", &recordId) != 1)
-        {
-            std::cerr << "Failed to parse record ID: " << journalError << "\n";
-            throw DBusInternalError();
-        }
-        break;
+    std::vector<std::string> newestEntryFields;
+    boost::split(newestEntryFields, newestEntry, boost::is_any_of(" ,"),
+                 boost::token_compress_on);
+    if (newestEntryFields.size() < 4)
+    {
+        return selInvalidRecID;
     }
-    sd_journal_close(journal);
-    return recordId;
+
+    return std::stoul(newestEntryFields[1]);
 }
 
 static unsigned int getNewRecordId(void)
