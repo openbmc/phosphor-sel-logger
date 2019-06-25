@@ -49,7 +49,7 @@ inline static sdbusplus::bus::match::match
             if (*variant == "xyz.openbmc_project.State.Host.HostState.Off")
             {
                 std::string message("Host system DC power is off");
-                std::string redfishMsgId("DCPowerOff");
+                std::string redfishMsgId("OpenBMC.0.1.DCPowerOff");
 
                 sd_journal_send("MESSAGE=%s", message.c_str(),
                                 "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
@@ -59,7 +59,7 @@ inline static sdbusplus::bus::match::match
                      "xyz.openbmc_project.State.Host.HostState.Running")
             {
                 std::string message("Host system DC power is on");
-                std::string redfishMsgId("DCPowerOn");
+                std::string redfishMsgId("OpenBMC.0.1.DCPowerOn");
 
                 sd_journal_send("MESSAGE=%s", message.c_str(),
                                 "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
