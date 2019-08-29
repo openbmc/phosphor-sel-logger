@@ -100,6 +100,13 @@ static unsigned int getNewRecordId(void)
 {
     static unsigned int recordId = initializeRecordId();
 
+    // If the log has been cleared, also clear the current ID
+    std::vector<std::filesystem::path> selLogFiles;
+    if (!getSELLogFiles(selLogFiles))
+    {
+        recordId = selInvalidRecID;
+    }
+
     if (++recordId >= selInvalidRecID)
     {
         recordId = 1;
