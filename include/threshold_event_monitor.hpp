@@ -159,7 +159,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         {
             eventData[1] = ipmi::getScaledIPMIValue(sensorVal, max, min);
         }
-        catch (std::runtime_error &e)
+        catch (const std::exception &e)
         {
             std::cerr << e.what();
             eventData[1] = 0xFF;
@@ -201,7 +201,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         {
             eventData[2] = ipmi::getScaledIPMIValue(thresholdVal, max, min);
         }
-        catch (std::runtime_error &e)
+        catch (const std::exception &e)
         {
             std::cerr << e.what();
             eventData[2] = 0xFF;
