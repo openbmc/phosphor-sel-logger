@@ -23,6 +23,7 @@ inline static sdbusplus::bus::match::match
     startPulseEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto pulseEventMatcherCallback = [](sdbusplus::message::message &msg) {
+        static std::string runningState = "starting";
         std::string thresholdInterface;
         boost::container::flat_map<std::string,
                                    sdbusplus::message::variant<std::string>>
@@ -46,6 +47,14 @@ inline static sdbusplus::bus::match::match
 
         if (event == "CurrentHostState")
         {
+            // check if Initialized is finished,
+            if (runningState == "starting")
+            {
+                std::cout << "Skip log during service starting: " << *variant
+                          << std::endl;
+                return;
+            }
+
             if (*variant == "xyz.openbmc_project.State.Host.HostState.Off")
             {
                 std::string message("Host system DC power is off");
@@ -65,6 +74,10 @@ inline static sdbusplus::bus::match::match
                                 "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
                                 NULL);
             }
+        }
+        else if (event == "RunningState")
+        {
+            runningState = *variant;
         }
     };
 
