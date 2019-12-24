@@ -19,7 +19,6 @@
 #include <sensorutils.hpp>
 #include <string_view>
 #include <variant>
-
 enum class thresholdEventOffsets : uint8_t
 {
     lowerNonCritGoingLow = 0x00,
@@ -32,7 +31,7 @@ static constexpr const uint8_t thresholdEventDataTriggerReadingByte2 = (1 << 6);
 static constexpr const uint8_t thresholdEventDataTriggerReadingByte3 = (1 << 4);
 
 static const std::string openBMCMessageRegistryVersion("0.1");
-
+static const std::variant<std::string> currentHostState;
 inline static sdbusplus::bus::match::match startThresholdEventMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
 {
@@ -273,17 +272,39 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             }
         }
 
-        std::string journalMsg(std::string(sensorName) + " sensor crossed a " +
-                               threshold + " threshold going " + direction +
-                               ". Reading=" + std::to_string(sensorVal) +
-                               " Threshold=" + std::to_string(thresholdVal) +
-                               ".");
+        if (std::get<std::string>(currentHostState) !=
+                "xyz.openbmc_project.State.Host.HostState.Off" &&
+            sensorVal)
+        {
+            std::string journalMsg(
+                std::string(sensorName) + " sensor crossed a " + threshold +
+                " threshold going " + direction +
+                ". Reading=" + std::to_string(sensorVal) +
+                " Threshold=" + std::to_string(thresholdVal) + ".");
 
-        selAddSystemRecord(
-            journalMsg, std::string(msg.get_path()), eventData, assert,
-            selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
-            "REDFISH_MESSAGE_ARGS=%.*s,%f,%f", sensorName.length(),
-            sensorName.data(), sensorVal, thresholdVal);
+            selAddSystemRecord(
+                journalMsg, std::string(msg.get_path()), eventData, assert,
+                selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
+                "REDFISH_MESSAGE_ARGS=%.*s,%f,%f", sensorName.length(),
+                sensorName.data(), sensorVal, thresholdVal);
+        }
+        else
+            (std::get<std::string>(currentHostState) ==
+             "xyz.openbmc_project.State.Host.HostState.Off")
+            {
+                std::string journalMsg(
+                    std::string(sensorName) + " sensor crossed a " + threshold +
+                    " threshold going " + direction +
+                    ". Reading=" + std::to_string(sensorVal) +
+                    " Threshold=" + std::to_string(thresholdVal) + ".");
+
+                selAddSystemRecord(
+                    journalMsg, std::string(msg.get_path()), eventData, assert,
+                    selBMCGenID, "REDFISH_MESSAGE_ID=%s",
+                    redfishMessageID.c_str(), "REDFISH_MESSAGE_ARGS=%.*s,%f,%f",
+                    sensorName.length(), sensorName.data(), sensorVal,
+                    thresholdVal);
+            }
     };
     sdbusplus::bus::match::match thresholdEventMatcher(
         static_cast<sdbusplus::bus::bus &>(*conn),
