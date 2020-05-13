@@ -24,8 +24,7 @@ inline static sdbusplus::bus::match::match
 {
     auto pulseEventMatcherCallback = [](sdbusplus::message::message &msg) {
         std::string thresholdInterface;
-        boost::container::flat_map<std::string,
-                                   sdbusplus::message::variant<std::string>>
+        boost::container::flat_map<std::string, std::variant<std::string>>
             propertiesChanged;
         msg.read(thresholdInterface, propertiesChanged);
 
