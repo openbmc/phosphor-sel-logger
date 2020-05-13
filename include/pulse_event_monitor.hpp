@@ -36,8 +36,8 @@ inline static sdbusplus::bus::match::match
 
         std::string event = propertiesChanged.begin()->first;
 
-        auto variant = sdbusplus::message::variant_ns::get_if<std::string>(
-            &propertiesChanged.begin()->second);
+        auto variant =
+            std::get_if<std::string>(&propertiesChanged.begin()->second);
 
         if (event.empty() || nullptr == variant)
         {
