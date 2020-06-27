@@ -32,6 +32,7 @@ static constexpr uint16_t selInvalidRecID =
     std::numeric_limits<uint16_t>::max();
 static constexpr size_t selEvtDataMaxSize = 3;
 static constexpr size_t selOemDataMaxSize = 13;
+static constexpr uint8_t selEvtDataUnspecified = 0xFF;
 
 static const std::filesystem::path selLogDir = "/var/log";
 static const std::string selLogFilename = "ipmi_sel";
