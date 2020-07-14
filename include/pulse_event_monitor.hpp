@@ -22,7 +22,7 @@
 inline static sdbusplus::bus::match::match
     startPulseEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
 {
-    auto pulseEventMatcherCallback = [](sdbusplus::message::message &msg) {
+    auto pulseEventMatcherCallback = [](sdbusplus::message::message& msg) {
         std::string thresholdInterface;
         boost::container::flat_map<std::string, std::variant<std::string>>
             propertiesChanged;
@@ -68,7 +68,7 @@ inline static sdbusplus::bus::match::match
     };
 
     sdbusplus::bus::match::match pulseEventMatcher(
-        static_cast<sdbusplus::bus::bus &>(*conn),
+        static_cast<sdbusplus::bus::bus&>(*conn),
         "type='signal',interface='org.freedesktop.DBus.Properties',member='"
         "PropertiesChanged',arg0namespace='xyz.openbmc_project.State.Host'",
         std::move(pulseEventMatcherCallback));

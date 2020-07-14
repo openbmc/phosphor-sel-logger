@@ -18,37 +18,38 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/container/flat_map.hpp>
 #include <boost/container/flat_set.hpp>
+#include <pulse_event_monitor.hpp>
+#include <sdbusplus/asio/object_server.hpp>
+#include <sel_logger.hpp>
+#include <threshold_event_monitor.hpp>
+
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <pulse_event_monitor.hpp>
-#include <sdbusplus/asio/object_server.hpp>
-#include <sel_logger.hpp>
 #include <sstream>
-#include <threshold_event_monitor.hpp>
 
 struct DBusInternalError final : public sdbusplus::exception_t
 {
-    const char *name() const noexcept override
+    const char* name() const noexcept override
     {
         return "org.freedesktop.DBus.Error.Failed";
     };
-    const char *description() const noexcept override
+    const char* description() const noexcept override
     {
         return "internal error";
     };
-    const char *what() const noexcept override
+    const char* what() const noexcept override
     {
         return "org.freedesktop.DBus.Error.Failed: "
                "internal error";
     };
 };
 
-static bool getSELLogFiles(std::vector<std::filesystem::path> &selLogFiles)
+static bool getSELLogFiles(std::vector<std::filesystem::path>& selLogFiles)
 {
     // Loop through the directory looking for ipmi_sel log files
-    for (const std::filesystem::directory_entry &dirEnt :
+    for (const std::filesystem::directory_entry& dirEnt :
          std::filesystem::directory_iterator(selLogDir))
     {
         std::string filename = dirEnt.path().filename();
@@ -114,11 +115,11 @@ static unsigned int getNewRecordId(void)
     return recordId;
 }
 
-static void toHexStr(const std::vector<uint8_t> &data, std::string &hexStr)
+static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
 {
     std::stringstream stream;
     stream << std::hex << std::uppercase << std::setfill('0');
-    for (const int &v : data)
+    for (const int& v : data)
     {
         stream << std::setw(2) << v;
     }
@@ -127,9 +128,9 @@ static void toHexStr(const std::vector<uint8_t> &data, std::string &hexStr)
 
 template <typename... T>
 static uint16_t
-    selAddSystemRecord(const std::string &message, const std::string &path,
-                       const std::vector<uint8_t> &selData, const bool &assert,
-                       const uint16_t &genId, T &&... metadata)
+    selAddSystemRecord(const std::string& message, const std::string& path,
+                       const std::vector<uint8_t>& selData, const bool& assert,
+                       const uint16_t& genId, T&&... metadata)
 {
     // Only 3 bytes of SEL event data are allowed in a system record
     if (selData.size() > selEvtDataMaxSize)
@@ -150,9 +151,9 @@ static uint16_t
     return recordId;
 }
 
-static uint16_t selAddOemRecord(const std::string &message,
-                                const std::vector<uint8_t> &selData,
-                                const uint8_t &recordType)
+static uint16_t selAddOemRecord(const std::string& message,
+                                const std::vector<uint8_t>& selData,
+                                const uint8_t& recordType)
 {
     // A maximum of 13 bytes of SEL event data are allowed in an OEM record
     if (selData.size() > selOemDataMaxSize)
@@ -170,7 +171,7 @@ static uint16_t selAddOemRecord(const std::string &message,
     return recordId;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // setup connection to dbus
     boost::asio::io_service io;
@@ -186,16 +187,16 @@ int main(int argc, char *argv[])
 
     // Add a new SEL entry
     ifaceAddSel->register_method(
-        "IpmiSelAdd", [](const std::string &message, const std::string &path,
-                         const std::vector<uint8_t> &selData,
-                         const bool &assert, const uint16_t &genId) {
+        "IpmiSelAdd", [](const std::string& message, const std::string& path,
+                         const std::vector<uint8_t>& selData,
+                         const bool& assert, const uint16_t& genId) {
             return selAddSystemRecord(message, path, selData, assert, genId);
         });
     // Add a new OEM SEL entry
     ifaceAddSel->register_method(
         "IpmiSelAddOem",
-        [](const std::string &message, const std::vector<uint8_t> &selData,
-           const uint8_t &recordType) {
+        [](const std::string& message, const std::vector<uint8_t>& selData,
+           const uint8_t& recordType) {
             return selAddOemRecord(message, selData, recordType);
         });
     ifaceAddSel->initialize();

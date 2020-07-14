@@ -17,6 +17,7 @@
 #pragma once
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
+
 #include <string_view>
 #include <variant>
 
@@ -37,7 +38,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto thresholdEventMatcherCallback = [conn](
-                                             sdbusplus::message::message &msg) {
+                                             sdbusplus::message::message& msg) {
         // This static set of std::pair<path, event> tracks asserted events to
         // avoid duplicate logs or deasserts logged without an assert
         static boost::container::flat_set<std::pair<std::string, std::string>>
@@ -51,7 +52,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             propertiesChanged;
         msg.read(thresholdInterface, propertiesChanged);
         std::string event = propertiesChanged.begin()->first;
-        bool *pval = std::get_if<bool>(&propertiesChanged.begin()->second);
+        bool* pval = std::get_if<bool>(&propertiesChanged.begin()->second);
         if (!pval)
         {
             std::cerr << "threshold event direction has invalid type\n";
@@ -121,7 +122,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                 conn->call(getSensorValue);
             getSensorValueResp.read(sensorValue);
         }
-        catch (sdbusplus::exception_t &)
+        catch (sdbusplus::exception_t&)
         {
             std::cerr << "error getting sensor value from " << msg.get_path()
                       << "\n";
@@ -159,7 +160,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         {
             eventData[1] = ipmi::getScaledIPMIValue(sensorVal, max, min);
         }
-        catch (const std::exception &e)
+        catch (const std::exception& e)
         {
             std::cerr << e.what();
             eventData[1] = 0xFF;
@@ -185,7 +186,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
                 conn->call(getThreshold);
             getThresholdResp.read(thresholdValue);
         }
-        catch (sdbusplus::exception_t &)
+        catch (sdbusplus::exception_t&)
         {
             std::cerr << "error getting sensor threshold from "
                       << msg.get_path() << "\n";
@@ -201,7 +202,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
         {
             eventData[2] = ipmi::getScaledIPMIValue(thresholdVal, max, min);
         }
-        catch (const std::exception &e)
+        catch (const std::exception& e)
         {
             std::cerr << e.what();
             eventData[2] = 0xFF;
@@ -286,7 +287,7 @@ inline static sdbusplus::bus::match::match startThresholdEventMonitor(
             sensorName.data(), sensorVal, thresholdVal);
     };
     sdbusplus::bus::match::match thresholdEventMatcher(
-        static_cast<sdbusplus::bus::bus &>(*conn),
+        static_cast<sdbusplus::bus::bus&>(*conn),
         "type='signal',interface='org.freedesktop.DBus.Properties',member='"
         "PropertiesChanged',arg0namespace='xyz.openbmc_project.Sensor."
         "Threshold'",

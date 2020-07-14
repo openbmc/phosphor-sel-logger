@@ -15,9 +15,10 @@
 */
 
 #pragma once
+#include <phosphor-logging/log.hpp>
+
 #include <cmath>
 #include <iostream>
-#include <phosphor-logging/log.hpp>
 
 namespace ipmi
 {
@@ -27,7 +28,8 @@ namespace ipmi
  */
 struct VariantToDoubleVisitor
 {
-    template <typename T> double operator()(const T& t) const
+    template <typename T>
+    double operator()(const T& t) const
     {
         static_assert(std::is_arithmetic_v<T>,
                       "Cannot translate type to double");
