@@ -16,6 +16,7 @@
 #include <systemd/sd-journal.h>
 
 #include <boost/algorithm/string.hpp>
+#include <boost/asio/io_service.hpp>
 #include <boost/container/flat_map.hpp>
 #include <boost/container/flat_set.hpp>
 #include <pulse_event_monitor.hpp>
