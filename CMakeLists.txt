@@ -19,10 +19,18 @@ option (
     OFF
 )
 
+option (
+    SEL_LOGGER_MONITOR_WATCHDOG_EVENTS
+    "Enable SEL Logger to monitor and automatically
+     log SEL records for watchdog sensor events"
+    ON
+)
+
 target_compile_definitions (
     sel-logger PRIVATE
     $<$<BOOL:${SEL_LOGGER_MONITOR_THRESHOLD_EVENTS}>: -DSEL_LOGGER_MONITOR_THRESHOLD_EVENTS>
     $<$<BOOL:${REDFISH_LOG_MONITOR_PULSE_EVENTS}>: -DREDFISH_LOG_MONITOR_PULSE_EVENTS>
+    $<$<BOOL:${SEL_LOGGER_MONITOR_WATCHDOG_EVENTS}>: -DSEL_LOGGER_MONITOR_WATCHDOG_EVENTS>
 )
 
 target_include_directories (sel-logger PRIVATE ${CMAKE_SOURCE_DIR})
