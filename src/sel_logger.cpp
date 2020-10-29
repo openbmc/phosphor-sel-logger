@@ -23,6 +23,7 @@
 #include <sdbusplus/asio/object_server.hpp>
 #include <sel_logger.hpp>
 #include <threshold_event_monitor.hpp>
+#include <watchdog_event_monitor.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -243,6 +244,10 @@ int main(int argc, char* argv[])
         startPulseEventMonitor(conn);
 #endif
 
+#ifdef SEL_LOGGER_MONITOR_WATCHDOG_EVENTS
+    sdbusplus::bus::match::match watchdogEventMonitor =
+        startWatchdogEventMonitor(conn);
+#endif
     io.run();
 
     return 0;
