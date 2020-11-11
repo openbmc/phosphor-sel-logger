@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99a0b989_b5282089",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000233
+      },
+      "writtenOn": "2020-11-11T19:12:38Z",
+      "side": 1,
+      "message": "define a constexpr for this magic number",
+      "range": {
+        "startLine": 159,
+        "startChar": 77,
+        "endLine": 159,
+        "endChar": 78
+      },
+      "revId": "f3e5c9cac6edaa14ac2dd983e8d0f18a8d953b4c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
