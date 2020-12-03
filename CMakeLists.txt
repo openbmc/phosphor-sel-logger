@@ -19,15 +19,28 @@ option (
     OFF
 )
 
+option (
+    SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+    "Make SEL Logger to send sel to logging service instead of journal"
+    OFF
+)
+
 target_compile_definitions (
     sel-logger PRIVATE
     $<$<BOOL:${SEL_LOGGER_MONITOR_THRESHOLD_EVENTS}>: -DSEL_LOGGER_MONITOR_THRESHOLD_EVENTS>
     $<$<BOOL:${REDFISH_LOG_MONITOR_PULSE_EVENTS}>: -DREDFISH_LOG_MONITOR_PULSE_EVENTS>
+    $<$<BOOL:${SEL_LOGGER_SEND_TO_LOGGING_SERVICE}>: -DSEL_LOGGER_SEND_TO_LOGGING_SERVICE>
 )
 
 target_include_directories (sel-logger PRIVATE ${CMAKE_SOURCE_DIR})
 
-target_link_libraries (sel-logger systemd sdbusplus pthread phosphor_logging -lstdc++fs)
+set(LINK_LIBS systemd sdbusplus pthread phosphor_logging -lstdc++fs)
+
+if (SEL_LOGGER_SEND_TO_LOGGING_SERVICE)
+    list(APPEND LINK_LIBS phosphor_dbus)
+endif()
+
+target_link_libraries (sel-logger ${LINK_LIBS})
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
 
