@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d4a71cf7_cb4d9574",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-12-08T18:31:12Z",
+      "side": 1,
+      "message": "This function is not void. What is the return value?\n\nSame comment for few instances below.",
+      "range": {
+        "startLine": 74,
+        "startChar": 12,
+        "endLine": 74,
+        "endChar": 18
+      },
+      "revId": "9fea44ca1399a1b1b5b60b68339d5635cf65fdfd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f4683ca_c96a7de0",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-12-08T18:31:12Z",
+      "side": 1,
+      "message": "return value.",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 18
+      },
+      "revId": "9fea44ca1399a1b1b5b60b68339d5635cf65fdfd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "845d989f_600d96bc",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000118
+      },
+      "writtenOn": "2020-12-08T18:31:12Z",
+      "side": 1,
+      "message": "return value.",
+      "range": {
+        "startLine": 101,
+        "startChar": 12,
+        "endLine": 101,
+        "endChar": 18
+      },
+      "revId": "9fea44ca1399a1b1b5b60b68339d5635cf65fdfd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
