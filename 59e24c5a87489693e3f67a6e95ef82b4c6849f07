@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b932aa3b_226563bf",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-01-22T19:10:07Z",
+      "side": 1,
+      "message": "Redfish Message ID is defined here: https://github.com/openbmc/bmcweb/blob/master/redfish-core/include/registries/openbmc_message_registry.hpp.\n\nThere is an existing one for \"IPMIWatchdog\", but if that isn\u0027t the right one, you will need to add a new Message ID there.",
+      "revId": "59e24c5a87489693e3f67a6e95ef82b4c6849f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
