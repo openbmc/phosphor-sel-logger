@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7ee6e859_c2e63e4b",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000930
+      },
+      "writtenOn": "2021-01-25T03:22:24Z",
+      "side": 1,
+      "message": "auto watchdogEventMatcherCallback is a void type :\nstd::function\u003cvoid(sdbusplus::message::message \u0026 message)\u003e",
+      "parentUuid": "d4a71cf7_cb4d9574",
+      "range": {
+        "startLine": 74,
+        "startChar": 12,
+        "endLine": 74,
+        "endChar": 18
+      },
+      "revId": "9fea44ca1399a1b1b5b60b68339d5635cf65fdfd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6f4683ca_c96a7de0",
         "filename": "include/watchdog_event_monitor.hpp",
         "patchSetId": 5
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "45c81bca_2311a829",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000930
+      },
+      "writtenOn": "2021-01-25T03:22:24Z",
+      "side": 1,
+      "message": "auto watchdogEventMatcherCallback is a void type :\nstd::function\u003cvoid(sdbusplus::message::message \u0026 message)\u003e",
+      "parentUuid": "6f4683ca_c96a7de0",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 18
+      },
+      "revId": "9fea44ca1399a1b1b5b60b68339d5635cf65fdfd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "845d989f_600d96bc",
         "filename": "include/watchdog_event_monitor.hpp",
         "patchSetId": 5
@@ -68,6 +116,30 @@
       "revId": "9fea44ca1399a1b1b5b60b68339d5635cf65fdfd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ecdfc07_965b2cae",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000930
+      },
+      "writtenOn": "2021-01-25T03:22:24Z",
+      "side": 1,
+      "message": "auto watchdogEventMatcherCallback is a void type :\nstd::function\u003cvoid(sdbusplus::message::message \u0026 message)\u003e",
+      "parentUuid": "845d989f_600d96bc",
+      "range": {
+        "startLine": 101,
+        "startChar": 12,
+        "endLine": 101,
+        "endChar": 18
+      },
+      "revId": "9fea44ca1399a1b1b5b60b68339d5635cf65fdfd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
