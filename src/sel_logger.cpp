@@ -24,6 +24,7 @@
 #include <sel_logger.hpp>
 #include <sstream>
 #include <threshold_event_monitor.hpp>
+#include <watchdog_event_monitor.hpp>
 
 struct DBusInternalError final : public sdbusplus::exception_t
 {
@@ -184,6 +185,10 @@ int main(int argc, char *argv[])
         startThresholdEventMonitor(conn);
 #endif
 
+#ifdef SEL_LOGGER_MONITOR_WATCHDOG_EVENTS
+    sdbusplus::bus::match::match watchdogEventMonitor =
+        startWatchdogEventMonitor(conn);
+#endif
     io.run();
 
     return 0;
