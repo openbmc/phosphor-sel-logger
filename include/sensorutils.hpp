@@ -51,6 +51,7 @@ static inline bool getSensorAttributes(const double max, const double min,
     // check for 0, assume always positive
     double mDouble;
     double bDouble;
+    double lowestM;
     if (max <= min)
     {
         phosphor::logging::log<phosphor::logging::level::DEBUG>(
@@ -63,12 +64,12 @@ static inline bool getSensorAttributes(const double max, const double min,
     if (min < 0)
     {
         bSigned = true;
-        bDouble = floor(0.5 + ((max + min) / 2));
+        lowestM = -128;
     }
     else
     {
         bSigned = false;
-        bDouble = min;
+        lowestM = 0;
     }
 
     rExp = 0;
@@ -96,21 +97,7 @@ static inline bool getSensorAttributes(const double max, const double min,
                 "rExp Too Small, Max and Min range too close");
             return false;
         }
-        // check to see if we reached the limit of where we can adjust back the
-        // B value
-        if (bDouble / std::pow(10, rExp + minInt4 - 1) > bDouble)
-        {
-            if (mDouble < 1.0)
-            {
-                phosphor::logging::log<phosphor::logging::level::DEBUG>(
-                    "Could not find mValue and B value with enough "
-                    "precision.");
-                return false;
-            }
-            break;
-        }
-        // can't multiply M any more, max precision reached
-        else if (mDouble * 10 > maxInt10)
+        if (mDouble * 10 > maxInt10)
         {
             break;
         }
@@ -118,7 +105,9 @@ static inline bool getSensorAttributes(const double max, const double min,
         rExp--;
     }
 
-    bDouble /= std::pow(10, rExp);
+    bDouble = std::pow(10.0, ((-rExp) - bExp)) *
+              (min - ((mDouble * std::pow(10.0, rExp) * lowestM)));
+    ;
     bExp = 0;
 
     // B too big for 10 bit variable
@@ -143,12 +132,16 @@ static inline bool getSensorAttributes(const double max, const double min,
                 "bExp Too Small, Max and Min range need to be adjusted");
             return false;
         }
+        if (bDouble * 10 > maxInt10)
+        {
+            break;
+        }
         bDouble *= 10;
         bExp -= 1;
     }
 
     mValue = static_cast<int16_t>(std::round(mDouble)) & maxInt10;
-    bValue = static_cast<int16_t>(bDouble) & maxInt10;
+    bValue = static_cast<int16_t>(std::round(bDouble)) & maxInt10;
 
     return true;
 }
@@ -158,28 +151,27 @@ static inline uint8_t
                              const int8_t rExp, const uint16_t bValue,
                              const int8_t bExp, const bool bSigned)
 {
-    int32_t scaledValue =
-        (value - (bValue * std::pow(10, bExp) * std::pow(10, rExp))) /
-        (mValue * std::pow(10, rExp));
+    double dM = static_cast<double>(mValue);
+    double dB = static_cast<double>(bValue);
+    double dX =
+        (value - (dB * std::pow(10, bExp + rExp))) / (dM * std::pow(10, rExp));
+    int32_t scaledValue = static_cast<int32_t>(std::round(dX));
 
+    int32_t minClamp;
+    int32_t maxClamp;
     if (bSigned)
     {
-        if (scaledValue > std::numeric_limits<int8_t>::max() ||
-            scaledValue < std::numeric_limits<int8_t>::lowest())
-        {
-            throw std::out_of_range("Value out of range");
-        }
-        return static_cast<int8_t>(scaledValue);
+        minClamp = std::numeric_limits<int8_t>::lowest();
+        maxClamp = std::numeric_limits<int8_t>::max();
     }
     else
     {
-        if (scaledValue > std::numeric_limits<uint8_t>::max() ||
-            scaledValue < std::numeric_limits<uint8_t>::lowest())
-        {
-            throw std::out_of_range("Value out of range");
-        }
-        return static_cast<uint8_t>(scaledValue);
+        minClamp = std::numeric_limits<uint8_t>::lowest();
+        maxClamp = std::numeric_limits<uint8_t>::max();
     }
+
+    auto clampedValue = std::clamp(scaledValue, minClamp, maxClamp);
+    return static_cast<uint8_t>(clampedValue);
 }
 
 static inline uint8_t getScaledIPMIValue(const double value, const double max,
