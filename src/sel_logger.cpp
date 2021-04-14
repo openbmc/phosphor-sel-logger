@@ -24,6 +24,9 @@
 #include <sel_logger.hpp>
 #include <threshold_event_monitor.hpp>
 #include <watchdog_event_monitor.hpp>
+#ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
+#include <threshold_alarm_event_monitor.hpp>
+#endif
 
 #include <filesystem>
 #include <fstream>
@@ -247,6 +250,10 @@ int main(int argc, char* argv[])
 #ifdef SEL_LOGGER_MONITOR_WATCHDOG_EVENTS
     sdbusplus::bus::match::match watchdogEventMonitor =
         startWatchdogEventMonitor(conn);
+#endif
+
+#ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
+    startThresholdAlarmMonitor(conn);
 #endif
     io.run();
 

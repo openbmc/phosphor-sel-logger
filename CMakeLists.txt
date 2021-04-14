@@ -32,12 +32,20 @@ option (
     OFF
 )
 
+option (
+    SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
+    "Enable SEL Logger to monitor threshold alarm signals and
+     automatically log SEL records for threshold sensor events"
+    OFF
+)
+
 target_compile_definitions (
     sel-logger PRIVATE
     $<$<BOOL:${SEL_LOGGER_MONITOR_THRESHOLD_EVENTS}>: -DSEL_LOGGER_MONITOR_THRESHOLD_EVENTS>
     $<$<BOOL:${REDFISH_LOG_MONITOR_PULSE_EVENTS}>: -DREDFISH_LOG_MONITOR_PULSE_EVENTS>
     $<$<BOOL:${SEL_LOGGER_MONITOR_WATCHDOG_EVENTS}>: -DSEL_LOGGER_MONITOR_WATCHDOG_EVENTS>
     $<$<BOOL:${SEL_LOGGER_SEND_TO_LOGGING_SERVICE}>: -DSEL_LOGGER_SEND_TO_LOGGING_SERVICE>
+    $<$<BOOL:${SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS}>: -DSEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS>
 )
 
 target_include_directories (sel-logger PRIVATE ${CMAKE_SOURCE_DIR})
