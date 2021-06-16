@@ -84,3 +84,9 @@ set (
     ${PROJECT_SOURCE_DIR}/service_files/xyz.openbmc_project.Logging.IPMI.service
 )
 install (FILES ${SERVICE_FILES} DESTINATION /lib/systemd/system/)
+
+set (
+    RSYSLOG_FILES
+    ${PROJECT_SOURCE_DIR}/rsyslog_files/50-ipmi-sel.conf
+)
+install (FILES ${RSYSLOG_FILES} DESTINATION /etc/rsyslog.d/)
