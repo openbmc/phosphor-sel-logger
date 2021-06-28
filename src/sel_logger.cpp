@@ -63,6 +63,8 @@ struct DBusInternalError final : public sdbusplus::exception_t
 };
 
 #ifndef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+static bool firstRecord = true;
+
 static bool getSELLogFiles(std::vector<std::filesystem::path>& selLogFiles)
 {
     // Loop through the directory looking for ipmi_sel log files
@@ -122,7 +124,22 @@ static unsigned int getNewRecordId(void)
     std::vector<std::filesystem::path> selLogFiles;
     if (!getSELLogFiles(selLogFiles))
     {
-        recordId = selInvalidRecID;
+        if (firstRecord)
+        {
+            firstRecord = false;
+            recordId = selInvalidRecID;
+        }
+        else
+        {
+            //Need to wait until the first record is added to ipmi_sel.
+            while(!getSELLogFiles(selLogFiles))
+            {
+                usleep(1000);
+            }
+
+            //Reset first record flag for when the SEL is cleared.
+            firstRecord = true;
+        }
     }
 
     if (++recordId >= selInvalidRecID)
