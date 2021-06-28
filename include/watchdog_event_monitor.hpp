@@ -211,7 +211,7 @@ inline static sdbusplus::bus::match::match
         }
 
         auto getWatchdogInterval = watchdogStatus.find("Interval");
-        uint64_t watchdogInterval;
+        uint64_t watchdogInterval = 0;
         if (getWatchdogInterval != watchdogStatus.end())
         {
             watchdogInterval = std::get<uint64_t>(getWatchdogInterval->second);
