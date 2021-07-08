@@ -16,6 +16,24 @@
       "revId": "2ece17b1548cf2efd90977fa8ceace59b99f2c05",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2d975d6_1797af6a",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000908
+      },
+      "writtenOn": "2021-07-08T16:22:31Z",
+      "side": 1,
+      "message": "A timeout would be necessary because I triggered the scenario where the sel-logger got stuck in an infinite loop. How should the SEL entry be handled if the timeout expires? I do not want to drop the entry because it could be an important message. An option is for sel-logger to assume that the deletion of ipmi_sel file caused the timeout, and the entry should become the first entry.",
+      "parentUuid": "c46ecf34_99e81eb5",
+      "revId": "2ece17b1548cf2efd90977fa8ceace59b99f2c05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
