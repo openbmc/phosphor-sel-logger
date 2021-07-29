@@ -114,8 +114,47 @@ static unsigned int initializeRecordId(void)
     return std::stoul(newestEntryFields[1]);
 }
 
+#ifdef SEL_LOGGER_CLEARS_SEL
+void clearSelLogFiles();
+
+static unsigned int recordId = initializeRecordId();
+
+void clearSelLogFiles()
+{
+    // Clear the SEL by deleting the log files
+    std::vector<std::filesystem::path> selLogFiles;
+    if (getSELLogFiles(selLogFiles))
+    {
+        for (const std::filesystem::path& file : selLogFiles)
+        {
+            std::error_code ec;
+            std::filesystem::remove(file, ec);
+        }
+    }
+
+    recordId = selInvalidRecID;
+
+    // Reload rsyslog so it knows to start new log files
+    boost::asio::io_service io;
+    auto dbus = std::make_shared<sdbusplus::asio::connection>(io);
+    sdbusplus::message::message rsyslogReload = dbus->new_method_call(
+        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
+        "org.freedesktop.systemd1.Manager", "ReloadUnit");
+    rsyslogReload.append("rsyslog.service", "replace");
+    try
+    {
+        sdbusplus::message::message reloadResponse = dbus->call(rsyslogReload);
+    }
+    catch (sdbusplus::exception_t& e)
+    {
+        std::cerr << e.what() << "\n";
+    }
+}
+#endif
+
 static unsigned int getNewRecordId(void)
 {
+#ifndef SEL_LOGGER_CLEARS_SEL
     static unsigned int recordId = initializeRecordId();
 
     // If the log has been cleared, also clear the current ID
@@ -124,6 +163,7 @@ static unsigned int getNewRecordId(void)
     {
         recordId = selInvalidRecID;
     }
+#endif
 
     if (++recordId >= selInvalidRecID)
     {
@@ -236,6 +276,11 @@ int main(int, char*[])
            const uint8_t& recordType) {
             return selAddOemRecord(message, selData, recordType);
         });
+
+#ifdef SEL_LOGGER_CLEARS_SEL
+    // Clear SEL entries
+    ifaceAddSel->register_method("Clear", []() { clearSelLogFiles(); });
+#endif
     ifaceAddSel->initialize();
 
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_EVENTS
