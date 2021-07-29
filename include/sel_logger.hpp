@@ -42,3 +42,6 @@ static uint16_t
     selAddSystemRecord(const std::string& message, const std::string& path,
                        const std::vector<uint8_t>& selData, const bool& assert,
                        const uint16_t& genId, T&&... metadata);
+#ifdef SEL_LOGGER_CLEARS_SEL
+static void clearSelLogFiles();
+#endif
