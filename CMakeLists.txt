@@ -39,6 +39,12 @@ option (
     OFF
 )
 
+option (
+    SEL_LOGGER_CLEARS_SEL
+    "Enable SEL Logger to clear the SEL records stored in ipmi_sel."
+    OFF
+)
+
 target_compile_definitions (
     sel-logger PRIVATE
     $<$<BOOL:${SEL_LOGGER_MONITOR_THRESHOLD_EVENTS}>: -DSEL_LOGGER_MONITOR_THRESHOLD_EVENTS>
@@ -46,6 +52,7 @@ target_compile_definitions (
     $<$<BOOL:${SEL_LOGGER_MONITOR_WATCHDOG_EVENTS}>: -DSEL_LOGGER_MONITOR_WATCHDOG_EVENTS>
     $<$<BOOL:${SEL_LOGGER_SEND_TO_LOGGING_SERVICE}>: -DSEL_LOGGER_SEND_TO_LOGGING_SERVICE>
     $<$<BOOL:${SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS}>: -DSEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS>
+    $<$<BOOL:${SEL_LOGGER_CLEARS_SEL}>: -DSEL_LOGGER_CLEARS_SEL>
 )
 
 target_include_directories (sel-logger PRIVATE ${CMAKE_SOURCE_DIR})
