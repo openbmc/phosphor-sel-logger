@@ -1,0 +1,4 @@
+/build*/
+/subprojects/*
+!subprojects/sdbusplus.wrap
+!subprojects/phosphor-logging.wrap
