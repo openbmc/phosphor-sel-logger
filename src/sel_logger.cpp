@@ -137,7 +137,7 @@ static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
 {
     std::stringstream stream;
     stream << std::hex << std::uppercase << std::setfill('0');
-    for (const int& v : data)
+    for (int v : data)
     {
         stream << std::setw(2) << v;
     }
