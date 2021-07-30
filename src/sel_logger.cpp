@@ -145,10 +145,11 @@ static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
 }
 
 template <typename... T>
-static uint16_t
-    selAddSystemRecord(const std::string& message, const std::string& path,
-                       const std::vector<uint8_t>& selData, const bool& assert,
-                       const uint16_t& genId, T&&... metadata)
+static uint16_t selAddSystemRecord([[maybe_unused]] const std::string& message,
+                                   const std::string& path,
+                                   const std::vector<uint8_t>& selData,
+                                   const bool& assert, const uint16_t& genId,
+                                   [[maybe_unused]] T&&... metadata)
 {
     // Only 3 bytes of SEL event data are allowed in a system record
     if (selData.size() > selEvtDataMaxSize)
@@ -178,7 +179,7 @@ static uint16_t
 #endif
 }
 
-static uint16_t selAddOemRecord(const std::string& message,
+static uint16_t selAddOemRecord([[maybe_unused]] const std::string& message,
                                 const std::vector<uint8_t>& selData,
                                 const uint8_t& recordType)
 {
@@ -207,7 +208,7 @@ static uint16_t selAddOemRecord(const std::string& message,
 #endif
 }
 
-int main(int argc, char* argv[])
+int main(int, char*[])
 {
     // setup connection to dbus
     boost::asio::io_service io;
