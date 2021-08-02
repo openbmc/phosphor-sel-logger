@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "677c7fc4_aafd127a",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000908
+      },
+      "writtenOn": "2021-08-02T16:06:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbe5c685_3d43325b",
+      "range": {
+        "startLine": 148,
+        "startChar": 33,
+        "endLine": 148,
+        "endChar": 42
+      },
+      "revId": "fb1b854fe513473a56883f91c27a74439cf03979",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dc9c28c9_df37a29a",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 3
@@ -39,6 +63,24 @@
       "revId": "fb1b854fe513473a56883f91c27a74439cf03979",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "071a9aab_a7fc57c6",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000908
+      },
+      "writtenOn": "2021-08-02T16:06:01Z",
+      "side": 1,
+      "message": "Acknowledged and changed, but I do not want getNewRecordId to use initializeRecordId because I sourced this as the issue with multiple entries sharing Record Id 1 in my system. Therefore, clearing the SEL or restarting service will execute initializeRecordId once in Patchset 4.",
+      "parentUuid": "dc9c28c9_df37a29a",
+      "revId": "fb1b854fe513473a56883f91c27a74439cf03979",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
