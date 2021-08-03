@@ -81,6 +81,24 @@
       "revId": "fb1b854fe513473a56883f91c27a74439cf03979",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a041f83c_54d68089",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-03T22:06:23Z",
+      "side": 1,
+      "message": "That\u0027s fair.  initializeRecordId() was only called to set a static, so it should only have executed once on startup.  I think the check below on line 158 is where it saw that there were no log files present and set the ID to 1 each time, but that check is also removed, so it looks good to me.",
+      "parentUuid": "071a9aab_a7fc57c6",
+      "revId": "fb1b854fe513473a56883f91c27a74439cf03979",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }

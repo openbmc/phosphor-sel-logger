@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25f3ce80_0e4444af",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-03T22:06:23Z",
+      "side": 1,
+      "message": "It looks like it ends up the same, but I think you can just set to selInvalidRecID here to avoid looking for the files that were just deleted?",
+      "revId": "fa21ce90d2e83e420d8f824677802f5d6db0748a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
