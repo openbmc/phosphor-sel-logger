@@ -4,6 +4,8 @@ option('log-pulse', type: 'boolean',
        description: 'Automatically log events to Redfish for pulse type assert-deassert sensor events')
 option('log-watchdog', type: 'boolean',
        description: 'Automatically log SEL records for watchdog events')
+option('log-watchdog-timeout', type: 'boolean',
+       description: 'Automatically log SEL records for watchdog timeout events')
 option('log-alarm', type: 'boolean',
        description: 'Monitor threshold alarm signals and log SEL records for threshold sensor events')
 option('send-to-logger', type: 'boolean',

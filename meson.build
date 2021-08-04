@@ -25,6 +25,9 @@ endif
 if get_option('log-watchdog')
   cpp_args += '-DSEL_LOGGER_MONITOR_WATCHDOG_EVENTS'
 endif
+if get_option('log-watchdog-timeout')
+  cpp_args += '-DSEL_LOGGER_MONITOR_WATCHDOG_TIMEOUT_EVENTS'
+endif
 if get_option('log-alarm')
   cpp_args += '-DSEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS'
 endif
