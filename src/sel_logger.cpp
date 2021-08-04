@@ -250,6 +250,9 @@ int main(int argc, char* argv[])
 #ifdef SEL_LOGGER_MONITOR_WATCHDOG_EVENTS
     sdbusplus::bus::match::match watchdogEventMonitor =
         startWatchdogEventMonitor(conn);
+
+    sdbusplus::bus::match::match watchdogTimeoutEventMonitor =
+        startWatchdogTimeoutEventMonitor(conn);
 #endif
 
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
