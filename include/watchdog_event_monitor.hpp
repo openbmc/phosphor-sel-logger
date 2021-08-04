@@ -19,6 +19,8 @@
 #include <sensorutils.hpp>
 
 #include <iostream>
+#include <optional>
+#include <string>
 #include <string_view>
 #include <variant>
 
@@ -68,24 +70,53 @@ inline static sdbusplus::bus::match::match
 
         // Get the event type and assertion details from the message
         std::string watchdogInterface;
-        boost::container::flat_map<std::string, std::variant<bool>>
+        boost::container::flat_map<std::string, std::variant<bool, std::string>>
             propertiesChanged;
 
         msg.read(watchdogInterface, propertiesChanged);
 
-        if (propertiesChanged.begin()->first != "Enabled")
+        std::optional<bool> assert = std::nullopt;
+        std::optional<std::string_view> expireAction = std::nullopt;
+
+        for (auto& [name, value] : propertiesChanged)
+        {
+            if (name == "Enabled")
+            {
+                bool* pval = std::get_if<bool>(&value);
+
+                if (!pval)
+                {
+                    std::cerr << "watchdog event direction has invalid type\n";
+                    continue;
+                }
+
+                assert = *pval;
+            }
+
+            if (name == "TriggeredAction")
+            {
+                std::string* pval = std::get_if<std::string>(&value);
+
+                if (!pval)
+                {
+                    std::cerr << "Testing Watchdog Action: failed to parse "
+                                 "Triggered Action"
+                              << std::endl;
+                    continue;
+                }
+
+                assert = true;
+
+                expireAction = *pval;
+                expireAction->remove_prefix(std::min(
+                    expireAction->find_last_of(".") + 1, expireAction->size()));
+            }
+        }
+
+        if (!assert)
         {
             return;
         }
-
-        bool* pval = std::get_if<bool>(&propertiesChanged.begin()->second);
-
-        if (!pval)
-        {
-            std::cerr << "watchdog event direction has invalid type\n";
-            return;
-        }
-        bool assert = *pval;
 
         sdbusplus::message::message getWatchdogStatus =
             conn->new_method_call(msg.get_sender(), msg.get_path(),
@@ -108,30 +139,33 @@ inline static sdbusplus::bus::match::match
             return;
         }
 
-        auto getExpireAction = watchdogStatus.find("ExpireAction");
-        std::string_view expireAction;
-        if (getExpireAction != watchdogStatus.end())
+        if (!expireAction)
         {
-            expireAction = std::get<std::string>(getExpireAction->second);
-            expireAction.remove_prefix(std::min(
-                expireAction.find_last_of(".") + 1, expireAction.size()));
+            auto getExpireAction = watchdogStatus.find("ExpireAction");
+            if (getExpireAction != watchdogStatus.end())
+            {
+                expireAction = std::get<std::string>(getExpireAction->second);
+                expireAction->remove_prefix(std::min(
+                    expireAction->find_last_of(".") + 1, expireAction->size()));
+            }
         }
-        if (expireAction == "HardReset")
+
+        if (*expireAction == "HardReset")
         {
             eventData[0] =
                 static_cast<uint8_t>(watchdogEventOffsets::hardReset);
         }
-        else if (expireAction == "PowerOff")
+        else if (*expireAction == "PowerOff")
         {
             eventData[0] =
                 static_cast<uint8_t>(watchdogEventOffsets::powerDown);
         }
-        else if (expireAction == "PowerCycle")
+        else if (*expireAction == "PowerCycle")
         {
             eventData[0] =
                 static_cast<uint8_t>(watchdogEventOffsets::powerCycle);
         }
-        else if (expireAction == "None")
+        else if (*expireAction == "None")
         {
             eventData[0] = static_cast<uint8_t>(watchdogEventOffsets::noAction);
         }
@@ -217,7 +251,7 @@ inline static sdbusplus::bus::match::match
             watchdogInterval = std::get<uint64_t>(getWatchdogInterval->second);
         }
 
-        // get watchdog status porperties
+        // get watchdog status properties
         static bool wdt_nolog;
         sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
         uint8_t netFn = 0x06;
@@ -238,7 +272,7 @@ inline static sdbusplus::bus::match::match
 
         std::string direction;
         std::string eventMessageArgs;
-        if (assert)
+        if (*assert)
         {
             direction = " enable ";
             eventMessageArgs = "Enabled";
@@ -258,12 +292,12 @@ inline static sdbusplus::bus::match::match
                 std::string(currentTimerUse) + std::string(direction) +
                 "watchdog countdown " +
                 std::to_string(watchdogInterval / 1000) + " seconds " +
-                std::string(expireAction) + " action");
+                std::string(*expireAction) + " action");
 
             std::string redfishMessageID = "OpenBMC.0.1.IPMIWatchdog";
 
             selAddSystemRecord(
-                journalMsg, std::string(msg.get_path()), eventData, assert,
+                journalMsg, std::string(msg.get_path()), eventData, *assert,
                 selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
                 "REDFISH_MESSAGE_ARGS=%s", eventMessageArgs.c_str(), NULL);
         }
