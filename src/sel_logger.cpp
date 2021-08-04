@@ -252,6 +252,11 @@ int main(int argc, char* argv[])
         startWatchdogEventMonitor(conn);
 #endif
 
+#ifdef SEL_LOGGER_MONITOR_WATCHDOG_TIMEOUT_EVENTS
+    sdbusplus::bus::match::match watchdogTimeoutEventMonitor =
+        startWatchdogTimeoutEventMonitor(conn);
+#endif
+
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
     startThresholdAlarmMonitor(conn);
 #endif
