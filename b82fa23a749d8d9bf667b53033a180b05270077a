@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e8d51280_625391d7",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2021-08-06T22:04:56Z",
+      "side": 1,
+      "message": "nit: Even\"t\"Log I\u0027m guessing?",
+      "range": {
+        "startLine": 56,
+        "startChar": 33,
+        "endLine": 56,
+        "endChar": 35
+      },
+      "revId": "b82fa23a749d8d9bf667b53033a180b05270077a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b165266_24eaed4d",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2021-08-06T22:04:56Z",
+      "side": 1,
+      "message": "Is this ok to do even if expireAction is nullopt? or should we have a big if statement to check if (expireAction)",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "b82fa23a749d8d9bf667b53033a180b05270077a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
