@@ -16,6 +16,24 @@
       "revId": "c2b1e9f91b45f322c162dafa506d32d956de8f79",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5ff27f1_eb38f3fb",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2021-08-09T20:25:53Z",
+      "side": 1,
+      "message": "The name change is probably not needed. I will change it for now.\n\nIf no one needs the original functionality, then we can just take over the function.",
+      "parentUuid": "5cd8f12b_590c185c",
+      "revId": "c2b1e9f91b45f322c162dafa506d32d956de8f79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
