@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c45c91b0_7c68ce15",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-09T22:25:48Z",
+      "side": 1,
+      "message": "It looks like clearSelLogFiles() is wrapped in this ifndef that is also set as part of the meson CI job, so it is removing the function during the build.",
+      "revId": "94534602430c3842e185469f4eba71965d371f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
