@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5cd8f12b_590c185c",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-09T19:59:41Z",
+      "side": 1,
+      "message": "Is this name change still needed if it\u0027s using the same option?",
+      "revId": "c2b1e9f91b45f322c162dafa506d32d956de8f79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
