@@ -16,6 +16,24 @@
       "revId": "94534602430c3842e185469f4eba71965d371f5c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9c32bb8_524a30a3",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000908
+      },
+      "writtenOn": "2021-08-10T17:46:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c45c91b0_7c68ce15",
+      "revId": "94534602430c3842e185469f4eba71965d371f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
