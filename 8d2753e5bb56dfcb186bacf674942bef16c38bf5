@@ -16,6 +16,24 @@
       "revId": "8d2753e5bb56dfcb186bacf674942bef16c38bf5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70bbf283_4e2d8607",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000908
+      },
+      "writtenOn": "2021-08-10T21:39:25Z",
+      "side": 1,
+      "message": "Agreed, and it can build without this.",
+      "parentUuid": "1765f822_f4a99d25",
+      "revId": "8d2753e5bb56dfcb186bacf674942bef16c38bf5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
