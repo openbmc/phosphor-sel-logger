@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1765f822_f4a99d25",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2021-08-10T20:17:47Z",
+      "side": 1,
+      "message": "I don\u0027t think you need this forward declaration anymore.",
+      "revId": "8d2753e5bb56dfcb186bacf674942bef16c38bf5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
