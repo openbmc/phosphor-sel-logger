@@ -1,0 +1,10 @@
+Code-Review+2: Jason Bills <jason.m.bills@linux.intel.com>
+Code-Review+1: Brandon Kim <brandonkim@google.com>
+Code-Review+1: Charles Boyer <Charles.Boyer@fii-usa.com>
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Willy Tu <wltu@google.com>
+Submitted-at: Thu, 12 Aug 2021 19:30:30 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-sel-logger/+/45622
+Project: openbmc/phosphor-sel-logger
+Branch: refs/heads/master
