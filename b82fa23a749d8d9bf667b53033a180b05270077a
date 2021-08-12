@@ -93,6 +93,30 @@
       "revId": "b82fa23a749d8d9bf667b53033a180b05270077a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d701794d_b3bc532a",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2021-08-12T16:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77194b79_e12210dc",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "b82fa23a749d8d9bf667b53033a180b05270077a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
