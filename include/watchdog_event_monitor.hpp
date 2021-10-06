@@ -75,7 +75,7 @@ inline static void sendWatchdogEventLog(
             conn->call(getWatchdogStatus);
         getWatchdogStatusResp.read(watchdogStatus);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         std::cerr << "error getting watchdog status from " << msg.get_path()
                   << "\n";

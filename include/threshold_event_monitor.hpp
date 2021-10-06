@@ -57,7 +57,7 @@ inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
             msg.read(sensorName, thresholdInterface, event, assert,
                      assertValue);
         }
-        catch (sdbusplus::exception_t&)
+        catch (const sdbusplus::exception_t&)
         {
             std::cerr << "error getting assert signal data from "
                       << msg.get_path() << "\n";
@@ -126,7 +126,7 @@ inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
                 conn->call(getSensorValue);
             getSensorValueResp.read(sensorValue);
         }
-        catch (sdbusplus::exception_t&)
+        catch (const sdbusplus::exception_t&)
         {
             std::cerr << "error getting sensor value from " << msg.get_path()
                       << "\n";
@@ -175,7 +175,7 @@ inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
                 conn->call(getThreshold);
             getThresholdResp.read(thresholdValue);
         }
-        catch (sdbusplus::exception_t&)
+        catch (const sdbusplus::exception_t&)
         {
             std::cerr << "error getting sensor threshold from "
                       << msg.get_path() << "\n";

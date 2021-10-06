@@ -148,7 +148,7 @@ void clearSelLogFiles()
     {
         sdbusplus::message::message reloadResponse = dbus->call(rsyslogReload);
     }
-    catch (sdbusplus::exception_t& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::cerr << e.what() << "\n";
     }

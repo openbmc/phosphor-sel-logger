@@ -52,7 +52,7 @@ void generateEvent(std::string signalName,
     {
         msg.read(assertValue);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         std::cerr << "error getting assert signal data from " << msg.get_path()
                   << "\n";
@@ -164,7 +164,7 @@ void generateEvent(std::string signalName,
             conn->call(getSensorValue);
         getSensorValueResp.read(sensorValue);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         std::cerr << "error getting sensor value from " << msg.get_path()
                   << "\n";
@@ -204,7 +204,7 @@ void generateEvent(std::string signalName,
         sdbusplus::message::message getThresholdResp = conn->call(getThreshold);
         getThresholdResp.read(thresholdValue);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         std::cerr << "error getting sensor threshold from " << msg.get_path()
                   << "\n";
