@@ -12,7 +12,7 @@ project(
 cpp_args = []
 
 deps = [
-  dependency('sdbusplus', fallback: ['sdbusplus', 'sdbusplus_dep']),
+  dependency('sdbusplus'),
   dependency('systemd'),
 ]
 
@@ -31,9 +31,7 @@ endif
 if get_option('send-to-logger')
   cpp_args += '-DSEL_LOGGER_SEND_TO_LOGGING_SERVICE'
 
-  deps += dependency(
-   'phosphor-logging',
-   fallback: ['phosphor-logging', 'phosphor_logging_dep'])
+  deps += dependency('phosphor-logging')
 endif
 if get_option('clears-sel')
   cpp_args += '-DSEL_LOGGER_CLEARS_SEL'
