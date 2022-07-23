@@ -55,13 +55,13 @@ static constexpr int interruptTypeBits = 4;
 
 inline static void sendWatchdogEventLog(
     std::shared_ptr<sdbusplus::asio::connection> conn,
-    sdbusplus::message::message& msg, bool assert,
+    sdbusplus::message_t& msg, bool assert,
     std::optional<std::string_view> expireAction = std::nullopt)
 {
     // SEL event data is three bytes where 0xFF means unspecified
     std::vector<uint8_t> eventData(selEvtDataMaxSize, 0xFF);
 
-    sdbusplus::message::message getWatchdogStatus =
+    sdbusplus::message_t getWatchdogStatus =
         conn->new_method_call(msg.get_sender(), msg.get_path(),
                               "org.freedesktop.DBus.Properties", "GetAll");
     getWatchdogStatus.append("xyz.openbmc_project.State.Watchdog");
@@ -71,7 +71,7 @@ inline static void sendWatchdogEventLog(
 
     try
     {
-        sdbusplus::message::message getWatchdogStatusResp =
+        sdbusplus::message_t getWatchdogStatusResp =
             conn->call(getWatchdogStatus);
         getWatchdogStatusResp.read(watchdogStatus);
     }
@@ -186,7 +186,7 @@ inline static void sendWatchdogEventLog(
 
     // get watchdog status properties
     static bool wdt_nolog;
-    sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+    sdbusplus::bus_t bus = sdbusplus::bus::new_default();
     uint8_t netFn = 0x06;
     uint8_t lun = 0x00;
     uint8_t cmd = 0x25;
@@ -234,23 +234,22 @@ inline static void sendWatchdogEventLog(
     }
 }
 
-inline static sdbusplus::bus::match::match
+inline static sdbusplus::bus::match_t
     startWatchdogEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
 {
-    auto watchdogEventMatcherCallback =
-        [conn](sdbusplus::message::message& msg) {
-            std::string expiredAction;
-            msg.read(expiredAction);
+    auto watchdogEventMatcherCallback = [conn](sdbusplus::message_t& msg) {
+        std::string expiredAction;
+        msg.read(expiredAction);
 
-            std::string_view action = expiredAction;
-            action.remove_prefix(
-                std::min(action.find_last_of(".") + 1, action.size()));
+        std::string_view action = expiredAction;
+        action.remove_prefix(
+            std::min(action.find_last_of(".") + 1, action.size()));
 
-            sendWatchdogEventLog(conn, msg, true, action);
-        };
+        sendWatchdogEventLog(conn, msg, true, action);
+    };
 
-    sdbusplus::bus::match::match watchdogEventMatcher(
-        static_cast<sdbusplus::bus::bus&>(*conn),
+    sdbusplus::bus::match_t watchdogEventMatcher(
+        static_cast<sdbusplus::bus_t&>(*conn),
         "type='signal',interface='xyz.openbmc_project.Watchdog',"
         "member='Timeout'",
         std::move(watchdogEventMatcherCallback));

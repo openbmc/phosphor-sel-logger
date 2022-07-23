@@ -23,7 +23,7 @@
 #include <string_view>
 #include <variant>
 
-using sdbusMatch = std::shared_ptr<sdbusplus::bus::match::match>;
+using sdbusMatch = std::shared_ptr<sdbusplus::bus::match_t>;
 static sdbusMatch warningLowAssertedMatcher;
 static sdbusMatch warningLowDeassertedMatcher;
 static sdbusMatch warningHighAssertedMatcher;
@@ -45,7 +45,7 @@ static boost::container::flat_map<std::string, sdbusMatch> matchers = {
 
 void generateEvent(std::string signalName,
                    std::shared_ptr<sdbusplus::asio::connection> conn,
-                   sdbusplus::message::message& msg)
+                   sdbusplus::message_t& msg)
 {
     double assertValue;
     try
@@ -152,7 +152,7 @@ void generateEvent(std::string signalName,
                     thresholdEventDataTriggerReadingByte3;
 
     // Get the sensor reading to put in the event data
-    sdbusplus::message::message getSensorValue =
+    sdbusplus::message_t getSensorValue =
         conn->new_method_call(msg.get_sender(), msg.get_path(),
                               "org.freedesktop.DBus.Properties", "GetAll");
     getSensorValue.append("xyz.openbmc_project.Sensor.Value");
@@ -160,8 +160,7 @@ void generateEvent(std::string signalName,
         sensorValue;
     try
     {
-        sdbusplus::message::message getSensorValueResp =
-            conn->call(getSensorValue);
+        sdbusplus::message_t getSensorValueResp = conn->call(getSensorValue);
         getSensorValueResp.read(sensorValue);
     }
     catch (const sdbusplus::exception_t&)
@@ -194,14 +193,14 @@ void generateEvent(std::string signalName,
     }
 
     // Get the threshold value to put in the event data
-    sdbusplus::message::message getThreshold =
+    sdbusplus::message_t getThreshold =
         conn->new_method_call(msg.get_sender(), msg.get_path(),
                               "org.freedesktop.DBus.Properties", "Get");
     getThreshold.append(thresholdInterface, event);
     std::variant<double, int64_t> thresholdValue;
     try
     {
-        sdbusplus::message::message getThresholdResp = conn->call(getThreshold);
+        sdbusplus::message_t getThresholdResp = conn->call(getThreshold);
         getThresholdResp.read(thresholdValue);
     }
     catch (const sdbusplus::exception_t&)
@@ -251,10 +250,10 @@ inline static void startThresholdAlarmMonitor(
 {
     for (auto iter = matchers.begin(); iter != matchers.end(); iter++)
     {
-        iter->second = std::make_shared<sdbusplus::bus::match::match>(
-            static_cast<sdbusplus::bus::bus&>(*conn),
+        iter->second = std::make_shared<sdbusplus::bus::match_t>(
+            static_cast<sdbusplus::bus_t&>(*conn),
             "type='signal',member=" + iter->first,
-            [conn, iter](sdbusplus::message::message& msg) {
+            [conn, iter](sdbusplus::message_t& msg) {
                 generateEvent(iter->first, conn, msg);
             });
     }

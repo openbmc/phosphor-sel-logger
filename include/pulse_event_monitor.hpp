@@ -19,10 +19,10 @@
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 
-inline static sdbusplus::bus::match::match
+inline static sdbusplus::bus::match_t
     startPulseEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
 {
-    auto pulseEventMatcherCallback = [](sdbusplus::message::message& msg) {
+    auto pulseEventMatcherCallback = [](sdbusplus::message_t& msg) {
         std::string thresholdInterface;
         boost::container::flat_map<std::string, std::variant<std::string>>
             propertiesChanged;
@@ -67,8 +67,8 @@ inline static sdbusplus::bus::match::match
         }
     };
 
-    sdbusplus::bus::match::match pulseEventMatcher(
-        static_cast<sdbusplus::bus::bus&>(*conn),
+    sdbusplus::bus::match_t pulseEventMatcher(
+        static_cast<sdbusplus::bus_t&>(*conn),
         "type='signal',interface='org.freedesktop.DBus.Properties',member='"
         "PropertiesChanged',arg0namespace='xyz.openbmc_project.State.Host'",
         std::move(pulseEventMatcherCallback));

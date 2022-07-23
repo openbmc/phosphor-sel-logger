@@ -140,13 +140,13 @@ void clearSelLogFiles()
     // Reload rsyslog so it knows to start new log files
     boost::asio::io_service io;
     auto dbus = std::make_shared<sdbusplus::asio::connection>(io);
-    sdbusplus::message::message rsyslogReload = dbus->new_method_call(
+    sdbusplus::message_t rsyslogReload = dbus->new_method_call(
         "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
         "org.freedesktop.systemd1.Manager", "ReloadUnit");
     rsyslogReload.append("rsyslog.service", "replace");
     try
     {
-        sdbusplus::message::message reloadResponse = dbus->call(rsyslogReload);
+        sdbusplus::message_t reloadResponse = dbus->call(rsyslogReload);
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -289,17 +289,16 @@ int main(int, char*[])
     ifaceAddSel->initialize();
 
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_EVENTS
-    sdbusplus::bus::match::match thresholdAssertMonitor =
+    sdbusplus::bus::match_t thresholdAssertMonitor =
         startThresholdAssertMonitor(conn);
 #endif
 
 #ifdef REDFISH_LOG_MONITOR_PULSE_EVENTS
-    sdbusplus::bus::match::match pulseEventMonitor =
-        startPulseEventMonitor(conn);
+    sdbusplus::bus::match_t pulseEventMonitor = startPulseEventMonitor(conn);
 #endif
 
 #ifdef SEL_LOGGER_MONITOR_WATCHDOG_EVENTS
-    sdbusplus::bus::match::match watchdogEventMonitor =
+    sdbusplus::bus::match_t watchdogEventMonitor =
         startWatchdogEventMonitor(conn);
 #endif
 

@@ -34,11 +34,10 @@ static constexpr const uint8_t thresholdEventDataTriggerReadingByte3 = (1 << 4);
 
 static const std::string openBMCMessageRegistryVersion("0.1");
 
-inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
+inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
 {
-    auto thresholdAssertMatcherCallback = [conn](sdbusplus::message::message&
-                                                     msg) {
+    auto thresholdAssertMatcherCallback = [conn](sdbusplus::message_t& msg) {
         // This static set of std::pair<path, event> tracks asserted events to
         // avoid duplicate logs or deasserts logged without an assert
         static boost::container::flat_set<std::pair<std::string, std::string>>
@@ -114,7 +113,7 @@ inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
                         thresholdEventDataTriggerReadingByte3;
 
         // Get the sensor reading to put in the event data
-        sdbusplus::message::message getSensorValue =
+        sdbusplus::message_t getSensorValue =
             conn->new_method_call(msg.get_sender(), msg.get_path(),
                                   "org.freedesktop.DBus.Properties", "GetAll");
         getSensorValue.append("xyz.openbmc_project.Sensor.Value");
@@ -122,7 +121,7 @@ inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
             sensorValue;
         try
         {
-            sdbusplus::message::message getSensorValueResp =
+            sdbusplus::message_t getSensorValueResp =
                 conn->call(getSensorValue);
             getSensorValueResp.read(sensorValue);
         }
@@ -164,15 +163,14 @@ inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
         {
             event.erase(pos, alarm.length());
         }
-        sdbusplus::message::message getThreshold =
+        sdbusplus::message_t getThreshold =
             conn->new_method_call(msg.get_sender(), msg.get_path(),
                                   "org.freedesktop.DBus.Properties", "Get");
         getThreshold.append(thresholdInterface, event);
         std::variant<double, int64_t> thresholdValue;
         try
         {
-            sdbusplus::message::message getThresholdResp =
-                conn->call(getThreshold);
+            sdbusplus::message_t getThresholdResp = conn->call(getThreshold);
             getThresholdResp.read(thresholdValue);
         }
         catch (const sdbusplus::exception_t&)
@@ -275,8 +273,8 @@ inline static sdbusplus::bus::match::match startThresholdAssertMonitor(
             "REDFISH_MESSAGE_ARGS=%.*s,%f,%f", sensorName.length(),
             sensorName.data(), assertValue, thresholdVal);
     };
-    sdbusplus::bus::match::match thresholdAssertMatcher(
-        static_cast<sdbusplus::bus::bus&>(*conn),
+    sdbusplus::bus::match_t thresholdAssertMatcher(
+        static_cast<sdbusplus::bus_t&>(*conn),
         "type='signal', member='ThresholdAsserted'",
         std::move(thresholdAssertMatcherCallback));
     return thresholdAssertMatcher;
