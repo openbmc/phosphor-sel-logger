@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18670b25_239559e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000934
+      },
+      "writtenOn": "2022-09-02T08:31:16Z",
+      "side": 1,
+      "message": "Could you also add gtest for getSensorAttributes like this\nhttps://github.com/openbmc/intel-ipmi-oem/blob/master/tests/test_sensorcommands.cpp#L423.\n\nI\u0027m not sure if the unit test for extreme ranges in intel-ipmi-oem\u0027s gtest is necessary.\n\nRefer to:\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/40700",
+      "revId": "75030edf569ff624be6ec40541757a01cf1cd5ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
