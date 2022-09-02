@@ -53,3 +53,8 @@ if systemd.found()
     'service_files/xyz.openbmc_project.Logging.IPMI.service',
     install_dir: systemd.get_variable(pkgconfig: 'systemdsystemunitdir'))
 endif
+
+build_tests = get_option('tests')
+if not build_tests.disabled()
+  subdir('test')
+endif
