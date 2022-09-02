@@ -16,6 +16,24 @@
       "message": "After I add this change in my machine, it seems this will make weird result in ipmitool sel elist with using phosphor-ipmi-host/dbus-sdr.\n\n```\n$ipmitool sel elist\n   3 | 04/06/11 | 00:24:29 UTC | Current cpu0_pvccd_hv | Lower Critical going low  | Asserted | Reading 17.72 \u003c Threshold 18.08 Amps\n\n$ipmitool sensor | grep cpu0_pvccd_hv | grep Amps\ncpu0_pvccd_hv    | -5.320     | Amps       | cr    | na        | -4.960    | na        | na        | 39.860    | na        \n\n```\nThis sensor has max 38 min -6 and LCT -5 UCT 39.9 and I set sensor reading to -5.3.\n\nPlease also push this change to https://github.com/openbmc/phosphor-host-ipmid/blob/master/dbus-sdr/sensorutils.cpp and provide the test result of ipmitool sensor/sel.",
       "revId": "cd3f267188bb91d01d1e60ea81fa1dd5a4d37be1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f28c591_63cf7ed0",
+        "filename": "include/sensorutils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2022-09-02T10:02:47Z",
+      "side": 1,
+      "message": "Since we didn\u0027t pick the dbus-sdr solution, I just looked at the sel logs and found some logic problems in there, so let me take a moment to look at the relevant stuff",
+      "parentUuid": "93d9fd5e_78aa9c64",
+      "revId": "cd3f267188bb91d01d1e60ea81fa1dd5a4d37be1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
