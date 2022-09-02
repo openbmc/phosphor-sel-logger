@@ -171,8 +171,7 @@ static inline void normalizeIntExp(int16_t& ibase, int8_t& expShift,
 // https://www.wolframalpha.com/input/?i=y%3D%28%28M*x%29%2B%28B*%2810%5EE%29%29%29*%2810%5ER%29
 static inline bool getSensorAttributes(const double max, const double min,
                                        int16_t& mValue, int8_t& rExp,
-                                       int16_t& bValue, int8_t& bExp,
-                                       bool& bSigned)
+                                       int16_t& bValue, int8_t& bExp)
 {
     if (!(std::isfinite(min)))
     {
@@ -198,32 +197,10 @@ static inline bool getSensorAttributes(const double max, const double min,
     // If y is min, x should equal = 0 (or -128 if signed)
     // If y is max, x should equal 255 (or 127 if signed)
     double fullRange = max - min;
-    double lowestX;
+    constexpr double lowestX = 0;
 
     rExp = 0;
     bExp = 0;
-
-    // TODO(): The IPMI document is ambiguous, as to whether
-    // the resulting byte should be signed or unsigned,
-    // essentially leaving it up to the caller.
-    // The document just refers to it as "raw reading",
-    // or "byte of reading", without giving further details.
-    // Previous code set it signed if min was less than zero,
-    // so I'm sticking with that, until I learn otherwise.
-    if (min < 0.0)
-    {
-        // TODO(): It would be worth experimenting with the range (-127,127),
-        // instead of the range (-128,127), because this
-        // would give good symmetry around zero, and make results look better.
-        // Divide by 254 instead of 255, and change -128 to -127 elsewhere.
-        bSigned = true;
-        lowestX = -128.0;
-    }
-    else
-    {
-        bSigned = false;
-        lowestX = 0.0;
-    }
 
     // Step 1: Set y to (max - min), set x to 255, set B to 0, solve for M
     // This works, regardless of signed or unsigned,
@@ -278,10 +255,11 @@ static inline bool getSensorAttributes(const double max, const double min,
     return true;
 }
 
-static inline uint8_t
-    scaleIPMIValueFromDouble(const double value, const int16_t mValue,
-                             const int8_t rExp, const int16_t bValue,
-                             const int8_t bExp, const bool bSigned)
+static inline uint8_t scaleIPMIValueFromDouble(const double value,
+                                               const int16_t mValue,
+                                               const int8_t rExp,
+                                               const int16_t bValue,
+                                               const int8_t bExp)
 {
     // Avoid division by zero below
     if (mValue == 0)
@@ -303,22 +281,8 @@ static inline uint8_t
 
     auto scaledValue = static_cast<int32_t>(std::round(dX));
 
-    int32_t minClamp;
-    int32_t maxClamp;
-
-    // Because of rounding and integer truncation of scaling factors,
-    // sometimes the resulting byte is slightly out of range.
-    // Still allow this, but clamp the values to range.
-    if (bSigned)
-    {
-        minClamp = std::numeric_limits<int8_t>::lowest();
-        maxClamp = std::numeric_limits<int8_t>::max();
-    }
-    else
-    {
-        minClamp = std::numeric_limits<uint8_t>::lowest();
-        maxClamp = std::numeric_limits<uint8_t>::max();
-    }
+    int32_t minClamp = std::numeric_limits<uint8_t>::lowest();
+    int32_t maxClamp = std::numeric_limits<uint8_t>::max();
 
     auto clampedValue = std::clamp(scaledValue, minClamp, maxClamp);
 
@@ -334,16 +298,14 @@ static inline uint8_t getScaledIPMIValue(const double value, const double max,
     int8_t rExp = 0;
     int16_t bValue = 0;
     int8_t bExp = 0;
-    bool bSigned = false;
 
-    bool result =
-        getSensorAttributes(max, min, mValue, rExp, bValue, bExp, bSigned);
+    bool result = getSensorAttributes(max, min, mValue, rExp, bValue, bExp);
     if (!result)
     {
         throw std::runtime_error("Illegal sensor attributes");
     }
 
-    return scaleIPMIValueFromDouble(value, mValue, rExp, bValue, bExp, bSigned);
+    return scaleIPMIValueFromDouble(value, mValue, rExp, bValue, bExp);
 }
 
 } // namespace ipmi
