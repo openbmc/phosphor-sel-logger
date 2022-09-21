@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38260c23_9481fee3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2022-09-21T20:31:22Z",
+      "side": 1,
+      "message": "This header was intended to be an exact copy from https://github.com/openbmc/phosphor-host-ipmid/blob/master/include/dbus-sdr/sensorutils.hpp.  It looks like that may have been changed from a header-only to a compiled library.  We should adjust phosphor-sel-logger to use the compiled sensorutils library from phosphor-host-ipmid.  Then this fix can be added there, so it will benefit all of IPMI.",
+      "revId": "cd3f267188bb91d01d1e60ea81fa1dd5a4d37be1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93d9fd5e_78aa9c64",
