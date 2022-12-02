@@ -27,6 +27,9 @@
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
 #include <threshold_alarm_event_monitor.hpp>
 #endif
+#ifdef SEL_LOGGER_MONITOR_HOST_ERROR_EVENTS
+#include <host_error_event_monitor.hpp>
+#endif
 
 #include <filesystem>
 #include <fstream>
@@ -304,6 +307,10 @@ int main(int, char*[])
 
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
     startThresholdAlarmMonitor(conn);
+#endif
+
+#ifdef SEL_LOGGER_MONITOR_HOST_ERROR_EVENTS
+    startHostErrorEventMonitor(conn);
 #endif
     io.run();
 

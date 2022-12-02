@@ -28,6 +28,9 @@ endif
 if get_option('log-alarm')
   cpp_args += '-DSEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS'
 endif
+if get_option('log-host')
+  cpp_args += '-DSEL_LOGGER_MONITOR_HOST_ERROR_EVENTS'
+endif
 if get_option('send-to-logger')
   cpp_args += '-DSEL_LOGGER_SEND_TO_LOGGING_SERVICE'
 
