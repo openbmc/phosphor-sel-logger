@@ -1,13 +1,13 @@
 # phosphor-sel-logger
 
-### Overview
+## Overview
 
 The SEL Logger daemon handles all requests to add new IPMI SEL records to the
 journal. SEL records stored in the journal are identified by the standard
 **MESSAGE_ID** metadata. Other metadata fields are used to store event-specific
 information for each record.
 
-### Metadata
+## Metadata
 
 SEL records are identified in the journal using the **MESSAGE_ID** field.
 
@@ -25,7 +25,7 @@ The additional metadata fields for a SEL record are
     IPMI_SEL_EVENT_DIR = Direction of the event (assert or deassert)
     IPMI_SEL_DATA = Raw binary data included in the SEL record
 
-### Interface
+## Interface
 
 The SEL Logger daemon exposes an interface for manually adding System and OEM
 type SEL events, and provides the capability to monitor for types of events and
@@ -48,12 +48,12 @@ The interface for OEM type events requires
 The **MESSAGE_ID** and **IPMI_SEL_RECORD_ID** metadata fields are added by the
 daemon.
 
-### Event Monitoring
+## Event Monitoring
 
 The SEL Logger daemon can be configured to watch for specific types of events
 and automatically log SEL records for them.
 
 As an example, the SEL Logger has a "threshold event monitor" which implements a
 D-Bus match for any "PropertiesChanged" event on the
-"xyz.openbmc_project.Sensor.Threshold" interface. The handler then checks for
+`xyz.openbmc_project.Sensor.Threshold` interface. The handler then checks for
 any new threshold events and logs SEL records accordingly.
