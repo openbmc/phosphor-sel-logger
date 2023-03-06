@@ -16,7 +16,7 @@
 #include <systemd/sd-journal.h>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/asio/io_service.hpp>
+#include <boost/asio/io_context.hpp>
 #include <boost/container/flat_map.hpp>
 #include <boost/container/flat_set.hpp>
 #include <pulse_event_monitor.hpp>
@@ -141,7 +141,7 @@ void clearSelLogFiles()
     recordId = selInvalidRecID;
 
     // Reload rsyslog so it knows to start new log files
-    boost::asio::io_service io;
+    boost::asio::io_context io;
     auto dbus = std::make_shared<sdbusplus::asio::connection>(io);
     sdbusplus::message_t rsyslogReload = dbus->new_method_call(
         "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
@@ -257,7 +257,7 @@ static uint16_t selAddOemRecord([[maybe_unused]] const std::string& message,
 int main(int, char*[])
 {
     // setup connection to dbus
-    boost::asio::io_service io;
+    boost::asio::io_context io;
     auto conn = std::make_shared<sdbusplus::asio::connection>(io);
 
     // IPMI SEL Object
