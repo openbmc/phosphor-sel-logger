@@ -15,9 +15,15 @@
 */
 
 #pragma once
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/asio/object_server.hpp>
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
+
+constexpr auto severity =
+    "xyz.openbmc_project.Logging.Entry.Level.Informational";
+constexpr auto hostOff = "xyz.openbmc_project.State.Host.HostState.Off";
+constexpr auto hostRunning = "xyz.openbmc_project.State.Host.HostState.Running";
 
 inline static sdbusplus::bus::match_t
     startPulseEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
@@ -43,26 +49,34 @@ inline static sdbusplus::bus::match_t
             return;
         }
 
+        std::map<std::string, std::string> additionalData;
         if (event == "CurrentHostState")
         {
-            if (*variant == "xyz.openbmc_project.State.Host.HostState.Off")
+            if (*variant == hostOff)
             {
                 std::string message("Host system DC power is off");
                 std::string redfishMsgId("OpenBMC.0.1.DCPowerOff");
 
-                sd_journal_send("MESSAGE=%s", message.c_str(),
-                                "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
-                                NULL);
+                phosphor::logging::log<phosphor::logging::level::INFO>(
+                    message.c_str(),
+                    phosphor::logging::entry("IPMISEL_MESSAGE_ID=%s",
+                                             redfishMsgId.c_str()));
+
+                additionalData.emplace("REDFISH_MESSAGE_ID", redfishMsgId);
+                selAddWithMethodCall(message, severity, additionalData);
             }
-            else if (*variant ==
-                     "xyz.openbmc_project.State.Host.HostState.Running")
+            else if (*variant == hostRunning)
             {
                 std::string message("Host system DC power is on");
                 std::string redfishMsgId("OpenBMC.0.1.DCPowerOn");
 
-                sd_journal_send("MESSAGE=%s", message.c_str(),
-                                "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
-                                NULL);
+                phosphor::logging::log<phosphor::logging::level::INFO>(
+                    message.c_str(),
+                    phosphor::logging::entry("IPMISEL_MESSAGE_ID=%s",
+                                             redfishMsgId.c_str()));
+
+                additionalData.emplace("REDFISH_MESSAGE_ID", redfishMsgId);
+                selAddWithMethodCall(message, severity, additionalData);
             }
         }
     };

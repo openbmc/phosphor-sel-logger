@@ -254,6 +254,26 @@ static uint16_t selAddOemRecord([[maybe_unused]] const std::string& message,
 #endif
 }
 
+static void
+    selAddWithMethodCall(std::string message, std::string severity,
+                         std::map<std::string, std::string> additionalData)
+{
+    auto bus = sdbusplus::bus::new_default();
+    auto reqMsg = bus.new_method_call(
+        "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
+        "xyz.openbmc_project.Logging.Create", "Create");
+    reqMsg.append(message, severity, additionalData);
+
+    try
+    {
+        auto respMsg = bus.call(reqMsg);
+    }
+    catch (sdbusplus::exception_t& e)
+    {
+        phosphor::logging::log<phosphor::logging::level::ERR>(e.what());
+    }
+}
+
 int main(int, char*[])
 {
     // setup connection to dbus
