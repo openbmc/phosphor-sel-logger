@@ -42,3 +42,9 @@ static uint16_t
     selAddSystemRecord(const std::string& message, const std::string& path,
                        const std::vector<uint8_t>& selData, const bool& assert,
                        const uint16_t& genId, T&&... metadata);
+
+#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+static void selAddWithMethodCall(
+    std::string message, std::string severity,
+    std::vector<std::pair<std::string, std::string>> additionalData);
+#endif

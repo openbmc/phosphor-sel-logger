@@ -19,6 +19,13 @@
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 
+#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+constexpr auto severity = "xyz.openbmc_project.Logging.Entry.Level.Critical";
+#endif
+
+constexpr auto hostOff = "xyz.openbmc_project.State.Host.HostState.Off";
+constexpr auto hostRunning = "xyz.openbmc_project.State.Host.HostState.Running";
+
 inline static sdbusplus::bus::match_t
     startPulseEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
 {
@@ -45,24 +52,36 @@ inline static sdbusplus::bus::match_t
 
         if (event == "CurrentHostState")
         {
-            if (*variant == "xyz.openbmc_project.State.Host.HostState.Off")
+            if (*variant == hostOff)
             {
                 std::string message("Host system DC power is off");
                 std::string redfishMsgId("OpenBMC.0.1.DCPowerOff");
 
+#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+                std::vector<std::pair<std::string, std::string>> additionalData;
+                additionalData.push_back(std::make_pair("HOST_STATE", hostOff));
+                selAddWithMethodCall(message, severity, additionalData);
+#else
                 sd_journal_send("MESSAGE=%s", message.c_str(),
                                 "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
                                 NULL);
+#endif
             }
-            else if (*variant ==
-                     "xyz.openbmc_project.State.Host.HostState.Running")
+            else if (*variant == hostRunning)
             {
                 std::string message("Host system DC power is on");
                 std::string redfishMsgId("OpenBMC.0.1.DCPowerOn");
 
+#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+                std::vector<std::pair<std::string, std::string>> additionalData;
+                additionalData.push_back(
+                    std::make_pair("HOST_STATE", hostRunning));
+                selAddWithMethodCall(message, severity, additionalData);
+#else
                 sd_journal_send("MESSAGE=%s", message.c_str(),
                                 "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
                                 NULL);
+#endif
             }
         }
     };
