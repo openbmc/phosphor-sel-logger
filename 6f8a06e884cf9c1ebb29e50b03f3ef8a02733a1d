@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa91e8ab_8894af4a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-03-13T20:07:21Z",
+      "side": 1,
+      "message": "typo: entries",
+      "range": {
+        "startLine": 10,
+        "startChar": 25,
+        "endLine": 10,
+        "endChar": 33
+      },
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1e89c499_6dee2d60",
@@ -14,6 +37,86 @@
       "writtenOn": "2023-03-09T09:44:55Z",
       "side": 1,
       "message": "Redfish implementation can be found here:\nhttps://gerrit.openbmc.org/c/openbmc/bmcweb/+/60813",
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67381c1a_4eb2a0f5",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-03-13T20:07:21Z",
+      "side": 1,
+      "message": "As I understand, boost::flat_map is more efficient for embedded systems.  But I think for D-Bus, std::vector\u003cstd::pair\u003c\u003e\u003e is most efficient.",
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d818cf4_d7235bae",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-03-13T20:07:21Z",
+      "side": 1,
+      "message": "For new code, I would recommend starting with the `lg2()` API instead.",
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd20072e_fff30be6",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-03-13T20:07:21Z",
+      "side": 1,
+      "message": "What is \"IPMISEL_MESSAGE_ID\"?",
+      "range": {
+        "startLine": 62,
+        "startChar": 46,
+        "endLine": 62,
+        "endChar": 64
+      },
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed93752d_08aea910",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-03-13T20:07:21Z",
+      "side": 1,
+      "message": "Is this the right approach to create a logging entry?  Doesn\u0027t phosphor-logging already do this?",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 5
+      },
       "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
