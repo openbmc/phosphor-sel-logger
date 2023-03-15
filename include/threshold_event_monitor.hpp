@@ -204,16 +204,26 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
         std::string direction;
         std::string redfishMessageID =
             "OpenBMC." + openBMCMessageRegistryVersion;
+        enum TEventRel
+        {
+            RelNone,
+            RelInfo,
+            RelWarn,
+            RelErr
+        };
+        TEventRel EventRel = RelNone;
         if (event == "CriticalLow")
         {
             threshold = "critical low";
             if (assert)
             {
+                EventRel = RelErr;
                 direction = "low";
                 redfishMessageID += ".SensorThresholdCriticalLowGoingLow";
             }
             else
             {
+                EventRel = RelInfo;
                 direction = "high";
                 redfishMessageID += ".SensorThresholdCriticalLowGoingHigh";
             }
@@ -223,11 +233,13 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             threshold = "warning low";
             if (assert)
             {
+                EventRel = RelWarn;
                 direction = "low";
                 redfishMessageID += ".SensorThresholdWarningLowGoingLow";
             }
             else
             {
+                EventRel = RelInfo;
                 direction = "high";
                 redfishMessageID += ".SensorThresholdWarningLowGoingHigh";
             }
@@ -237,11 +249,13 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             threshold = "warning high";
             if (assert)
             {
+                EventRel = RelWarn;
                 direction = "high";
                 redfishMessageID += ".SensorThresholdWarningHighGoingHigh";
             }
             else
             {
+                EventRel = RelInfo;
                 direction = "low";
                 redfishMessageID += ".SensorThresholdWarningHighGoingLow";
             }
@@ -251,11 +265,13 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             threshold = "critical high";
             if (assert)
             {
+                EventRel = RelErr;
                 direction = "high";
                 redfishMessageID += ".SensorThresholdCriticalHighGoingHigh";
             }
             else
             {
+                EventRel = RelInfo;
                 direction = "low";
                 redfishMessageID += ".SensorThresholdCriticalHighGoingLow";
             }
@@ -267,11 +283,53 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
                                " Threshold=" + std::to_string(thresholdVal) +
                                ".");
 
+       #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+       std::string LogLevel="";
+       switch ( EventRel )
+       {
+           case RelInfo:
+           {
+               LogLevel =
+                   "xyz.openbmc_project.Logging.Entry.Level.Informational";
+               break;
+           }
+           case RelWarn:
+           {
+                LogLevel="xyz.openbmc_project.Logging.Entry.Level.Warning";
+                break;
+           }
+           case RelErr:
+           {
+                LogLevel="xyz.openbmc_project.Logging.Entry.Level.Critical";
+               break;
+           }
+           default:
+           {
+               LogLevel = "xyz.openbmc_project.Logging.Entry.Level.Debug";
+               break;
+           }
+       }
+       if (EventRel != RelNone)
+       {
+         sdbusplus::message::message AddToLog =
+         conn->new_method_call("xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
+                               "xyz.openbmc_project.Logging.Create", "Create");
+         AddToLog.append(journalMsg, LogLevel,
+           std::map<std::string,std::string>({{"SENSOR_PATH",std::string(msg.get_path())},
+             {"EVENT", threshold},
+             {"DIRECTION", direction},
+             {"THRESHOLD", std::to_string(thresholdVal)},
+             {"READING", std::to_string(assertValue)}
+           }));
+           conn->call(AddToLog);
+       }
+       #else
         selAddSystemRecord(
             journalMsg, std::string(msg.get_path()), eventData, assert,
             selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
             "REDFISH_MESSAGE_ARGS=%.*s,%f,%f", sensorName.length(),
             sensorName.data(), assertValue, thresholdVal);
+        #endif
     };
     sdbusplus::bus::match_t thresholdAssertMatcher(
         static_cast<sdbusplus::bus_t&>(*conn),
