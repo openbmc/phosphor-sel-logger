@@ -33,6 +33,24 @@
       "message": "Per our coding guidelines, enum members should be lowerCamelCase: https://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md#constants.\n\nAlso, as a side note, I don\u0027t understand what \"Rel\" means in this context.",
       "revId": "c6784ead168cdc01366f76d8b6f8e4c0d39b63d9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f31b6f_7ba398a1",
+        "filename": "include/threshold_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001210
+      },
+      "writtenOn": "2023-03-20T06:30:33Z",
+      "side": 1,
+      "message": "Yes, I agree, the name is not good. The patch was written a long time ago and I myself do not understand what it is.\nI suggest\nTEventRel-\u003eEventType\nRelNone-\u003eeventNone\nRelInfo-\u003eeventInfo\nRelWarn-\u003eeventWarn\nRelErr-\u003eeventErr\nEventRel-\u003eeventType\nIs that okay?",
+      "parentUuid": "d389434c_a0236907",
+      "revId": "c6784ead168cdc01366f76d8b6f8e4c0d39b63d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
