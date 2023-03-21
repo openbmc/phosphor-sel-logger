@@ -69,6 +69,24 @@
       "parentUuid": "45f31b6f_7ba398a1",
       "revId": "c6784ead168cdc01366f76d8b6f8e4c0d39b63d9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ffb8826_8823294f",
+        "filename": "include/threshold_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001210
+      },
+      "writtenOn": "2023-03-21T05:14:54Z",
+      "side": 1,
+      "message": "I updated the variable names. I like the short ones better.",
+      "parentUuid": "5b0b0224_346f9556",
+      "revId": "c6784ead168cdc01366f76d8b6f8e4c0d39b63d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
