@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d5eb2ca3_dc1b6b69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-03-24T01:43:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa91e8ab_8894af4a",
+      "range": {
+        "startLine": 10,
+        "startChar": 25,
+        "endLine": 10,
+        "endChar": 33
+      },
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "1e89c499_6dee2d60",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -58,6 +82,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69771326_3c8394b8",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-03-24T01:43:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67381c1a_4eb2a0f5",
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d818cf4_d7235bae",
@@ -71,6 +113,24 @@
       "writtenOn": "2023-03-13T20:07:21Z",
       "side": 1,
       "message": "For new code, I would recommend starting with the `lg2()` API instead.",
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "757ab5a0_94308336",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-03-24T01:43:03Z",
+      "side": 1,
+      "message": "We change the implementation here.",
+      "parentUuid": "5d818cf4_d7235bae",
       "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +158,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5522c9c8_c5d5878d",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-03-24T01:43:03Z",
+      "side": 1,
+      "message": "Sorry we made the mistake here.",
+      "parentUuid": "fd20072e_fff30be6",
+      "range": {
+        "startLine": 62,
+        "startChar": 46,
+        "endLine": 62,
+        "endChar": 64
+      },
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed93752d_08aea910",
@@ -111,6 +195,30 @@
       "writtenOn": "2023-03-13T20:07:21Z",
       "side": 1,
       "message": "Is this the right approach to create a logging entry?  Doesn\u0027t phosphor-logging already do this?",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 5
+      },
+      "revId": "6f8a06e884cf9c1ebb29e50b03f3ef8a02733a1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a40eaf5_be0e3bc3",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-03-24T01:43:03Z",
+      "side": 1,
+      "message": "This method will send logging entries on dbus. If we compile bmcweb with `-DBMCWEB_ENABLE_REDFISH_DBUS_LOG_ENTRIES\u003dON`, it will get event entries on the dbus.",
+      "parentUuid": "ed93752d_08aea910",
       "range": {
         "startLine": 261,
         "startChar": 0,
