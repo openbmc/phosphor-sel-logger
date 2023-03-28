@@ -311,7 +311,7 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
         }
         if (eventType != eventNone)
         {
-            sdbusplus::message::message AddToLog = conn->new_method_call(
+            sdbusplus::message_t AddToLog = conn->new_method_call(
                 "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
                 "xyz.openbmc_project.Logging.Create", "Create");
             AddToLog.append(journalMsg, LogLevel,
