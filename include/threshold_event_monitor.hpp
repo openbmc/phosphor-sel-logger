@@ -277,11 +277,11 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             }
         }
 
-        std::string journalMsg(std::string(sensorName) + " sensor crossed a " +
-                               threshold + " threshold going " + direction +
-                               ". Reading=" + std::to_string(assertValue) +
-                               " Threshold=" + std::to_string(thresholdVal) +
-                               ".");
+        std::string journalMsg(
+            std::string(sensorName) + " " + threshold + " threshold " +
+            (assert ? "assert" : "deassert") +
+            ". Reading=" + std::to_string(assertValue) +
+            " Threshold=" + std::to_string(thresholdVal) + ".");
 
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
         std::string LogLevel = "";
