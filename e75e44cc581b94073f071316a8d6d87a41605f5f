@@ -33,6 +33,24 @@
       "message": "Does maybe_unused work? That would be an easier fix and the compiler could just optimize it out, resulting in smaller code size for systems that don\u0027t have SEL_LOGGER_SEND_TO_LOGGING_SERVICE defined.\n\n[[maybe_unused]] EventType eventType \u003d eventNone;",
       "revId": "e75e44cc581b94073f071316a8d6d87a41605f5f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "247c9023_525e8383",
+        "filename": "include/threshold_event_monitor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1001210
+      },
+      "writtenOn": "2023-04-05T03:36:16Z",
+      "side": 1,
+      "message": "Ha, I just didn\u0027t know that option. It looks better to me. I\u0027ll fix it to what you wrote.",
+      "parentUuid": "7053fd50_8a98871c",
+      "revId": "e75e44cc581b94073f071316a8d6d87a41605f5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
