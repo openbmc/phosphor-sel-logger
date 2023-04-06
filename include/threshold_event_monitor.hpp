@@ -211,7 +211,7 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             eventWarn,
             eventErr
         };
-        EventType eventType = eventNone;
+        [[maybe_unused]] EventType eventType = eventNone;
         if (event == "CriticalLow")
         {
             threshold = "critical low";
