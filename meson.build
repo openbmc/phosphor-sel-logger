@@ -2,7 +2,7 @@ project(
   'phosphor-sel-logger',
   'cpp',
   version: '0.1',
-  meson_version: '>=0.57.0',
+  meson_version: '>=0.58.0',
   default_options: [
     'werror=true',
     'warning_level=3',
@@ -54,5 +54,5 @@ systemd = dependency('systemd')
 if systemd.found()
   install_data(
     'service_files/xyz.openbmc_project.Logging.IPMI.service',
-    install_dir: systemd.get_variable(pkgconfig: 'systemdsystemunitdir'))
+    install_dir: systemd.get_variable('systemdsystemunitdir'))
 endif
