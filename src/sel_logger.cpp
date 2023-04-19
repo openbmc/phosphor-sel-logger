@@ -37,17 +37,6 @@
 #include <iostream>
 #include <sstream>
 
-#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
-#include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/log.hpp>
-#include <xyz/openbmc_project/Logging/SEL/error.hpp>
-
-using namespace phosphor::logging;
-using SELCreated =
-    sdbusplus::xyz::openbmc_project::Logging::SEL::Error::Created;
-#endif
-
 struct DBusInternalError final : public sdbusplus::exception_t
 {
     const char* name() const noexcept override
@@ -191,11 +180,11 @@ static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
 }
 
 template <typename... T>
-static void selAddSystemRecord([[maybe_unused]] const std::string& message,
-                               const std::string& path,
-                               const std::vector<uint8_t>& selData,
-                               const bool& assert, const uint16_t& genId,
-                               [[maybe_unused]] T&&... metadata)
+static void selAddSystemRecord(
+    [[maybe_unused]] std::shared_ptr<sdbusplus::asio::connection> conn,
+    [[maybe_unused]] const std::string& message, const std::string& path,
+    const std::vector<uint8_t>& selData, const bool& assert,
+    const uint16_t& genId, [[maybe_unused]] T&&... metadata)
 {
     // Only 3 bytes of SEL event data are allowed in a system record
     if (selData.size() > selEvtDataMaxSize)
@@ -206,11 +195,25 @@ static void selAddSystemRecord([[maybe_unused]] const std::string& message,
     toHexStr(selData, selDataStr);
 
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
-    using namespace xyz::openbmc_project::Logging::SEL;
-    report<SELCreated>(
-        Created::RECORD_TYPE(selSystemType), Created::GENERATOR_ID(genId),
-        Created::SENSOR_DATA(selDataStr.c_str()), Created::EVENT_DIR(assert),
-        Created::SENSOR_PATH(path.c_str()));
+    sdbusplus::message_t AddToLog = conn->new_method_call(
+        "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
+        "xyz.openbmc_project.Logging.Create", "Create");
+
+    std::string journalMsg(message + " from " + path + ": " +
+                           " RecordType=" + std::to_string(selSystemType) +
+                           ", GeneratorID=" + std::to_string(genId) +
+                           ", EventDir=" + std::to_string(assert) +
+                           ", EventData=" + selDataStr);
+
+    AddToLog.append(journalMsg,
+                    "xyz.openbmc_project.Logging.Entry.Level.Informational",
+                    std::map<std::string, std::string>(
+                        {{"SENSOR_PATH", path},
+                         {"GENERATOR_ID", std::to_string(genId)},
+                         {"RECORD_TYPE", std::to_string(selSystemType)},
+                         {"EVENT_DIR", std::to_string(assert)},
+                         {"SENSOR_DATA", selDataStr}}));
+    conn->call(AddToLog);
 #else
     unsigned int recordId = getNewRecordId();
     sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
@@ -223,9 +226,10 @@ static void selAddSystemRecord([[maybe_unused]] const std::string& message,
 #endif
 }
 
-static void selAddOemRecord([[maybe_unused]] const std::string& message,
-                            const std::vector<uint8_t>& selData,
-                            const uint8_t& recordType)
+static void selAddOemRecord(
+    [[maybe_unused]] std::shared_ptr<sdbusplus::asio::connection> conn,
+    [[maybe_unused]] const std::string& message,
+    const std::vector<uint8_t>& selData, const uint8_t& recordType)
 {
     // A maximum of 13 bytes of SEL event data are allowed in an OEM record
     if (selData.size() > selOemDataMaxSize)
@@ -236,11 +240,24 @@ static void selAddOemRecord([[maybe_unused]] const std::string& message,
     toHexStr(selData, selDataStr);
 
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
-    using namespace xyz::openbmc_project::Logging::SEL;
-    report<SELCreated>(Created::RECORD_TYPE(recordType),
-                       Created::GENERATOR_ID(0),
-                       Created::SENSOR_DATA(selDataStr.c_str()),
-                       Created::EVENT_DIR(0), Created::SENSOR_PATH(""));
+    sdbusplus::message_t AddToLog = conn->new_method_call(
+        "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
+        "xyz.openbmc_project.Logging.Create", "Create");
+
+    std::string journalMsg(
+        message + ": " + " RecordType=" + std::to_string(recordType) +
+        ", GeneratorID=" + std::to_string(0) +
+        ", EventDir=" + std::to_string(0) + ", EventData=" + selDataStr);
+
+    AddToLog.append(journalMsg,
+                    "xyz.openbmc_project.Logging.Entry.Level.Informational",
+                    std::map<std::string, std::string>(
+                        {{"SENSOR_PATH", ""},
+                         {"GENERATOR_ID", std::to_string(0)},
+                         {"RECORD_TYPE", std::to_string(recordType)},
+                         {"EVENT_DIR", std::to_string(0)},
+                         {"SENSOR_DATA", selDataStr}}));
+    conn->call(AddToLog);
 #else
     unsigned int recordId = getNewRecordId();
     sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
@@ -266,17 +283,18 @@ int main(int, char*[])
 
     // Add a new SEL entry
     ifaceAddSel->register_method(
-        "IpmiSelAdd", [](const std::string& message, const std::string& path,
-                         const std::vector<uint8_t>& selData,
-                         const bool& assert, const uint16_t& genId) {
-            return selAddSystemRecord(message, path, selData, assert, genId);
+        "IpmiSelAdd",
+        [conn](const std::string& message, const std::string& path,
+               const std::vector<uint8_t>& selData, const bool& assert,
+               const uint16_t& genId) {
+        return selAddSystemRecord(conn, message, path, selData, assert, genId);
         });
     // Add a new OEM SEL entry
     ifaceAddSel->register_method("IpmiSelAddOem",
-                                 [](const std::string& message,
-                                    const std::vector<uint8_t>& selData,
-                                    const uint8_t& recordType) {
-        return selAddOemRecord(message, selData, recordType);
+                                 [conn](const std::string& message,
+                                        const std::vector<uint8_t>& selData,
+                                        const uint8_t& recordType) {
+        return selAddOemRecord(conn, message, selData, recordType);
     });
 
 #ifdef SEL_LOGGER_CLEARS_SEL

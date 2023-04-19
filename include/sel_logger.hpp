@@ -39,6 +39,7 @@ static const std::string selLogFilename = "ipmi_sel";
 
 template <typename... T>
 static void
-    selAddSystemRecord(const std::string& message, const std::string& path,
+    selAddSystemRecord(std::shared_ptr<sdbusplus::asio::connection> conn,
+                       const std::string& message, const std::string& path,
                        const std::vector<uint8_t>& selData, const bool& assert,
                        const uint16_t& genId, T&&... metadata);

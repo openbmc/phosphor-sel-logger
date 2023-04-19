@@ -227,10 +227,10 @@ inline static void sendWatchdogEventLog(
 
         std::string redfishMessageID = "OpenBMC.0.1.IPMIWatchdog";
 
-        selAddSystemRecord(journalMsg, std::string(msg.get_path()), eventData,
-                           assert, selBMCGenID, "REDFISH_MESSAGE_ID=%s",
-                           redfishMessageID.c_str(), "REDFISH_MESSAGE_ARGS=%s",
-                           eventMessageArgs.c_str(), NULL);
+        selAddSystemRecord(
+            conn, journalMsg, std::string(msg.get_path()), eventData, assert,
+            selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
+            "REDFISH_MESSAGE_ARGS=%s", eventMessageArgs.c_str(), NULL);
     }
 }
 

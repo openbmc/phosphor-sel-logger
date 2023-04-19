@@ -28,7 +28,8 @@ static boost::container::flat_map<std::string, sdbusMatch> hostErrorMatches = {
     {"ThermalTrip", thermTripEventMatcher}, {"IERR", ierrEventMatcher}};
 static boost::container::flat_set<std::string> hostErrorEvents;
 
-void hostErrorEventMonitor(sdbusplus::message_t& msg)
+void hostErrorEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn,
+                           sdbusplus::message_t& msg)
 {
     std::string msgInterface;
     boost::container::flat_map<std::string, std::variant<bool>> values;
@@ -71,7 +72,7 @@ void hostErrorEventMonitor(sdbusplus::message_t& msg)
     uint8_t selType = (msgInterface.ends_with("ThermalTrip")) ? 0x01 : 0x00;
 
     std::vector<uint8_t> selData{selType, 0xff, 0xff};
-    selAddSystemRecord(message, objectPath, selData, assert, selBMCGenID);
+    selAddSystemRecord(conn, message, objectPath, selData, assert, selBMCGenID);
 }
 
 inline static void startHostErrorEventMonitor(
@@ -87,7 +88,7 @@ inline static void startHostErrorEventMonitor(
             "HostErrorMonitor.Processor." +
                 iter->first + "'",
             [conn, iter](sdbusplus::message_t& msg) {
-            hostErrorEventMonitor(msg);
+            hostErrorEventMonitor(conn, msg);
             });
     }
 }
