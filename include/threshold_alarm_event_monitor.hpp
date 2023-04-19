@@ -238,7 +238,7 @@ void generateEvent(std::string signalName,
                            ". Reading=" + std::to_string(assertValue) +
                            " Threshold=" + std::to_string(thresholdVal) + ".");
 
-    selAddSystemRecord(journalMsg, std::string(msg.get_path()), eventData,
+    selAddSystemRecord(conn, journalMsg, std::string(msg.get_path()), eventData,
                        assert, selBMCGenID, "REDFISH_MESSAGE_ID=%s",
                        redfishMessageID.c_str(),
                        "REDFISH_MESSAGE_ARGS=%.*s,%f,%f", sensorName.length(),
