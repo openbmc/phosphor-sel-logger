@@ -325,7 +325,7 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
         }
 #else
         selAddSystemRecord(
-            journalMsg, std::string(msg.get_path()), eventData, assert,
+            conn, journalMsg, std::string(msg.get_path()), eventData, assert,
             selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
             "REDFISH_MESSAGE_ARGS=%.*s,%f,%f", sensorName.length(),
             sensorName.data(), assertValue, thresholdVal);

@@ -71,7 +71,7 @@ void hostErrorEventMonitor(sdbusplus::message_t& msg)
     uint8_t selType = (msgInterface.ends_with("ThermalTrip")) ? 0x01 : 0x00;
 
     std::vector<uint8_t> selData{selType, 0xff, 0xff};
-    selAddSystemRecord(message, objectPath, selData, assert, selBMCGenID);
+    selAddSystemRecord(conn, message, objectPath, selData, assert, selBMCGenID);
 }
 
 inline static void startHostErrorEventMonitor(
