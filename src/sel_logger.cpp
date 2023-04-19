@@ -191,11 +191,11 @@ static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
 }
 
 template <typename... T>
-static uint16_t selAddSystemRecord([[maybe_unused]] const std::string& message,
-                                   const std::string& path,
-                                   const std::vector<uint8_t>& selData,
-                                   const bool& assert, const uint16_t& genId,
-                                   [[maybe_unused]] T&&... metadata)
+static void selAddSystemRecord([[maybe_unused]] const std::string& message,
+                               const std::string& path,
+                               const std::vector<uint8_t>& selData,
+                               const bool& assert, const uint16_t& genId,
+                               [[maybe_unused]] T&&... metadata)
 {
     // Only 3 bytes of SEL event data are allowed in a system record
     if (selData.size() > selEvtDataMaxSize)
@@ -207,11 +207,10 @@ static uint16_t selAddSystemRecord([[maybe_unused]] const std::string& message,
 
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
     using namespace xyz::openbmc_project::Logging::SEL;
-    auto entryID = report<SELCreated>(
+    report<SELCreated>(
         Created::RECORD_TYPE(selSystemType), Created::GENERATOR_ID(genId),
         Created::SENSOR_DATA(selDataStr.c_str()), Created::EVENT_DIR(assert),
         Created::SENSOR_PATH(path.c_str()));
-    return static_cast<uint16_t>(entryID);
 #else
     unsigned int recordId = getNewRecordId();
     sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
@@ -221,13 +220,12 @@ static uint16_t selAddSystemRecord([[maybe_unused]] const std::string& message,
                     "IPMI_SEL_SENSOR_PATH=%s", path.c_str(),
                     "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
                     selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
-    return recordId;
 #endif
 }
 
-static uint16_t selAddOemRecord([[maybe_unused]] const std::string& message,
-                                const std::vector<uint8_t>& selData,
-                                const uint8_t& recordType)
+static void selAddOemRecord([[maybe_unused]] const std::string& message,
+                            const std::vector<uint8_t>& selData,
+                            const uint8_t& recordType)
 {
     // A maximum of 13 bytes of SEL event data are allowed in an OEM record
     if (selData.size() > selOemDataMaxSize)
@@ -239,18 +237,16 @@ static uint16_t selAddOemRecord([[maybe_unused]] const std::string& message,
 
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
     using namespace xyz::openbmc_project::Logging::SEL;
-    auto entryID = report<SELCreated>(
-        Created::RECORD_TYPE(recordType), Created::GENERATOR_ID(0),
-        Created::SENSOR_DATA(selDataStr.c_str()), Created::EVENT_DIR(0),
-        Created::SENSOR_PATH(""));
-    return static_cast<uint16_t>(entryID);
+    report<SELCreated>(Created::RECORD_TYPE(recordType),
+                       Created::GENERATOR_ID(0),
+                       Created::SENSOR_DATA(selDataStr.c_str()),
+                       Created::EVENT_DIR(0), Created::SENSOR_PATH(""));
 #else
     unsigned int recordId = getNewRecordId();
     sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
                     "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d",
                     recordId, "IPMI_SEL_RECORD_TYPE=%x", recordType,
                     "IPMI_SEL_DATA=%s", selDataStr.c_str(), NULL);
-    return recordId;
 #endif
 }
 

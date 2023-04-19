@@ -38,7 +38,7 @@ static const std::filesystem::path selLogDir = "/var/log";
 static const std::string selLogFilename = "ipmi_sel";
 
 template <typename... T>
-static uint16_t
+static void
     selAddSystemRecord(const std::string& message, const std::string& path,
                        const std::vector<uint8_t>& selData, const bool& assert,
                        const uint16_t& genId, T&&... metadata);
