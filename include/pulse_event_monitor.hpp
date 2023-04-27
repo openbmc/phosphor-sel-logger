@@ -22,7 +22,7 @@
 inline static sdbusplus::bus::match_t
     startPulseEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
 {
-    auto pulseEventMatcherCallback = [](sdbusplus::message_t& msg) {
+    auto pulseEventMatcherCallback = [conn](sdbusplus::message_t& msg) {
         std::string thresholdInterface;
         boost::container::flat_map<std::string, std::variant<std::string>>
             propertiesChanged;
@@ -45,25 +45,43 @@ inline static sdbusplus::bus::match_t
 
         if (event == "CurrentHostState")
         {
+
+            std::string journalMsg;
+            std::string redfishMsgId;
+
             if (*variant == "xyz.openbmc_project.State.Host.HostState.Off")
             {
-                std::string message("Host system DC power is off");
-                std::string redfishMsgId("OpenBMC.0.1.DCPowerOff");
-
-                sd_journal_send("MESSAGE=%s", message.c_str(),
-                                "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
-                                NULL);
+                journalMsg = "Host system DC power is off";
+                redfishMsgId = "OpenBMC.0.1.DCPowerOff";
             }
             else if (*variant ==
                      "xyz.openbmc_project.State.Host.HostState.Running")
             {
-                std::string message("Host system DC power is on");
-                std::string redfishMsgId("OpenBMC.0.1.DCPowerOn");
-
-                sd_journal_send("MESSAGE=%s", message.c_str(),
-                                "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
-                                NULL);
+                journalMsg = "Host system DC power is on";
+                redfishMsgId = "OpenBMC.0.1.DCPowerOn";
             }
+            else
+            {
+                return;
+            }
+#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+            sdbusplus::message_t newLogEntry = conn->new_method_call(
+                "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
+                "xyz.openbmc_project.Logging.Create", "Create");
+            const std::string logLevel =
+                "xyz.openbmc_project.Logging.Entry.Level.Informational";
+            const std::string hostPathName = "HOST_PATH";
+            const std::string hostPath = msg.get_path();
+            newLogEntry.append(
+                std::move(journalMsg), std::move(logLevel),
+                std::map<std::string, std::string>(
+                    {{std::move(hostPathName), std::move(hostPath)}}));
+            conn->call(newLogEntry);
+#else
+            sd_journal_send("MESSAGE=%s", journalMsg.c_str(),
+                            "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
+                            NULL);
+#endif
         }
     };
 
