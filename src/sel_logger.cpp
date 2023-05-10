@@ -276,12 +276,12 @@ int main(int, char*[])
             return selAddSystemRecord(message, path, selData, assert, genId);
         });
     // Add a new OEM SEL entry
-    ifaceAddSel->register_method(
-        "IpmiSelAddOem",
-        [](const std::string& message, const std::vector<uint8_t>& selData,
-           const uint8_t& recordType) {
-            return selAddOemRecord(message, selData, recordType);
-        });
+    ifaceAddSel->register_method("IpmiSelAddOem",
+                                 [](const std::string& message,
+                                    const std::vector<uint8_t>& selData,
+                                    const uint8_t& recordType) {
+        return selAddOemRecord(message, selData, recordType);
+    });
 
 #ifdef SEL_LOGGER_CLEARS_SEL
 #ifndef SEL_LOGGER_SEND_TO_LOGGING_SERVICE

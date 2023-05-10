@@ -209,8 +209,8 @@ void generateEvent(std::string signalName,
                   << "\n";
         return;
     }
-    double thresholdVal =
-        std::visit(ipmi::VariantToDoubleVisitor(), thresholdValue);
+    double thresholdVal = std::visit(ipmi::VariantToDoubleVisitor(),
+                                     thresholdValue);
 
     double scale = 0;
     auto findScale = sensorValue.find("Scale");
@@ -254,7 +254,7 @@ inline static void startThresholdAlarmMonitor(
             static_cast<sdbusplus::bus_t&>(*conn),
             "type='signal',member=" + iter->first,
             [conn, iter](sdbusplus::message_t& msg) {
-                generateEvent(iter->first, conn, msg);
+            generateEvent(iter->first, conn, msg);
             });
     }
 }

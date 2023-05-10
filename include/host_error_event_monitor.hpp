@@ -66,8 +66,8 @@ void hostErrorEventMonitor(sdbusplus::message_t& msg)
     }
     std::string eventName = objectPath.substr(objectPath.find_last_of('/') + 1,
                                               objectPath.length());
-    std::string message =
-        (assert) ? eventName + " Asserted" : eventName + " De-Asserted";
+    std::string message = (assert) ? eventName + " Asserted"
+                                   : eventName + " De-Asserted";
     uint8_t selType = (msgInterface.ends_with("ThermalTrip")) ? 0x01 : 0x00;
 
     std::vector<uint8_t> selData{selType, 0xff, 0xff};
@@ -87,7 +87,7 @@ inline static void startHostErrorEventMonitor(
             "HostErrorMonitor.Processor." +
                 iter->first + "'",
             [conn, iter](sdbusplus::message_t& msg) {
-                hostErrorEventMonitor(msg);
+            hostErrorEventMonitor(msg);
             });
     }
 }
