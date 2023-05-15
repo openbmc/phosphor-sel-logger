@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce3bd196_f1f70b36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2023-05-15T14:18:15Z",
+      "side": 1,
+      "message": "The repo has changed `.clang-format` file, so here is a style update for the patchset",
+      "revId": "6f5342d0bdb2b2b8c52323219656f88794abf54f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
