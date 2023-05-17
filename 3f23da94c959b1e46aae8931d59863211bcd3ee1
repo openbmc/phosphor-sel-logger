@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c148a13a_23a4967c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-05-17T19:05:38Z",
+      "side": 1,
+      "message": "Yes.  Sorry, I didn\u0027t see that this had lost the +2.",
+      "revId": "3f23da94c959b1e46aae8931d59863211bcd3ee1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
