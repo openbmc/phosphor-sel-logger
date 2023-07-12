@@ -45,7 +45,6 @@ inline static sdbusplus::bus::match_t
 
         if (event == "CurrentHostState")
         {
-
             std::string journalMsg;
             std::string redfishMsgId;
 
