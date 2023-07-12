@@ -1,0 +1,7 @@
+Code-Review+2: Jason Bills <jason.m.bills@linux.intel.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Wed, 12 Jul 2023 20:03:11 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/64846
+Project: openbmc/phosphor-sel-logger
+Branch: refs/heads/master
