@@ -34,6 +34,23 @@
       "parentUuid": "14b60bcc_5c63773a",
       "revId": "641242468a1d77ab3f4d6a2658660d6a8113a49f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "514e0159_0c9705d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-07-12T16:41:24Z",
+      "side": 1,
+      "message": "I pushed a fix for the clang-format build error: https://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/64894",
+      "revId": "641242468a1d77ab3f4d6a2658660d6a8113a49f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
