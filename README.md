@@ -57,3 +57,7 @@ As an example, the SEL Logger has a "threshold event monitor" which implements a
 D-Bus match for any "PropertiesChanged" event on the
 `xyz.openbmc_project.Sensor.Threshold` interface. The handler then checks for
 any new threshold events and logs SEL records accordingly.
+
+## Debugging
+
+There is a `--debug` flag to enable debug log messages.
