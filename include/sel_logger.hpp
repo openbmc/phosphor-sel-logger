@@ -36,6 +36,8 @@ static constexpr uint8_t selEvtDataUnspecified = 0xFF;
 
 static const std::filesystem::path selLogDir = "/var/log";
 static const std::string selLogFilename = "ipmi_sel";
+static const std::filesystem::path selEraseTimePath =
+    "/var/lib/ipmi/sel_erase_time";
 
 template <typename... T>
 static void

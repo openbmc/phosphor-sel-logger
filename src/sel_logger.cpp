@@ -31,11 +31,18 @@
 #include <host_error_event_monitor.hpp>
 #endif
 
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <optional>
 #include <sstream>
+
+static bool debug = false;
+
+static std::optional<std::chrono::time_point<std::chrono::system_clock>>
+    timestampSelAdd = std::nullopt;
 
 struct DBusInternalError final : public sdbusplus::exception_t
 {
@@ -111,8 +118,9 @@ static unsigned int initializeRecordId(void)
     return std::stoul(newestEntryFields[1]);
 }
 
-#ifdef SEL_LOGGER_CLEARS_SEL
 static unsigned int recordId = initializeRecordId();
+
+#ifdef SEL_LOGGER_CLEARS_SEL
 
 void clearSelLogFiles()
 {
@@ -128,6 +136,20 @@ void clearSelLogFiles()
     }
 
     recordId = selInvalidRecID;
+
+    if (!std::filesystem::exists(selEraseTimePath))
+    {
+        std::ofstream selEraseTimeFile(selEraseTimePath);
+        selEraseTimeFile.close();
+    }
+
+    std::error_code ec;
+    std::filesystem::last_write_time(selEraseTimePath,
+                                     std::chrono::system_clock::now(), &ec);
+    if (ec != 0)
+    {
+        std::cerr << "could not touch " << selEraseTimePath << std::endl;
+    }
 
     // Reload rsyslog so it knows to start new log files
     boost::asio::io_context io;
@@ -150,13 +172,32 @@ void clearSelLogFiles()
 static unsigned int getNewRecordId(void)
 {
 #ifndef SEL_LOGGER_CLEARS_SEL
-    static unsigned int recordId = initializeRecordId();
 
     // If the log has been cleared, also clear the current ID
     std::vector<std::filesystem::path> selLogFiles;
-    if (!getSELLogFiles(selLogFiles))
+
+    if (!getSELLogFiles(selLogFiles) &&
+        std::filesystem::exists(selEraseTimePath))
     {
-        recordId = selInvalidRecID;
+        const auto selEraseTime =
+            std::chrono::clock_cast<std::chrono::system_clock>(
+                std::filesystem::last_write_time(selEraseTimePath));
+        if (debug)
+        {
+            std::cout << "last SEL erase time: " << selEraseTime << std::endl;
+        }
+
+        if (!timestampSelAdd.has_value() ||
+            timestampSelAdd.value() < selEraseTime)
+        {
+            // the SEL was cleared since we last added a record.
+            recordId = selInvalidRecID;
+            if (debug)
+            {
+                std::cout << "detected SEL clear, resetting record id"
+                          << std::endl;
+            }
+        }
     }
 #endif
 
@@ -224,6 +265,13 @@ static void selAddSystemRecord(
                     "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
                     selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
 #endif
+
+    timestampSelAdd = std::chrono::system_clock::now();
+    if (debug)
+    {
+        std::cout << "last SEL add timestamp " << timestampSelAdd.value()
+                  << std::endl;
+    }
 }
 
 static void selAddOemRecord(
@@ -265,10 +313,26 @@ static void selAddOemRecord(
                     recordId, "IPMI_SEL_RECORD_TYPE=%x", recordType,
                     "IPMI_SEL_DATA=%s", selDataStr.c_str(), NULL);
 #endif
+
+    timestampSelAdd = std::chrono::system_clock::now();
+    if (debug)
+    {
+        std::cout << "last SEL add timestamp " << timestampSelAdd.value()
+                  << std::endl;
+    }
 }
 
-int main(int, char*[])
+int main(int argc, char* argv[])
 {
+    if (argc > 1)
+    {
+        if (strcmp(argv[1], "-d") == 0 || strcmp(argv[1], "--debug") == 0)
+        {
+            debug = true;
+            std::cout << "debug logging enabled" << std::endl;
+        }
+    }
+
     // setup connection to dbus
     boost::asio::io_context io;
     auto conn = std::make_shared<sdbusplus::asio::connection>(io);
