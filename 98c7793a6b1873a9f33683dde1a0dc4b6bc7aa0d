@@ -16,6 +16,24 @@
       "message": "It looks like this commit was already merged to solve this problem: https://github.com/openbmc/phosphor-sel-logger/commit/9f476e82f72e78d2be6cdeb95f7d5552c19d97a7.\n\nHave you tried enabling the `clears-sel` option and using the phosphor-sel-logger `clearSelLogFiles()` function to see if it solves the problem?",
       "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41381098_7db93d36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2023-09-02T16:15:23Z",
+      "side": 1,
+      "message": "the \u0027Solution\u0027 to the problem made it worse IMO because now there is even more configurations to keep track of. But you are right that there is a \u0027right\u0027 configuration where stuff works.\n\nComparing \ndbus-sdr/storagecommands.cpp:1167\nand\nsel_logger.cpp:119\n\nit is exactly the same code.\n\nLets have only one way of clearing the SEL that works and does not have to be configured every time in 2 separate projects.\n\nThere is no benefit to having this configurable, or did i miss it?\n\nMy suggestion would be to let ipmid clear the SEL since thats like the centerpiece of the IPMI implementation whereas sel-logger may not always be present.\n\nIf you agree then i would be willing to create the required patches.",
+      "parentUuid": "088e5e2f_7844e395",
+      "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
