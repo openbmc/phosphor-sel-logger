@@ -51,6 +51,24 @@
       "message": "If the problem is that the file doesn\u0027t exist, might it be a better idea to delete the older (rotated) files and only truncate the current file? I am not sure if that would work for rsyslogd (does it keep an open file handle? maybe we need to also send SIGHUP or something to rsyslogd.)",
       "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b76436b6_d372afca",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2023-09-06T08:34:21Z",
+      "side": 1,
+      "message": "interesting. https://www.rsyslog.com/doc/v8-stable/compatibility/v4compatibility.html\n\nso HUP should close the file and then it could be truncated. \nBut since rsyslogd can receive new journal entries matching the filter in the meantime, it might try to open the file again, right?\n\nI view /var/log/ipmi_sel as specific to rsyslogd and don\u0027t think it would be a good idea to have other programs writing to that file. Also the behavior of SIGHUP in rsyslogd could change anytime in the future.\n\nWhat is your opinion on unifying the SEL clear behavior?",
+      "parentUuid": "54dbb182_720a8eb0",
+      "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
