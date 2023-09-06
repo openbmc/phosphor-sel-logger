@@ -69,6 +69,24 @@
       "parentUuid": "54dbb182_720a8eb0",
       "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e881ca56_5d5bcb69",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2023-09-06T20:14:02Z",
+      "side": 1,
+      "message": "\u003e (does it keep an open file handle? maybe we need to also send SIGHUP or something to rsyslogd.)\n\nYes, it keeps the file handle open. In IPMI after deleting the files, it reloads the rsyslog service to send it the HUP to restart the new file: https://github.com/openbmc/phosphor-host-ipmid/blob/master/dbus-sdr/storagecommands.cpp#L1172-L1177.\n\nIf I remember correctly, there is a configuration option in rsyslog to tell it to immediately create an empty file or wait until it gets a new log to create the file. We currently use the latter, but could change to immediately create a new file, if it would help.",
+      "parentUuid": "b76436b6_d372afca",
+      "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
