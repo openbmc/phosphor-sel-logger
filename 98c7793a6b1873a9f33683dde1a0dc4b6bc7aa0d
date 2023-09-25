@@ -159,6 +159,24 @@
       "parentUuid": "d12da420_f7edbddc",
       "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7892f7c_171bd8cf",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000163
+      },
+      "writtenOn": "2023-09-25T16:27:19Z",
+      "side": 1,
+      "message": "I am all for making things simpler. I really don\u0027t like how there are ifdefs sprinkled everywhere to make special behavior for every vendor.",
+      "parentUuid": "ac3cef85_918a7fcf",
+      "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
