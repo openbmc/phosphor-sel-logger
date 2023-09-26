@@ -36,9 +36,6 @@ if get_option('send-to-logger')
 
   deps += dependency('phosphor-logging')
 endif
-if get_option('clears-sel')
-  cpp_args += '-DSEL_LOGGER_CLEARS_SEL'
-endif
 
 executable(
   'sel-logger',

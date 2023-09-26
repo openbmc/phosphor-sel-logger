@@ -10,5 +10,3 @@ option('log-host', type: 'boolean',
        description: 'Automatically log SEL records for host error events')
 option('send-to-logger', type: 'boolean',
        description: 'Automatically log events to Redfish for pulse type assert-deassert sensor events')
-option('clears-sel', type: 'boolean',
-       description: 'Expose method for SEL Logger to clear the SEL records stored in ipmi_sel')

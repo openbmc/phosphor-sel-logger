@@ -111,11 +111,30 @@ static unsigned int initializeRecordId(void)
     return std::stoul(newestEntryFields[1]);
 }
 
-#ifdef SEL_LOGGER_CLEARS_SEL
 static unsigned int recordId = initializeRecordId();
+
+static void saveClearSelTimestamp()
+{
+    int fd = open("/var/lib/ipmi/sel_erase_time",
+                  O_WRONLY | O_CREAT | O_CLOEXEC, 0644);
+    if (fd < 0)
+    {
+        std::cerr << "Failed to open file\n";
+        return;
+    }
+
+    if (futimens(fd, NULL) < 0)
+    {
+        std::cerr << "Failed to update SEL cleared timestamp: "
+                  << std::string(strerror(errno));
+    }
+    close(fd);
+}
 
 void clearSelLogFiles()
 {
+    saveClearSelTimestamp();
+
     // Clear the SEL by deleting the log files
     std::vector<std::filesystem::path> selLogFiles;
     if (getSELLogFiles(selLogFiles))
@@ -145,21 +164,9 @@ void clearSelLogFiles()
         std::cerr << e.what() << "\n";
     }
 }
-#endif
 
 static unsigned int getNewRecordId(void)
 {
-#ifndef SEL_LOGGER_CLEARS_SEL
-    static unsigned int recordId = initializeRecordId();
-
-    // If the log has been cleared, also clear the current ID
-    std::vector<std::filesystem::path> selLogFiles;
-    if (!getSELLogFiles(selLogFiles))
-    {
-        recordId = selInvalidRecID;
-    }
-#endif
-
     if (++recordId >= selInvalidRecID)
     {
         recordId = 1;
@@ -297,11 +304,9 @@ int main(int, char*[])
         return selAddOemRecord(conn, message, selData, recordType);
     });
 
-#ifdef SEL_LOGGER_CLEARS_SEL
 #ifndef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
     // Clear SEL entries
     ifaceAddSel->register_method("Clear", []() { clearSelLogFiles(); });
-#endif
 #endif
     ifaceAddSel->initialize();
 
