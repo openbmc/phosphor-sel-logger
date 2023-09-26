@@ -177,6 +177,24 @@
       "parentUuid": "ac3cef85_918a7fcf",
       "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07594fc5_53961987",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2023-09-26T09:44:10Z",
+      "side": 1,
+      "message": "Nice. The topic is underway at\nhttps://gerrit.openbmc.org/q/topic:sel-cleanup\n\nSince this is my first time creating a topic, there might be some mistakes.\n\nLooking forward to your feedback :)",
+      "parentUuid": "f7892f7c_171bd8cf",
+      "revId": "98c7793a6b1873a9f33683dde1a0dc4b6bc7aa0d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
