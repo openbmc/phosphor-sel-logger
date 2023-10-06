@@ -208,7 +208,7 @@ inline static void sendWatchdogEventLog(
     {
         direction = " enable ";
         eventMessageArgs = "Enabled";
-        wdt_nolog = responseData[0] & wdtNologBit;
+        wdt_nolog = responseData[1] & wdtNologBit;
     }
     else
     {
