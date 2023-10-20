@@ -255,6 +255,6 @@ inline static void startThresholdAlarmMonitor(
             "type='signal',member=" + iter->first,
             [conn, iter](sdbusplus::message_t& msg) {
             generateEvent(iter->first, conn, msg);
-            });
+        });
     }
 }

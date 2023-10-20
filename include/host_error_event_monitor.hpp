@@ -89,6 +89,6 @@ inline static void startHostErrorEventMonitor(
                 iter->first + "'",
             [conn, iter](sdbusplus::message_t& msg) {
             hostErrorEventMonitor(conn, msg);
-            });
+        });
     }
 }

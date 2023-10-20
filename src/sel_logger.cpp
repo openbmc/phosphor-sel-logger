@@ -295,7 +295,7 @@ int main(int, char*[])
                const std::vector<uint8_t>& selData, const bool& assert,
                const uint16_t& genId) {
         return selAddSystemRecord(conn, message, path, selData, assert, genId);
-        });
+    });
     // Add a new OEM SEL entry
     ifaceAddSel->register_method("IpmiSelAddOem",
                                  [conn](const std::string& message,
