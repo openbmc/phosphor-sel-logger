@@ -37,6 +37,17 @@
 #include <iostream>
 #include <sstream>
 
+#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Logging/SEL/error.hpp>
+
+using namespace phosphor::logging;
+using SELCreated =
+    sdbusplus::xyz::openbmc_project::Logging::SEL::Error::Created;
+#endif
+
 struct DBusInternalError final : public sdbusplus::exception_t
 {
     const char* name() const noexcept override
@@ -163,6 +174,111 @@ void clearSelLogFiles()
     {
         std::cerr << e.what() << "\n";
     }
+}
+
+static bool selDeleteTargetRecord(const std::filesystem::path& file,
+                                  const std::string targetId)
+{
+    std::ifstream logStream(file);
+    if (!logStream.is_open())
+    {
+        return false;
+    }
+
+    std::fstream tempFile;
+    tempFile.open(selLogDir / "temp", std::ios::out);
+    bool targetEntryFound = false;
+
+    // go over the entries in the file and copy them to the temp file exept the
+    // target
+    std::string line;
+    while (std::getline(logStream, line))
+    {
+        // get the recordId of the current entry
+        int left = line.find(" ");
+        int right = line.find(",");
+        int recordLen = right - left;
+        std::string recordId = line.substr(left, recordLen);
+        int newRecordId = std::stoi(recordId);
+        // decrement the recordId after the target entry
+        if (targetEntryFound)
+        {
+            line.replace(left + 1, recordLen - 1,
+                         std::to_string(newRecordId - 1));
+        }
+        // copy the entry from the original ipmi_sel to the temp file
+        if (line.find(targetId) == std::string::npos)
+        {
+            tempFile << line << "\n";
+        }
+        else
+        {
+            if (!targetEntryFound)
+            {
+                targetEntryFound = true;
+            }
+            else
+            {
+                tempFile << line << "\n";
+            }
+        }
+    }
+    logStream.close();
+    tempFile.close();
+    std::error_code ec;
+    std::filesystem::remove(file, ec);
+
+    // Reload rsyslog so it knows to connect to the new log files
+    boost::asio::io_context io;
+    auto dbus = std::make_shared<sdbusplus::asio::connection>(io);
+    sdbusplus::message_t rsyslogReload = dbus->new_method_call(
+        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
+        "org.freedesktop.systemd1.Manager", "ReloadUnit");
+    rsyslogReload.append("rsyslog.service", "replace");
+    try
+    {
+        sdbusplus::message_t reloadResponse = dbus->call(rsyslogReload);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        std::cerr << e.what() << "\n";
+    }
+
+    // rename the temp file to "ipmi_sel"
+    std::filesystem::rename(selLogDir / "temp", file);
+
+    return targetEntryFound;
+}
+
+static uint16_t selDeleteRecord(const uint16_t& targetId)
+{
+    // check if the ipmi_sel exist and save the path
+    std::vector<std::filesystem::path> selLogFiles;
+    if (!getSELLogFiles(selLogFiles))
+    {
+        return selInvalidRecID;
+    }
+
+    std::string target = " " + std::to_string(targetId) + ",";
+    bool targetEntryFound = false;
+
+    // go over all the ipmi_sel files to remove the entry with the target ID
+    for (const std::filesystem::path& file : selLogFiles)
+    {
+        targetEntryFound = selDeleteTargetRecord(file, target);
+        if (targetEntryFound)
+        {
+            break;
+        }
+    }
+
+    // check if the targetId is Invalid
+    if (!targetEntryFound)
+    {
+        return selInvalidRecID;
+    }
+    recordId--;
+    return targetId;
 }
 
 static unsigned int getNewRecordId(void)
@@ -307,6 +423,10 @@ int main(int, char*[])
 #ifndef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
     // Clear SEL entries
     ifaceAddSel->register_method("Clear", []() { clearSelLogFiles(); });
+    // Delete a SEL entry
+    ifaceAddSel->register_method("IpmiSelDelete", [](const uint16_t& recordId) {
+        return selDeleteRecord(recordId);
+    });
 #endif
     ifaceAddSel->initialize();
 
