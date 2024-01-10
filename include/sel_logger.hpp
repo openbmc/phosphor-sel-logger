@@ -37,6 +37,8 @@ static constexpr uint8_t selEvtDataUnspecified = 0xFF;
 static const std::filesystem::path selLogDir = "/var/log";
 static const std::string selLogFilename = "ipmi_sel";
 
+static std::list<uint16_t> freedRecordIDs;
+
 template <typename... T>
 static void
     selAddSystemRecord(std::shared_ptr<sdbusplus::asio::connection> conn,

@@ -146,6 +146,7 @@ void clearSelLogFiles()
         }
     }
 
+    freedRecordIDs.clear();
     recordId = selInvalidRecID;
 
     // Reload rsyslog so it knows to start new log files
@@ -165,8 +166,94 @@ void clearSelLogFiles()
     }
 }
 
+static bool selDeleteTargetRecord(const uint16_t& targetId)
+{
+    bool targetEntryFound = false;
+    // Check if the ipmi_sel exist and save the path
+    std::vector<std::filesystem::path> selLogFiles;
+    if (!getSELLogFiles(selLogFiles))
+    {
+        return targetEntryFound;
+    }
+
+    // Go over all the ipmi_sel files to remove the entry with the target ID
+    for (const std::filesystem::path& file : selLogFiles)
+    {
+        std::fstream logStream(file, std::ios::in);
+        std::fstream tempFile(selLogDir / "temp", std::ios::out);
+        if (!logStream.is_open())
+        {
+            return targetEntryFound;
+        }
+        std::string line;
+        while (std::getline(logStream, line))
+        {
+            // Get the recordId of the current entry
+            int left = line.find(" ");
+            int right = line.find(",");
+            int recordLen = right - left;
+            std::string recordId = line.substr(left, recordLen);
+            int newRecordId = std::stoi(recordId);
+
+            if (newRecordId != targetId)
+            {
+                // Copy the entry from the original ipmi_sel to the temp file
+                tempFile << line << '\n';
+            }
+            else
+            {
+                // Skip copying the target entry
+                targetEntryFound = true;
+            }
+        }
+        logStream.close();
+        tempFile.close();
+        if (targetEntryFound)
+        {
+            std::fstream logStream(file, std::ios::out);
+            std::fstream tempFile(selLogDir / "temp", std::ios::in);
+            while (std::getline(tempFile, line))
+            {
+                logStream << line << '\n';
+            }
+            logStream.close();
+            tempFile.close();
+            std::error_code ec;
+            if (!std::filesystem::remove(selLogDir / "temp", ec))
+            {
+                std::cerr << ec.message() << std::endl;
+            }
+            break;
+        }
+    }
+    return targetEntryFound;
+}
+
+static uint16_t selDeleteRecord(const uint16_t& targetId)
+{
+    std::filesystem::file_time_type prevAddTime =
+        std::filesystem::last_write_time(selLogDir / selLogFilename);
+    bool targetEntryFound = selDeleteTargetRecord(targetId);
+
+    // Check if the targetId is Invalid
+    if (!targetEntryFound)
+    {
+        return selInvalidRecID;
+    }
+    freedRecordIDs.emplace_back(targetId);
+    std::filesystem::last_write_time(selLogDir / selLogFilename, prevAddTime);
+    saveClearSelTimestamp();
+    return targetId;
+}
+
 static unsigned int getNewRecordId(void)
 {
+    if (!freedRecordIDs.empty())
+    {
+        unsigned int freeRecord = freedRecordIDs.front();
+        freedRecordIDs.pop_front();
+        return freeRecord;
+    }
     if (++recordId >= selInvalidRecID)
     {
         recordId = 1;
@@ -307,6 +394,10 @@ int main(int, char*[])
 #ifndef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
     // Clear SEL entries
     ifaceAddSel->register_method("Clear", []() { clearSelLogFiles(); });
+    // Delete a SEL entry
+    ifaceAddSel->register_method("IpmiSelDelete", [](const uint16_t& recordId) {
+        return selDeleteRecord(recordId);
+    });
 #endif
     ifaceAddSel->initialize();
 
