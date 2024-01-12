@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3168f7c_35d6a7b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-01-12T15:30:21Z",
+      "side": 1,
+      "message": "Can you please add a `Tested:` field with a brief description of how you tested this change?",
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b76b2455_2ee26919",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-01-12T15:30:21Z",
+      "side": 1,
+      "message": "Are you required to adjust the record IDs?  If not, it may help avoid some corner cases to just leave a gap at the deleted ID.",
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "943d7dd4_10bf1126",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-01-12T15:30:21Z",
+      "side": 1,
+      "message": "This change seems unrelated to the rest of the commit.  Does it need to be in this review?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 6
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5329620c_9511261f",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-01-12T15:30:21Z",
+      "side": 1,
+      "message": "Does this support if the record ID rolls over in the file?",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "338c88ad_ffd111f7",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-01-12T15:30:21Z",
+      "side": 1,
+      "message": "Do you need to remove the file, or will the rename below work alone?",
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0784d5a5_25b53c1d",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-01-12T15:30:21Z",
+      "side": 1,
+      "message": "Does this reload work if you delete the currently active rsyslog file?  Does the reload need to happen after the rename, so the file manipulation is completed before the reload?",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 55
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14818d90_1805e1f9",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-01-12T15:30:21Z",
+      "side": 1,
+      "message": "Won\u0027t you need to continue looping through all the selLogFiles to adjust the record IDs?\n\nFor example, if ipmi_sel.1 has IDs 1-10 and ipmi_sel has IDs 11-20.  If you delete ID 5, you adjust ipmi_sel.1 to be 1-9, but it looks like ipmi_sel still has IDs 11-20. If that is the case, then when you decrement recordId back to 20, you will get a duplicate ID on the next entry.",
+      "range": {
+        "startLine": 266,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 5
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
