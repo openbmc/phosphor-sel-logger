@@ -187,7 +187,7 @@ static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
 }
 
 template <typename... T>
-static void selAddSystemRecord(
+static uint16_t selAddSystemRecord(
     [[maybe_unused]] std::shared_ptr<sdbusplus::asio::connection> conn,
     [[maybe_unused]] const std::string& message, const std::string& path,
     const std::vector<uint8_t>& selData, const bool& assert,
@@ -221,6 +221,7 @@ static void selAddSystemRecord(
                          {"EVENT_DIR", std::to_string(assert)},
                          {"SENSOR_DATA", selDataStr}}));
     conn->call(AddToLog);
+    return 0;
 #else
     unsigned int recordId = getNewRecordId();
     sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
@@ -230,10 +231,11 @@ static void selAddSystemRecord(
                     "IPMI_SEL_SENSOR_PATH=%s", path.c_str(),
                     "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
                     selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
+    return recordId;
 #endif
 }
 
-static void selAddOemRecord(
+static uint16_t selAddOemRecord(
     [[maybe_unused]] std::shared_ptr<sdbusplus::asio::connection> conn,
     [[maybe_unused]] const std::string& message,
     const std::vector<uint8_t>& selData, const uint8_t& recordType)
@@ -265,12 +267,14 @@ static void selAddOemRecord(
                          {"EVENT_DIR", std::to_string(0)},
                          {"SENSOR_DATA", selDataStr}}));
     conn->call(AddToLog);
+    return 0;
 #else
     unsigned int recordId = getNewRecordId();
     sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
                     "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d",
                     recordId, "IPMI_SEL_RECORD_TYPE=%x", recordType,
                     "IPMI_SEL_DATA=%s", selDataStr.c_str(), NULL);
+    return recordId;
 #endif
 }
 
