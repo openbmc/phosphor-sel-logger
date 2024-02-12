@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb4d19b0_450766ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-02-12T19:54:29Z",
+      "side": 1,
+      "message": "Added a `Tested:` section",
+      "parentUuid": "f3168f7c_35d6a7b2",
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b76b2455_2ee26919",
@@ -60,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca294456_ffde9dcc",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-02-12T19:54:29Z",
+      "side": 1,
+      "message": "It has been removed.",
+      "parentUuid": "943d7dd4_10bf1126",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 6
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5329620c_9511261f",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
@@ -71,6 +113,30 @@
       "writtenOn": "2024-01-12T15:30:21Z",
       "side": 1,
       "message": "Does this support if the record ID rolls over in the file?",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7440fb94_2d480328",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-02-12T19:54:29Z",
+      "side": 1,
+      "message": "It now decrements greater RecordIDs in other files.",
+      "parentUuid": "5329620c_9511261f",
       "range": {
         "startLine": 206,
         "startChar": 0,
@@ -100,6 +166,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98da8392_f0038b44",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-02-12T19:54:29Z",
+      "side": 1,
+      "message": "I have it only do the rename now.",
+      "parentUuid": "338c88ad_ffd111f7",
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0784d5a5_25b53c1d",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
@@ -123,6 +207,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "03e904a1_227b7872",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-02-12T19:54:29Z",
+      "side": 1,
+      "message": "I now perform the reload after all file manipulation.",
+      "parentUuid": "0784d5a5_25b53c1d",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 55
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "14818d90_1805e1f9",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
@@ -134,6 +242,30 @@
       "writtenOn": "2024-01-12T15:30:21Z",
       "side": 1,
       "message": "Won\u0027t you need to continue looping through all the selLogFiles to adjust the record IDs?\n\nFor example, if ipmi_sel.1 has IDs 1-10 and ipmi_sel has IDs 11-20.  If you delete ID 5, you adjust ipmi_sel.1 to be 1-9, but it looks like ipmi_sel still has IDs 11-20. If that is the case, then when you decrement recordId back to 20, you will get a duplicate ID on the next entry.",
+      "range": {
+        "startLine": 266,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 5
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d98a09d_97d7110c",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-02-12T19:54:29Z",
+      "side": 1,
+      "message": "This has been added now.",
+      "parentUuid": "14818d90_1805e1f9",
       "range": {
         "startLine": 266,
         "startChar": 0,
