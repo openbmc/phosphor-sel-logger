@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "bcf47623_d32ceacb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-02-16T17:22:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bb4d19b0_450766ce",
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b76b2455_2ee26919",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -100,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db717521_88fd460f",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-02-16T17:22:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ca294456_ffde9dcc",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 6
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5329620c_9511261f",
@@ -149,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "05d7454f_19dc9da8",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-02-16T17:22:17Z",
+      "side": 1,
+      "message": "This looks like it will still have issues if the record ID rolls over.\n\nFor example, it\u0027s possible for the IDs to be:\n0xFFFD\n0xFFFE\n0x0001\n0x0002\n\nIn this case, the decrement needs to cross the rollover in reverse.",
+      "parentUuid": "7440fb94_2d480328",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c88ad_ffd111f7",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
@@ -178,6 +244,24 @@
       "side": 1,
       "message": "I have it only do the rename now.",
       "parentUuid": "338c88ad_ffd111f7",
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caee5949_bcb2c49d",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-02-16T17:22:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "98da8392_f0038b44",
       "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -229,6 +313,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d433a181_74c5748c",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-02-16T17:22:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "03e904a1_227b7872",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 55
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14818d90_1805e1f9",
@@ -266,6 +374,30 @@
       "side": 1,
       "message": "This has been added now.",
       "parentUuid": "14818d90_1805e1f9",
+      "range": {
+        "startLine": 266,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 5
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39972e98_fc2c9dfc",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-02-16T17:22:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9d98a09d_97d7110c",
       "range": {
         "startLine": 266,
         "startChar": 0,

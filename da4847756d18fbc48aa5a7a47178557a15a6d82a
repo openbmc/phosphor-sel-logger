@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e3778b2_e8c3b6cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-02-16T17:22:17Z",
+      "side": 1,
+      "message": "Thanks for the update.  It has resolved everything except the rollover case, which may be the most complicated.\n\nAre you sure you need to adjust the record IDs?  We can confirm with the IPMI experts, but my understanding is that record IDs don\u0027t need to be contiguous, and it seems much simpler to just leave a gap at the deleted ID.",
+      "revId": "da4847756d18fbc48aa5a7a47178557a15a6d82a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
