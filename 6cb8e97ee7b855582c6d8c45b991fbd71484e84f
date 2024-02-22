@@ -215,6 +215,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ed1562a_8670d7ba",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-02-22T16:24:55Z",
+      "side": 1,
+      "message": "Is this a case that the delete needs to cover? The IPMI spec, under Section 1.9, mentions that the SMS manages the SEL and argues that the SEL shouldn\u0027t act as a FIFO. In Section 17.5, it appears that the SEL will ignore events if it is full (assuming PEF and the Event Message Buffer are not implemented).",
+      "parentUuid": "05d7454f_19dc9da8",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c88ad_ffd111f7",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
