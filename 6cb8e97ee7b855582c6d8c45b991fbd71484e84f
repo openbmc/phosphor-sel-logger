@@ -263,6 +263,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce8fb364_058103de",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-03-15T14:21:34Z",
+      "side": 1,
+      "message": "I have made the change to leave the record IDs unmodified and simply delete the requested entry leaving a gap.\n\nAs for record ID rollover, I think we should remove the rollover and instead set the rollover flag when checking the SEL info as seen in Table 31-2 of the spec and ignore any further entries as implied by the spec in that section since it is the responsibility of the SMS or user to clear the SEL when it is full.",
+      "parentUuid": "4c7aeb50_d1fa73f1",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c88ad_ffd111f7",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
