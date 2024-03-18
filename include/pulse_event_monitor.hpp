@@ -27,6 +27,7 @@ inline static sdbusplus::bus::match_t
         boost::container::flat_map<std::string, std::variant<std::string>>
             propertiesChanged;
         msg.read(thresholdInterface, propertiesChanged);
+        std::string objPath = msg.get_path();
 
         if (propertiesChanged.empty())
         {
@@ -45,18 +46,25 @@ inline static sdbusplus::bus::match_t
 
         if (event == "CurrentHostState")
         {
-            std::string journalMsg;
+            std::string journalMsg = "Host";
             std::string redfishMsgId;
+            std::string_view hostObjPathPrefix =
+                "/xyz/openbmc_project/state/host";
+
+            if (objPath.starts_with(hostObjPathPrefix))
+            {
+                journalMsg += objPath.erase(0, hostObjPathPrefix.size());
+            }
 
             if (*variant == "xyz.openbmc_project.State.Host.HostState.Off")
             {
-                journalMsg = "Host system DC power is off";
+                journalMsg += " system DC power is off";
                 redfishMsgId = "OpenBMC.0.1.DCPowerOff";
             }
             else if (*variant ==
                      "xyz.openbmc_project.State.Host.HostState.Running")
             {
-                journalMsg = "Host system DC power is on";
+                journalMsg += " system DC power is on";
                 redfishMsgId = "OpenBMC.0.1.DCPowerOn";
             }
             else
