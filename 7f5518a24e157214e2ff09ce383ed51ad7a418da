@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c04e75bd_2b9387e8",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2024-03-19T14:42:30Z",
+      "side": 1,
+      "message": "I wonder if the message string is correct or not as the condition to check is Host state, not power state. I think Host state is different from DC Power state. For example, when the Host is rebooted, Host state will transition to Off and then Running but power state unchanged.",
+      "revId": "7f5518a24e157214e2ff09ce383ed51ad7a418da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e37f3165_564851ab",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2024-03-19T14:42:30Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "7f5518a24e157214e2ff09ce383ed51ad7a418da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
