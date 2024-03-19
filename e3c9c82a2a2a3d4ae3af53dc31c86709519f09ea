@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c2b5a99_b41f05e5",
+        "filename": "include/sel_logger.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-03-19T19:50:29Z",
+      "side": 1,
+      "message": "The global variable should go in the .cpp file.",
+      "revId": "e3c9c82a2a2a3d4ae3af53dc31c86709519f09ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19061a6a_8b63c6f9",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-03-19T19:50:29Z",
+      "side": 1,
+      "message": "Does this work?  I thought the way it worked is rsyslog kept a file handle open on the file with the pointer at the current location.  If you rewrite the file like this with one line missing, wouldn\u0027t rsyslog continue pointing at the old \"end of file\" location?\n\nDoes the next write leave a gap in the file and continue working or result in some error?",
+      "range": {
+        "startLine": 211,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 9
+      },
+      "revId": "e3c9c82a2a2a3d4ae3af53dc31c86709519f09ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c650120_75eff775",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-03-19T19:50:29Z",
+      "side": 1,
+      "message": "The issue here is that, on startup, we initialize the record ID to the last one used and increment from there.  This change will introduce two issues:\n1. This list is lost on restart, so we wouldn\u0027t be able to use all of the freed IDs.\n2. If a freed ID is the last ID before a restart, the next ID will initialize incorrectly from that one.\n\nDo you need to re-use the freed record IDs?  It would be simpler to just drop them completely and stop allowing new records when the record IDs reach 0xFFFE, as you proposed.",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 256,
+        "endChar": 5
+      },
+      "revId": "e3c9c82a2a2a3d4ae3af53dc31c86709519f09ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
