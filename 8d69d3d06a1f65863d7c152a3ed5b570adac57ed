@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d09a1675_21a1d7f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2024-03-21T06:28:59Z",
+      "side": 1,
+      "message": "I don\u0027t know any difference between you and me in generating event log. But when I use DCPowerOff, my EventLog is as below:\n\n    {\n      \"@odata.id\": \"/redfish/v1/Systems/system/LogServices/EventLog/Entries/1711002326\",\n      \"@odata.type\": \"#LogEntry.v1_9_0.LogEntry\",\n      \"Created\": \"2024-03-21T06:25:26+00:00\",\n      \"EntryType\": \"Event\",\n      \"Id\": \"1711002326\",\n      \"Message\": \"Host system DC power is off\",\n      \"MessageArgs\": [],\n      \"MessageId\": \"OpenBMC.0.1.DCPowerOff\",\n      \"Name\": \"System Event Log Entry\",\n      \"Severity\": \"OK\"\n    }",
+      "revId": "8d69d3d06a1f65863d7c152a3ed5b570adac57ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0644d13a_377e7e47",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2024-03-21T06:28:59Z",
+      "side": 1,
+      "message": "Is it right to use DCPowerOff registry for this message?",
+      "revId": "8d69d3d06a1f65863d7c152a3ed5b570adac57ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14aa12b7_afcd8caf",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2024-03-21T06:28:59Z",
+      "side": 1,
+      "message": "Is it right to use DCPowerOn registry for this message? I wonder if we need new registry in bmcweb\u0027s registry",
+      "revId": "8d69d3d06a1f65863d7c152a3ed5b570adac57ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
