@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b337e65_58260db1",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2024-03-21T06:06:17Z",
+      "side": 1,
+      "message": "Add new commit for updating the message.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/70149",
+      "parentUuid": "c04e75bd_2b9387e8",
+      "revId": "7f5518a24e157214e2ff09ce383ed51ad7a418da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e37f3165_564851ab",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-19T14:42:30Z",
       "side": 1,
       "message": "same as above",
+      "revId": "7f5518a24e157214e2ff09ce383ed51ad7a418da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43092b73_c0993bb9",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2024-03-21T06:06:17Z",
+      "side": 1,
+      "message": "Add new commit for updating the message.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/70149",
+      "parentUuid": "e37f3165_564851ab",
       "revId": "7f5518a24e157214e2ff09ce383ed51ad7a418da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
