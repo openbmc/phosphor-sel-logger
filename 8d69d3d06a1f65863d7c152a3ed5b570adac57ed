@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1b2a566_da77df2d",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2024-03-21T07:15:43Z",
+      "side": 1,
+      "message": "Should we change this to check Power status instead of Host state? then don\u0027t need to change for message and redfishMsgId",
+      "revId": "8d69d3d06a1f65863d7c152a3ed5b570adac57ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0644d13a_377e7e47",
         "filename": "include/pulse_event_monitor.hpp",
         "patchSetId": 1
