@@ -311,6 +311,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31d82f55_0cfc2422",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-03-27T15:07:48Z",
+      "side": 1,
+      "message": "I have removed the rollover support and have getNewRecordId stop at 0xFFFF with the AddSEL functions not adding an entry if the new record ID is 0xFFFF. I will make a change in phosphor-ipmi-host to return an error if an entry is attempted to be added when the SEL is full.",
+      "parentUuid": "0a2760de_56a28835",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c88ad_ffd111f7",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
