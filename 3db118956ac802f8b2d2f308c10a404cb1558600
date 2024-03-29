@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97a54b0b_51c655a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-03-29T15:39:59Z",
+      "side": 1,
+      "message": "Trivial change that looks fine to me, so going ahead with +2.",
+      "revId": "3db118956ac802f8b2d2f308c10a404cb1558600",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
