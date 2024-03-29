@@ -83,6 +83,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "602358d5_1fc0dac9",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-03-29T15:36:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "375cfaeb_4ab6e5ff",
+      "range": {
+        "startLine": 211,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 9
+      },
+      "revId": "e3c9c82a2a2a3d4ae3af53dc31c86709519f09ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c650120_75eff775",
@@ -120,6 +144,30 @@
       "side": 1,
       "message": "I see your point. A local cache is now used to determine the next record ID which is backed up to a file in the case of a restart.",
       "parentUuid": "1c650120_75eff775",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 256,
+        "endChar": 5
+      },
+      "revId": "e3c9c82a2a2a3d4ae3af53dc31c86709519f09ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b47dd1f7_d8d16fa0",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-03-29T15:36:58Z",
+      "side": 1,
+      "message": "I\u0027m a little worried about corner-cases with this change.  This is a pretty big change to functionality that has been there for a long time.  Especially because it\u0027s only needed for a feature that most people won\u0027t use.\n\nHow hard would it be to put this change behind a build flag so those who don\u0027t need SEL Delete can keep the current record ID handling?",
+      "parentUuid": "855f3eef_85b94dd7",
       "range": {
         "startLine": 251,
         "startChar": 0,

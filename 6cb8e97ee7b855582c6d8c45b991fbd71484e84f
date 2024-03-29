@@ -335,6 +335,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4bcacb5_27654220",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-03-29T15:36:58Z",
+      "side": 1,
+      "message": "Could you please make this change as a separate commit, so it can be viewed and searched individually in the history?",
+      "parentUuid": "31d82f55_0cfc2422",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c88ad_ffd111f7",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
