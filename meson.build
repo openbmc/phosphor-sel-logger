@@ -14,6 +14,7 @@ cpp_args = []
 deps = [
   dependency('sdbusplus'),
   dependency('systemd'),
+  dependency('boost'),
 ]
 
 if get_option('log-threshold')
