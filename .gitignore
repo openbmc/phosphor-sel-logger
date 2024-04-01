@@ -2,3 +2,5 @@
 /subprojects/*
 !subprojects/sdbusplus.wrap
 !subprojects/phosphor-logging.wrap
+!subprojects/boost.wrap
+!subprojects/packagefiles
