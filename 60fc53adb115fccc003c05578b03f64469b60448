@@ -103,6 +103,24 @@
       "parentUuid": "964290a7_3568803f",
       "revId": "60fc53adb115fccc003c05578b03f64469b60448",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f3b8e7_8d5da607",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1001311
+      },
+      "writtenOn": "2024-04-17T02:25:37Z",
+      "side": 1,
+      "message": "After re-investigating the IPMI watchdog specification, I think the property \"LogTimeout\" needs to be cleared after the timer expires.\nThanks for your advice.",
+      "parentUuid": "9371a05b_656796c2",
+      "revId": "60fc53adb115fccc003c05578b03f64469b60448",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
