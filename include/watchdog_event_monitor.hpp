@@ -184,23 +184,12 @@ inline static void sendWatchdogEventLog(
         watchdogInterval = std::get<uint64_t>(getWatchdogInterval->second);
     }
 
-    // get watchdog status properties
-    static bool wdt_nolog;
-    sdbusplus::bus_t bus = sdbusplus::bus::new_default();
-    uint8_t netFn = 0x06;
-    uint8_t lun = 0x00;
-    uint8_t cmd = 0x25;
-    std::vector<uint8_t> commandData;
-    std::map<std::string, std::variant<int>> options;
-
-    auto ipmiCall = bus.new_method_call(
-        "xyz.openbmc_project.Ipmi.Host", "/xyz/openbmc_project/Ipmi",
-        "xyz.openbmc_project.Ipmi.Server", "execute");
-    ipmiCall.append(netFn, lun, cmd, commandData, options);
-    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t, std::vector<uint8_t>> rsp;
-    auto ipmiReply = bus.call(ipmiCall);
-    ipmiReply.read(rsp);
-    auto& [rnetFn, rlun, rcmd, cc, responseData] = rsp;
+    auto getLogTimeout = watchdogStatus.find("LogTimeout");
+    bool wdt_logtimeout = true;
+    if (getLogTimeout != watchdogStatus.end())
+    {
+        wdt_logtimeout = std::get<bool>(getLogTimeout->second);
+    }
 
     std::string direction;
     std::string eventMessageArgs;
@@ -208,7 +197,6 @@ inline static void sendWatchdogEventLog(
     {
         direction = " enable ";
         eventMessageArgs = "Enabled";
-        wdt_nolog = responseData[0] & wdtNologBit;
     }
     else
     {
@@ -216,8 +204,7 @@ inline static void sendWatchdogEventLog(
         eventMessageArgs = "Disabled";
     }
 
-    // Set Watchdog Timer byte1[7]-1b=don't log
-    if (!wdt_nolog)
+    if (wdt_logtimeout)
     {
         // Construct a human-readable message of this event for the log
         std::string journalMsg(
@@ -231,6 +218,14 @@ inline static void sendWatchdogEventLog(
             conn, journalMsg, std::string(msg.get_path()), eventData, assert,
             selBMCGenID, "REDFISH_MESSAGE_ID=%s", redfishMessageID.c_str(),
             "REDFISH_MESSAGE_ARGS=%s", eventMessageArgs.c_str(), NULL);
+    } else {
+        // Set property LogTimeout value to true
+        sdbusplus::message_t setWatchdogLogTimeout =
+        conn->new_method_call(msg.get_sender(), msg.get_path(),
+                              "org.freedesktop.DBus.Properties", "Set");
+        setWatchdogLogTimeout.append("xyz.openbmc_project.State.Watchdog",
+                              "LogTimeout", std::variant<bool>(true));
+        conn->call_noreply(setWatchdogLogTimeout);
     }
 }
 
