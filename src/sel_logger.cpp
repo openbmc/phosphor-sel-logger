@@ -81,17 +81,17 @@ static bool getSELLogFiles(std::vector<std::filesystem::path>& selLogFiles)
     return !selLogFiles.empty();
 }
 
-static unsigned int initializeRecordId(void)
+static unsigned int initializeRecordId()
 {
     std::vector<std::filesystem::path> selLogFiles;
     if (!getSELLogFiles(selLogFiles))
     {
-        return selInvalidRecID;
+        return 0;
     }
     std::ifstream logStream(selLogFiles.front());
     if (!logStream.is_open())
     {
-        return selInvalidRecID;
+        return 0;
     }
     std::string line;
     std::string newestEntry;
@@ -105,7 +105,7 @@ static unsigned int initializeRecordId(void)
                  boost::token_compress_on);
     if (newestEntryFields.size() < 4)
     {
-        return selInvalidRecID;
+        return 0;
     }
 
     return std::stoul(newestEntryFields[1]);
@@ -146,7 +146,7 @@ void clearSelLogFiles()
         }
     }
 
-    recordId = selInvalidRecID;
+    recordId = 0;
 
     // Reload rsyslog so it knows to start new log files
     boost::asio::io_context io;
@@ -165,11 +165,11 @@ void clearSelLogFiles()
     }
 }
 
-static unsigned int getNewRecordId(void)
+static unsigned int getNewRecordId()
 {
     if (++recordId >= selInvalidRecID)
     {
-        recordId = 1;
+        recordId = selInvalidRecID;
     }
     return recordId;
 }
@@ -224,13 +224,16 @@ static uint16_t selAddSystemRecord(
     return 0;
 #else
     unsigned int recordId = getNewRecordId();
-    sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
-                    "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d",
-                    recordId, "IPMI_SEL_RECORD_TYPE=%x", selSystemType,
-                    "IPMI_SEL_GENERATOR_ID=%x", genId,
-                    "IPMI_SEL_SENSOR_PATH=%s", path.c_str(),
-                    "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
-                    selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
+    if (recordId < selInvalidRecID)
+    {
+        sd_journal_send(
+            "MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
+            "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d", recordId,
+            "IPMI_SEL_RECORD_TYPE=%x", selSystemType,
+            "IPMI_SEL_GENERATOR_ID=%x", genId, "IPMI_SEL_SENSOR_PATH=%s",
+            path.c_str(), "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
+            selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
+    }
     return recordId;
 #endif
 }
@@ -270,10 +273,14 @@ static uint16_t selAddOemRecord(
     return 0;
 #else
     unsigned int recordId = getNewRecordId();
-    sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
-                    "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d",
-                    recordId, "IPMI_SEL_RECORD_TYPE=%x", recordType,
-                    "IPMI_SEL_DATA=%s", selDataStr.c_str(), NULL);
+    if (recordId < selInvalidRecID)
+    {
+        sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i",
+                        selPriority, "MESSAGE_ID=%s", selMessageId,
+                        "IPMI_SEL_RECORD_ID=%d", recordId,
+                        "IPMI_SEL_RECORD_TYPE=%x", recordType,
+                        "IPMI_SEL_DATA=%s", selDataStr.c_str(), NULL);
+    }
     return recordId;
 #endif
 }
