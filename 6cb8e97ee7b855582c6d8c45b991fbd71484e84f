@@ -359,6 +359,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1eb96e1d_efbdd04a",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-04-24T14:39:22Z",
+      "side": 1,
+      "message": "I have created the separate commit here: https://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/71020",
+      "parentUuid": "b4bcacb5_27654220",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "338c88ad_ffd111f7",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
