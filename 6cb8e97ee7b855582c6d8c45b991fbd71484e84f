@@ -381,6 +381,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc76b37a_eabb5d82",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-04-26T14:18:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1eb96e1d_efbdd04a",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "6cb8e97ee7b855582c6d8c45b991fbd71484e84f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "338c88ad_ffd111f7",
