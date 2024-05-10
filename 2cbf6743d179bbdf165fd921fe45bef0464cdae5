@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "784e4970_92f50983",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-05-10T21:13:38Z",
+      "side": 1,
+      "message": "I see.  It should be fine as it is.",
+      "parentUuid": "56b1e487_2573b621",
+      "revId": "2cbf6743d179bbdf165fd921fe45bef0464cdae5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95922cff_9437997d",
@@ -90,6 +108,30 @@
       "side": 1,
       "message": "Yes, you are right, it should be `#ifdef SEL_LOGGER_ENABLE_SEL_DELETE`. Fixed.",
       "parentUuid": "95922cff_9437997d",
+      "range": {
+        "startLine": 461,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 6
+      },
+      "revId": "2cbf6743d179bbdf165fd921fe45bef0464cdae5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb4dda1_71dad1cf",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-05-10T21:13:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "915053fd_5036e66f",
       "range": {
         "startLine": 461,
         "startChar": 0,
