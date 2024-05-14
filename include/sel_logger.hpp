@@ -33,9 +33,13 @@ static constexpr uint16_t selInvalidRecID =
 static constexpr size_t selEvtDataMaxSize = 3;
 static constexpr size_t selOemDataMaxSize = 13;
 static constexpr uint8_t selEvtDataUnspecified = 0xFF;
+static constexpr uint32_t invalidTimeStamp = 0xFFFFFFFF;
+static constexpr uint8_t selOverflowFlag = 0x80;
 
 static const std::filesystem::path selLogDir = "/var/log";
 static const std::string selLogFilename = "ipmi_sel";
+static const std::string addTimeStamp = "sel_add_time";
+static const std::string deleteTimeStamp = "sel_erase_time";
 #ifdef SEL_LOGGER_ENABLE_SEL_DELETE
 static const std::string nextRecordFilename = "next_records";
 #endif

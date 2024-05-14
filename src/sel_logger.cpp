@@ -81,10 +81,47 @@ static bool getSELLogFiles(std::vector<std::filesystem::path>& selLogFiles)
     return !selLogFiles.empty();
 }
 
-static void saveClearSelTimestamp()
+static uint16_t countSELEntries()
 {
-    int fd = open("/var/lib/ipmi/sel_erase_time",
-                  O_WRONLY | O_CREAT | O_CLOEXEC, 0644);
+    // Get the list of ipmi_sel log files
+    std::vector<std::filesystem::path> selLogFiles;
+    if (!getSELLogFiles(selLogFiles))
+    {
+        return 0;
+    }
+    int numSELEntries = 0;
+    // Loop through each log file and count the number of logs
+    for (const std::filesystem::path& file : selLogFiles)
+    {
+        std::ifstream logStream(file);
+        if (!logStream.is_open())
+        {
+            continue;
+        }
+
+        std::string line;
+        while (std::getline(logStream, line))
+        {
+            numSELEntries++;
+        }
+    }
+    return numSELEntries;
+}
+
+static int getFileTimestamp(const std::filesystem::path& file)
+{
+    struct stat st;
+
+    if (stat(file.c_str(), &st) >= 0)
+    {
+        return st.st_mtime;
+    }
+    return invalidTimeStamp;
+}
+
+static void saveFileTimestamp(const std::filesystem::path& file)
+{
+    int fd = open(file.c_str(), O_WRONLY | O_CREAT | O_CLOEXEC, 0644);
     if (fd < 0)
     {
         std::cerr << "Failed to open file\n";
@@ -93,7 +130,7 @@ static void saveClearSelTimestamp()
 
     if (futimens(fd, NULL) < 0)
     {
-        std::cerr << "Failed to update SEL cleared timestamp: "
+        std::cerr << "Failed to update SEL timestamp: "
                   << std::string(strerror(errno));
     }
     close(fd);
@@ -101,6 +138,7 @@ static void saveClearSelTimestamp()
 
 #ifdef SEL_LOGGER_ENABLE_SEL_DELETE
 std::vector<uint16_t> nextRecordsCache;
+static uint8_t selOperationSupport = 0x0A;
 
 static void backupCacheToFile()
 {
@@ -143,43 +181,6 @@ static void initializeRecordId()
     {
         nextRecordsCache.push_back(std::stoi(line));
     }
-}
-
-void clearSelLogFiles()
-{
-    saveClearSelTimestamp();
-
-    // Clear the SEL by deleting the log files
-    std::vector<std::filesystem::path> selLogFiles;
-    if (getSELLogFiles(selLogFiles))
-    {
-        for (const std::filesystem::path& file : selLogFiles)
-        {
-            std::error_code ec;
-            std::filesystem::remove(file, ec);
-        }
-    }
-    // Reload rsyslog so it knows to start new log files
-    boost::asio::io_context io;
-    auto dbus = std::make_shared<sdbusplus::asio::connection>(io);
-    sdbusplus::message_t rsyslogReload = dbus->new_method_call(
-        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
-        "org.freedesktop.systemd1.Manager", "ReloadUnit");
-    rsyslogReload.append("rsyslog.service", "replace");
-    try
-    {
-        sdbusplus::message_t reloadResponse = dbus->call(rsyslogReload);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        std::cerr << e.what() << "\n";
-    }
-    // Set next record to 1
-    nextRecordsCache.clear();
-    nextRecordsCache.push_back(1);
-    // Update backup file as well
-    std::ofstream nextRecordStream(selLogDir / nextRecordFilename);
-    nextRecordStream << '1' << '\n';
 }
 
 static bool selDeleteTargetRecord(const uint16_t& targetId)
@@ -247,8 +248,6 @@ static bool selDeleteTargetRecord(const uint16_t& targetId)
 
 static uint16_t selDeleteRecord(const uint16_t& recordId)
 {
-    std::filesystem::file_time_type prevAddTime =
-        std::filesystem::last_write_time(selLogDir / selLogFilename);
     bool targetEntryFound = selDeleteTargetRecord(recordId);
 
     // Check if the Record Id was found
@@ -256,19 +255,50 @@ static uint16_t selDeleteRecord(const uint16_t& recordId)
     {
         return selInvalidRecID;
     }
+    selOperationSupport &= ~(selOverflowFlag);
     // Add to next record cache for reuse
     nextRecordsCache.push_back(recordId);
     // Add to backup file
     std::ofstream nextRecordStream(selLogDir / nextRecordFilename,
                                    std::ios::app);
     nextRecordStream << recordId << '\n';
-    // Keep Last Add Time the same
-    std::filesystem::last_write_time(selLogDir / selLogFilename, prevAddTime);
-    // Update Last Del Time
-    saveClearSelTimestamp();
+    saveFileTimestamp(selLogDir / deleteTimeStamp);
     return recordId;
 }
+
+void clearSelLogFiles()
+{
+    std::filesystem::path selBaseFile(selLogDir / selLogFilename);
+
+    // Clear the SEL by deleting the log files
+    std::vector<std::filesystem::path> selLogFiles;
+    if (getSELLogFiles(selLogFiles))
+    {
+        for (const std::filesystem::path& file : selLogFiles)
+        {
+            if (file != selBaseFile)
+            {
+                std::error_code ec;
+                std::filesystem::remove(file, ec);
+            }
+            else
+            {
+                std::fstream logStream(selBaseFile, std::ios::out);
+                continue;
+            }
+        }
+    }
+    selOperationSupport &= ~(selOverflowFlag);
+    saveFileTimestamp(selLogDir / deleteTimeStamp);
+    // Set next record to 1
+    nextRecordsCache.clear();
+    nextRecordsCache.push_back(1);
+    // Update backup file as well
+    std::ofstream nextRecordStream(selLogDir / nextRecordFilename);
+    nextRecordStream << '1' << '\n';
+}
 #else
+static uint8_t selOperationSupport = 0x02;
 static unsigned int initializeRecordId()
 {
     std::vector<std::filesystem::path> selLogFiles;
@@ -312,7 +342,7 @@ static unsigned int getNewRecordId()
 
 void clearSelLogFiles()
 {
-    saveClearSelTimestamp();
+    std::filesystem::path selBaseFile(selLogDir / selLogFilename);
 
     // Clear the SEL by deleting the log files
     std::vector<std::filesystem::path> selLogFiles;
@@ -320,30 +350,39 @@ void clearSelLogFiles()
     {
         for (const std::filesystem::path& file : selLogFiles)
         {
-            std::error_code ec;
-            std::filesystem::remove(file, ec);
+            if (file != selBaseFile)
+            {
+                std::error_code ec;
+                std::filesystem::remove(file, ec);
+            }
+            else
+            {
+                std::fstream logStream(selBaseFile, std::ios::out);
+                continue;
+            }
         }
     }
-
+    selOperationSupport &= ~(selOverflowFlag);
+    saveFileTimestamp(selLogDir / deleteTimeStamp);
     recordId = 0;
-
-    // Reload rsyslog so it knows to start new log files
-    boost::asio::io_context io;
-    auto dbus = std::make_shared<sdbusplus::asio::connection>(io);
-    sdbusplus::message_t rsyslogReload = dbus->new_method_call(
-        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
-        "org.freedesktop.systemd1.Manager", "ReloadUnit");
-    rsyslogReload.append("rsyslog.service", "replace");
-    try
-    {
-        sdbusplus::message_t reloadResponse = dbus->call(rsyslogReload);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        std::cerr << e.what() << "\n";
-    }
 }
 #endif
+
+static std::tuple<uint16_t, // SEL entry count
+                  uint16_t, // free space
+                  uint32_t, // last add timestamp
+                  uint32_t, // last erase timestamp
+                  uint8_t>  // operation support
+    selGetInfo()
+{
+    uint16_t entries = countSELEntries();
+    uint32_t lastAddTime = getFileTimestamp(selLogDir / addTimeStamp);
+    uint32_t lastDelTime = getFileTimestamp(selLogDir / deleteTimeStamp);
+    uint8_t operationSupport = selOperationSupport;
+    constexpr uint16_t freeSpace =
+        0xffff; // Spec indicates that more than 64kB is free
+    return {entries, freeSpace, lastAddTime, lastDelTime, operationSupport};
+}
 #endif
 
 static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
@@ -397,6 +436,7 @@ static uint16_t selAddSystemRecord(
     unsigned int recordId = getNewRecordId();
     if (recordId < selInvalidRecID)
     {
+        saveFileTimestamp(selLogDir / addTimeStamp);
         sd_journal_send(
             "MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
             "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d", recordId,
@@ -404,6 +444,10 @@ static uint16_t selAddSystemRecord(
             "IPMI_SEL_GENERATOR_ID=%x", genId, "IPMI_SEL_SENSOR_PATH=%s",
             path.c_str(), "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
             selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
+    }
+    else
+    {
+        selOperationSupport |= selOverflowFlag;
     }
     return recordId;
 #endif
@@ -446,11 +490,16 @@ static uint16_t selAddOemRecord(
     unsigned int recordId = getNewRecordId();
     if (recordId < selInvalidRecID)
     {
+        saveFileTimestamp(selLogDir / addTimeStamp);
         sd_journal_send("MESSAGE=%s", message.c_str(), "PRIORITY=%i",
                         selPriority, "MESSAGE_ID=%s", selMessageId,
                         "IPMI_SEL_RECORD_ID=%d", recordId,
                         "IPMI_SEL_RECORD_TYPE=%x", recordType,
                         "IPMI_SEL_DATA=%s", selDataStr.c_str(), NULL);
+    }
+    else
+    {
+        selOperationSupport |= selOverflowFlag;
     }
     return recordId;
 #endif
@@ -500,6 +549,8 @@ int main(int, char*[])
         return selDeleteRecord(recordId);
     });
 #endif
+    // Get SEL Info
+    ifaceAddSel->register_method("IpmiSelInfo", []() { return selGetInfo(); });
 #endif
     ifaceAddSel->initialize();
 
