@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b0f317f_c929fdd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2024-05-17T14:00:10Z",
+      "side": 1,
+      "message": "Seems okay to me as long as clearing the current rsyslog file doesn\u0027t disrupt rsyslog behavior.\n\nBy the way, I thought rsyslog was configured to find events it missed when it started up, so it shouldn\u0027t miss anything from the restart.  Have you confirmed that events are missed by the restart?\n\nI would like input from the IPMI maintainers on this change, also.",
+      "revId": "603e318b1c1d205e0d5c80c5240b1a9124118071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
