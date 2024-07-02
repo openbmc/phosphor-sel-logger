@@ -39,6 +39,8 @@ if get_option('send-to-logger')
 endif
 if get_option('sel-delete')
   cpp_args += '-DSEL_LOGGER_ENABLE_SEL_DELETE'
+
+  deps += dependency('phosphor-dbus-interfaces')
 endif
 
 executable(
