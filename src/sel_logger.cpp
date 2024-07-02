@@ -24,6 +24,9 @@
 #include <sel_logger.hpp>
 #include <threshold_event_monitor.hpp>
 #include <watchdog_event_monitor.hpp>
+#ifdef SEL_LOGGER_ENABLE_SEL_DELETE
+#include <xyz/openbmc_project/Common/error.hpp>
+#endif
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS
 #include <threshold_alarm_event_monitor.hpp>
 #endif
@@ -245,7 +248,7 @@ static bool selDeleteTargetRecord(const uint16_t& targetId)
     return targetEntryFound;
 }
 
-static uint16_t selDeleteRecord(const uint16_t& recordId)
+static void selDeleteRecord(const uint16_t& recordId)
 {
     std::filesystem::file_time_type prevAddTime =
         std::filesystem::last_write_time(selLogDir / selLogFilename);
@@ -254,7 +257,8 @@ static uint16_t selDeleteRecord(const uint16_t& recordId)
     // Check if the Record Id was found
     if (!targetEntryFound)
     {
-        return selInvalidRecID;
+        throw sdbusplus::xyz::openbmc_project::Common::Error::
+            ResourceNotFound();
     }
     // Add to next record cache for reuse
     nextRecordsCache.push_back(recordId);
@@ -266,7 +270,6 @@ static uint16_t selDeleteRecord(const uint16_t& recordId)
     std::filesystem::last_write_time(selLogDir / selLogFilename, prevAddTime);
     // Update Last Del Time
     saveClearSelTimestamp();
-    return recordId;
 }
 #else
 static unsigned int initializeRecordId()
@@ -496,7 +499,7 @@ int main(int, char*[])
     ifaceAddSel->register_method("Clear", []() { clearSelLogFiles(); });
 #ifdef SEL_LOGGER_ENABLE_SEL_DELETE
     // Delete a SEL entry
-    ifaceAddSel->register_method("IpmiSelDelete", [](const uint16_t& recordId) {
+    ifaceAddSel->register_method("SELDelete", [](const uint16_t& recordId) {
         return selDeleteRecord(recordId);
     });
 #endif
