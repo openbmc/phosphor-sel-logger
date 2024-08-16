@@ -179,15 +179,15 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
                       << msg.get_path() << "\n";
             return;
         }
-        double thresholdVal = std::visit(ipmi::VariantToDoubleVisitor(),
-                                         thresholdValue);
+        double thresholdVal =
+            std::visit(ipmi::VariantToDoubleVisitor(), thresholdValue);
 
         double scale = 0;
         auto findScale = sensorValue.find("Scale");
         if (findScale != sensorValue.end())
         {
-            scale = std::visit(ipmi::VariantToDoubleVisitor(),
-                               findScale->second);
+            scale =
+                std::visit(ipmi::VariantToDoubleVisitor(), findScale->second);
             thresholdVal *= std::pow(10, scale);
         }
         try
@@ -202,8 +202,8 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
 
         std::string threshold;
         std::string direction;
-        std::string redfishMessageID = "OpenBMC." +
-                                       openBMCMessageRegistryVersion;
+        std::string redfishMessageID =
+            "OpenBMC." + openBMCMessageRegistryVersion;
         enum EventType
         {
             eventNone,

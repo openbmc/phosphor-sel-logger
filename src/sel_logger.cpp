@@ -377,20 +377,20 @@ static uint16_t selAddSystemRecord(
         "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
         "xyz.openbmc_project.Logging.Create", "Create");
 
-    std::string journalMsg(message + " from " + path + ": " +
-                           " RecordType=" + std::to_string(selSystemType) +
-                           ", GeneratorID=" + std::to_string(genId) +
-                           ", EventDir=" + std::to_string(assert) +
-                           ", EventData=" + selDataStr);
+    std::string journalMsg(
+        message + " from " + path + ": " +
+        " RecordType=" + std::to_string(selSystemType) +
+        ", GeneratorID=" + std::to_string(genId) +
+        ", EventDir=" + std::to_string(assert) + ", EventData=" + selDataStr);
 
-    AddToLog.append(journalMsg,
-                    "xyz.openbmc_project.Logging.Entry.Level.Informational",
-                    std::map<std::string, std::string>(
-                        {{"SENSOR_PATH", path},
-                         {"GENERATOR_ID", std::to_string(genId)},
-                         {"RECORD_TYPE", std::to_string(selSystemType)},
-                         {"EVENT_DIR", std::to_string(assert)},
-                         {"SENSOR_DATA", selDataStr}}));
+    AddToLog.append(
+        journalMsg, "xyz.openbmc_project.Logging.Entry.Level.Informational",
+        std::map<std::string, std::string>(
+            {{"SENSOR_PATH", path},
+             {"GENERATOR_ID", std::to_string(genId)},
+             {"RECORD_TYPE", std::to_string(selSystemType)},
+             {"EVENT_DIR", std::to_string(assert)},
+             {"SENSOR_DATA", selDataStr}}));
     conn->call(AddToLog);
     return 0;
 #else
@@ -432,14 +432,14 @@ static uint16_t selAddOemRecord(
         ", GeneratorID=" + std::to_string(0) +
         ", EventDir=" + std::to_string(0) + ", EventData=" + selDataStr);
 
-    AddToLog.append(journalMsg,
-                    "xyz.openbmc_project.Logging.Entry.Level.Informational",
-                    std::map<std::string, std::string>(
-                        {{"SENSOR_PATH", ""},
-                         {"GENERATOR_ID", std::to_string(0)},
-                         {"RECORD_TYPE", std::to_string(recordType)},
-                         {"EVENT_DIR", std::to_string(0)},
-                         {"SENSOR_DATA", selDataStr}}));
+    AddToLog.append(
+        journalMsg, "xyz.openbmc_project.Logging.Entry.Level.Informational",
+        std::map<std::string, std::string>(
+            {{"SENSOR_PATH", ""},
+             {"GENERATOR_ID", std::to_string(0)},
+             {"RECORD_TYPE", std::to_string(recordType)},
+             {"EVENT_DIR", std::to_string(0)},
+             {"SENSOR_DATA", selDataStr}}));
     conn->call(AddToLog);
     return 0;
 #else
@@ -481,15 +481,16 @@ int main(int, char*[])
         [conn](const std::string& message, const std::string& path,
                const std::vector<uint8_t>& selData, const bool& assert,
                const uint16_t& genId) {
-        return selAddSystemRecord(conn, message, path, selData, assert, genId);
-    });
+            return selAddSystemRecord(conn, message, path, selData, assert,
+                                      genId);
+        });
     // Add a new OEM SEL entry
-    ifaceAddSel->register_method("IpmiSelAddOem",
-                                 [conn](const std::string& message,
-                                        const std::vector<uint8_t>& selData,
-                                        const uint8_t& recordType) {
-        return selAddOemRecord(conn, message, selData, recordType);
-    });
+    ifaceAddSel->register_method(
+        "IpmiSelAddOem",
+        [conn](const std::string& message, const std::vector<uint8_t>& selData,
+               const uint8_t& recordType) {
+            return selAddOemRecord(conn, message, selData, recordType);
+        });
 
 #ifndef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
     // Clear SEL entries
