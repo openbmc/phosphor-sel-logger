@@ -13,7 +13,7 @@ cpp_args = []
 
 deps = [
   dependency('sdbusplus'),
-  dependency('systemd'),
+  dependency('libsystemd'),
   dependency('boost'),
 ]
 
