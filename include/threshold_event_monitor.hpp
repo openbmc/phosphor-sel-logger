@@ -276,6 +276,102 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
                 redfishMessageID += ".SensorThresholdCriticalHighGoingLow";
             }
         }
+        else if (event == "HardShutdownHigh")
+        {
+            threshold = "hard shutdown high";
+            if (assert)
+            {
+                eventType = eventErr;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdHardShutdownHighGoingHigh";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdHardShutdownHighGoingLow";
+            }
+        }
+        else if (event == "HardShutdownLow")
+        {
+            threshold = "hard shutdown low";
+            if (assert)
+            {
+                eventType = eventErr;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdHardShutdownLowGoingLow";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdHardShutdownLowGoingHigh";
+            }
+        }
+        else if (event == "SoftShutdownHigh")
+        {
+            threshold = "soft shutdown high";
+            if (assert)
+            {
+                eventType = eventErr;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdSoftShutdownHighGoingHigh";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdSoftShutdownHighGoingLow";
+            }
+        }
+        else if (event == "SoftShutdownLow")
+        {
+            threshold = "soft shutdown low";
+            if (assert)
+            {
+                eventType = eventErr;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdSoftShutdownLowGoingLow";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdSoftShutdownLowGoingHigh";
+            }
+        }
+        else if (event == "PerformanceLossHigh")
+        {
+            threshold = "performance loss high";
+            if (assert)
+            {
+                eventType = eventErr;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdPerformanceLossHighGoingHigh";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdPerformanceLossHighGoingLow";
+            }
+        }
+        else if (event == "PerformanceLossLow")
+        {
+            threshold = "performance loss low";
+            if (assert)
+            {
+                eventType = eventErr;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdPerformanceLossLowGoingLow";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdPerformanceLossLowGoingHigh";
+            }
+        }
 
         std::string journalMsg(
             std::string(sensorName) + " " + threshold + " threshold " +
