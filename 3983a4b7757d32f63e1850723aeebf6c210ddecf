@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4982a59_6db1c1e9",
+        "filename": "include/threshold_event_monitor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-01-09T16:20:55Z",
+      "side": 1,
+      "message": "None of these Redfish Message IDs exist.  I think you need a corresponding change proposal to bmcweb if you want to do this.\n\nAre you aware of the work to move to the new event design?  https://gerrit.openbmc.org/c/openbmc/dbus-sensors/+/75997",
+      "revId": "3983a4b7757d32f63e1850723aeebf6c210ddecf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
