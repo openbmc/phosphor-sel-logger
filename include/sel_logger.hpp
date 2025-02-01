@@ -41,8 +41,8 @@ static const std::string nextRecordFilename = "next_records";
 #endif
 
 template <typename... T>
-static uint16_t
-    selAddSystemRecord(std::shared_ptr<sdbusplus::asio::connection> conn,
-                       const std::string& message, const std::string& path,
-                       const std::vector<uint8_t>& selData, const bool& assert,
-                       const uint16_t& genId, T&&... metadata);
+static uint16_t selAddSystemRecord(
+    std::shared_ptr<sdbusplus::asio::connection> conn,
+    const std::string& message, const std::string& path,
+    const std::vector<uint8_t>& selData, const bool& assert,
+    const uint16_t& genId, T&&... metadata);

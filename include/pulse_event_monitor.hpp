@@ -19,8 +19,8 @@
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 
-inline static sdbusplus::bus::match_t
-    startPulseEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
+inline static sdbusplus::bus::match_t startPulseEventMonitor(
+    std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto pulseEventMatcherCallback = [conn](sdbusplus::message_t& msg) {
         std::string thresholdInterface;
