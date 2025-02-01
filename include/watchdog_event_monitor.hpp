@@ -234,8 +234,8 @@ inline static void sendWatchdogEventLog(
     }
 }
 
-inline static sdbusplus::bus::match_t
-    startWatchdogEventMonitor(std::shared_ptr<sdbusplus::asio::connection> conn)
+inline static sdbusplus::bus::match_t startWatchdogEventMonitor(
+    std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto watchdogEventMatcherCallback = [conn](sdbusplus::message_t& msg) {
         std::string expiredAction;
