@@ -15,6 +15,9 @@
 */
 
 #pragma once
+#include <boost/container/flat_map.hpp>
+#include <boost/container/flat_set.hpp>
+#include <sdbusplus/bus/match.hpp>
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 

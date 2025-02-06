@@ -349,7 +349,7 @@ void clearSelLogFiles()
 #endif
 #endif
 
-static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
+void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
 {
     std::stringstream stream;
     stream << std::hex << std::uppercase << std::setfill('0');
@@ -358,58 +358,6 @@ static void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr)
         stream << std::setw(2) << v;
     }
     hexStr = stream.str();
-}
-
-template <typename... T>
-static uint16_t selAddSystemRecord(
-    [[maybe_unused]] std::shared_ptr<sdbusplus::asio::connection> conn,
-    [[maybe_unused]] const std::string& message, const std::string& path,
-    const std::vector<uint8_t>& selData, const bool& assert,
-    const uint16_t& genId, [[maybe_unused]] T&&... metadata)
-{
-    // Only 3 bytes of SEL event data are allowed in a system record
-    if (selData.size() > selEvtDataMaxSize)
-    {
-        throw std::invalid_argument("Event data too large");
-    }
-    std::string selDataStr;
-    toHexStr(selData, selDataStr);
-
-#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
-    sdbusplus::message_t AddToLog = conn->new_method_call(
-        "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
-        "xyz.openbmc_project.Logging.Create", "Create");
-
-    std::string journalMsg(
-        message + " from " + path + ": " +
-        " RecordType=" + std::to_string(selSystemType) +
-        ", GeneratorID=" + std::to_string(genId) +
-        ", EventDir=" + std::to_string(assert) + ", EventData=" + selDataStr);
-
-    AddToLog.append(
-        journalMsg, "xyz.openbmc_project.Logging.Entry.Level.Informational",
-        std::map<std::string, std::string>(
-            {{"SENSOR_PATH", path},
-             {"GENERATOR_ID", std::to_string(genId)},
-             {"RECORD_TYPE", std::to_string(selSystemType)},
-             {"EVENT_DIR", std::to_string(assert)},
-             {"SENSOR_DATA", selDataStr}}));
-    conn->call(AddToLog);
-    return 0;
-#else
-    unsigned int recordId = getNewRecordId();
-    if (recordId < selInvalidRecID)
-    {
-        sd_journal_send(
-            "MESSAGE=%s", message.c_str(), "PRIORITY=%i", selPriority,
-            "MESSAGE_ID=%s", selMessageId, "IPMI_SEL_RECORD_ID=%d", recordId,
-            "IPMI_SEL_RECORD_TYPE=%x", selSystemType,
-            "IPMI_SEL_GENERATOR_ID=%x", genId, "IPMI_SEL_SENSOR_PATH=%s",
-            path.c_str(), "IPMI_SEL_EVENT_DIR=%x", assert, "IPMI_SEL_DATA=%s",
-            selDataStr.c_str(), std::forward<T>(metadata)..., NULL);
-    }
-    return recordId;
-#endif
 }
 
 static uint16_t selAddOemRecord(
