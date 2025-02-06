@@ -15,7 +15,10 @@
 */
 
 #pragma once
+#include "threshold_event_monitor.hpp"
+
 #include <boost/container/flat_map.hpp>
+#include <sdbusplus/bus/match.hpp>
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 

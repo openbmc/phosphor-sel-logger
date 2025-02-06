@@ -16,6 +16,7 @@
 
 #pragma once
 #include <boost/container/flat_map.hpp>
+#include <boost/container/flat_set.hpp>
 #include <sdbusplus/asio/object_server.hpp>
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>

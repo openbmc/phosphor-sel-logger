@@ -15,7 +15,10 @@
 */
 
 #pragma once
-#include <sel_logger.hpp>
+#include "sel_logger.hpp"
+
+#include <boost/container/flat_map.hpp>
+#include <sdbusplus/bus/match.hpp>
 #include <sensorutils.hpp>
 
 #include <string>
@@ -84,6 +87,7 @@ inline static void sendWatchdogEventLog(
 
     if (!expireAction)
     {
+        expireAction = "";
         auto getExpireAction = watchdogStatus.find("ExpireAction");
         if (getExpireAction != watchdogStatus.end())
         {
