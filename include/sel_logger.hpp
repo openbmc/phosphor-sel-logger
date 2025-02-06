@@ -15,7 +15,10 @@
 */
 
 #pragma once
+#include <sdbusplus/asio/connection.hpp>
+
 #include <filesystem>
+#include <string>
 
 static constexpr const char* ipmiSelObject = "xyz.openbmc_project.Logging.IPMI";
 static constexpr const char* ipmiSelPath = "/xyz/openbmc_project/Logging/IPMI";
