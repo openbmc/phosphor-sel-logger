@@ -58,13 +58,13 @@ inline static sdbusplus::bus::match_t startPulseEventMonitor(
 
             if (*variant == "xyz.openbmc_project.State.Host.HostState.Off")
             {
-                journalMsg += " system DC power is off";
+                journalMsg += " state is off";
                 redfishMsgId = "OpenBMC.0.1.DCPowerOff";
             }
             else if (*variant ==
                      "xyz.openbmc_project.State.Host.HostState.Running")
             {
-                journalMsg += " system DC power is on";
+                journalMsg += " state is on";
                 redfishMsgId = "OpenBMC.0.1.DCPowerOn";
             }
             else
