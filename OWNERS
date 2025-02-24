@@ -33,7 +33,7 @@
 
 owners:
 - jason.m.bills@linux.intel.com
-- vernon.mauery@linux.intel.com
+- vernon.mauery@gmail.com
 
 reviewers:
 
@@ -44,5 +44,5 @@ openbmc:
   email: jason.m.bills@linux.intel.com
   discord: jmbills
 - name: Vernon Mauery
-  email: vernon.mauery@linux.intel.com
+  email: vernon.mauery@gmail.com
   discord: vmauery
