@@ -16,6 +16,23 @@
       "message": "Looks good to me.  I\u0027ll leave it at +1 for a bit to see if anyone else has feedback.",
       "revId": "1d80b0093c293d0946ea3e9a7a482e6aac1af3b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d9005e_00c05906",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-02-25T18:35:17Z",
+      "side": 1,
+      "message": "I don\u0027t have much opinion on the strings from phosphor-sel-logger.",
+      "revId": "1d80b0093c293d0946ea3e9a7a482e6aac1af3b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
