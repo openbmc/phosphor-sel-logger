@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "324e8fe5_95ed0c4d",
+        "filename": "include/watchdog_event_monitor.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2025-03-04T17:27:33Z",
+      "side": 1,
+      "message": "I meant that if you look in `include/threshold_event_monitor.hpp`, it still uses angle-braces.  If \"\" is preferred, that\u0027s fine, but we should use them consistently throughout all files in the repo.",
+      "parentUuid": "c2d0a2df_a5fc2805",
+      "revId": "ec0e1f92cdf70ed2a0daad77badbaa227094d88d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16dee1a3_c6ab7c7e",
