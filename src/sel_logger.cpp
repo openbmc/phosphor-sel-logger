@@ -114,7 +114,7 @@ static void backupCacheToFile()
     }
 }
 
-static uint16_t getNewRecordId()
+uint16_t getNewRecordId()
 {
     uint16_t nextRecordId = nextRecordsCache.back();
     // Check if SEL is full

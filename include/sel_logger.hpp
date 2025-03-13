@@ -15,6 +15,8 @@
 */
 
 #pragma once
+#include <systemd/sd-journal.h>
+
 #include <sdbusplus/asio/connection.hpp>
 
 #include <filesystem>
@@ -41,6 +43,7 @@ static const std::filesystem::path selLogDir = "/var/log";
 static const std::string selLogFilename = "ipmi_sel";
 #ifdef SEL_LOGGER_ENABLE_SEL_DELETE
 static const std::string nextRecordFilename = "next_records";
+uint16_t getNewRecordId();
 #endif
 
 void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr);
