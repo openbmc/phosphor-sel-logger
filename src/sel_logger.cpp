@@ -304,7 +304,7 @@ static unsigned int initializeRecordId()
 
 static unsigned int recordId = initializeRecordId();
 
-static unsigned int getNewRecordId()
+unsigned int getNewRecordId()
 {
     if (++recordId >= selInvalidRecID)
     {
