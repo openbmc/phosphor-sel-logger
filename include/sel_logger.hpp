@@ -44,6 +44,8 @@ static const std::string selLogFilename = "ipmi_sel";
 #ifdef SEL_LOGGER_ENABLE_SEL_DELETE
 static const std::string nextRecordFilename = "next_records";
 uint16_t getNewRecordId();
+#else
+static unsigned int getNewRecordId();
 #endif
 
 void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr);
