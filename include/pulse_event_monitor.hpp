@@ -41,15 +41,17 @@ inline static sdbusplus::bus::match_t startPulseEventMonitor(
         auto variant =
             std::get_if<std::string>(&propertiesChanged.begin()->second);
 
-        if (event.empty() || nullptr == variant)
+        if (event.empty() || variant == nullptr)
         {
             return;
         }
 
+        std::string journalMsg;
+        std::string redfishMsgId;
+
         if (event == "CurrentHostState")
         {
-            std::string journalMsg = "Host";
-            std::string redfishMsgId;
+            journalMsg = "Host";
             std::string_view hostObjPathPrefix =
                 "/xyz/openbmc_project/state/host";
 
@@ -73,31 +75,61 @@ inline static sdbusplus::bus::match_t startPulseEventMonitor(
             {
                 return;
             }
+        }
+        else if (event == "CurrentPowerState")
+        {
+            journalMsg = "Chassis";
+            std::string_view chassisObjPathPrefix =
+                "/xyz/openbmc_project/state/chassis";
+
+            if (objPath.starts_with(chassisObjPathPrefix))
+            {
+                journalMsg += objPath.erase(0, chassisObjPathPrefix.size());
+            }
+
+            if (*variant == "xyz.openbmc_project.State.Chassis.PowerState.Off")
+            {
+                journalMsg += " power is off";
+                redfishMsgId = "OpenBMC.0.1.ACPowerOff";
+            }
+            else if (*variant ==
+                     "xyz.openbmc_project.State.Chassis.PowerState.On")
+            {
+                journalMsg += " power is on";
+                redfishMsgId = "OpenBMC.0.1.ACPowerOn";
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
             sdbusplus::message_t newLogEntry = conn->new_method_call(
                 "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
                 "xyz.openbmc_project.Logging.Create", "Create");
             const std::string logLevel =
                 "xyz.openbmc_project.Logging.Entry.Level.Informational";
-            const std::string hostPathName = "HOST_PATH";
-            const std::string hostPath = msg.get_path();
+            const std::string pathName = "PATH";
             newLogEntry.append(
                 std::move(journalMsg), std::move(logLevel),
                 std::map<std::string, std::string>(
-                    {{std::move(hostPathName), std::move(hostPath)}}));
+                    {{std::move(pathName), std::move(objPath)}}));
             conn->call(newLogEntry);
 #else
             sd_journal_send("MESSAGE=%s", journalMsg.c_str(),
                             "REDFISH_MESSAGE_ID=%s", redfishMsgId.c_str(),
                             NULL);
 #endif
-        }
     };
 
     sdbusplus::bus::match_t pulseEventMatcher(
         static_cast<sdbusplus::bus_t&>(*conn),
         "type='signal',interface='org.freedesktop.DBus.Properties',member='"
-        "PropertiesChanged',arg0namespace='xyz.openbmc_project.State.Host'",
+        "PropertiesChanged',arg0namespace='xyz.openbmc_project.State'",
         std::move(pulseEventMatcherCallback));
 
     return pulseEventMatcher;
