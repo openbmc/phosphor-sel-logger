@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d8da9bc_b42ea16e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002229
+      },
+      "writtenOn": "2025-05-26T07:02:13Z",
+      "side": 1,
+      "message": "Updated patch set to apply clang-format for code style consistency.\nNo logic changes were made.\nKindly help to re-review and re-vote. Thanks!",
+      "revId": "950d05c336accee7d2d7cf4410864b9729d201d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
