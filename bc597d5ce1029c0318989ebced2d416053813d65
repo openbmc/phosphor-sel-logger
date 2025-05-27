@@ -16,6 +16,24 @@
       "message": "Looks good to me.",
       "revId": "bc597d5ce1029c0318989ebced2d416053813d65",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a2d4e6_9ffe55c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002229
+      },
+      "writtenOn": "2025-05-27T07:07:03Z",
+      "side": 1,
+      "message": "Hi @jason.m.bills@linux.intel.com\n\nUpdated patch set to apply clang-format for code style consistency.\nNo logic changes were made.\nKindly help to review and vote again. Thanks!",
+      "parentUuid": "593671ff_aa2bbf8a",
+      "revId": "bc597d5ce1029c0318989ebced2d416053813d65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
