@@ -35,6 +35,10 @@ static sdbusMatch criticalLowAssertedMatcher;
 static sdbusMatch criticalLowDeassertedMatcher;
 static sdbusMatch criticalHighAssertedMatcher;
 static sdbusMatch criticalHighDeassertedMatcher;
+static sdbusMatch hardshutdownLowAssertedMatcher;
+static sdbusMatch hardshutdownLowDeassertedMatcher;
+static sdbusMatch hardshutdownHighAssertedMatcher;
+static sdbusMatch hardshutdownHighDeassertedMatcher;
 
 static boost::container::flat_map<std::string, sdbusMatch> matchers = {
     {"WarningLowAlarmAsserted", warningLowAssertedMatcher},
@@ -44,7 +48,11 @@ static boost::container::flat_map<std::string, sdbusMatch> matchers = {
     {"CriticalLowAlarmAsserted", criticalLowAssertedMatcher},
     {"CriticalLowAlarmDeasserted", criticalLowDeassertedMatcher},
     {"CriticalHighAlarmAsserted", criticalHighAssertedMatcher},
-    {"CriticalHighAlarmDeasserted", criticalHighDeassertedMatcher}};
+    {"CriticalHighAlarmDeasserted", criticalHighDeassertedMatcher},
+    {"HardShutdownLowAlarmAsserted", hardshutdownLowAssertedMatcher},
+    {"HardShutdownLowAlarmDeasserted", hardshutdownLowDeassertedMatcher},
+    {"HardShutdownHighAlarmAsserted", hardshutdownHighAssertedMatcher},
+    {"HardShutdownHighAlarmDeasserted", hardshutdownHighDeassertedMatcher}};
 
 void generateEvent(std::string signalName,
                    std::shared_ptr<sdbusplus::asio::connection> conn,
@@ -150,6 +158,47 @@ void generateEvent(std::string signalName,
             redfishMessageID += ".SensorThresholdCriticalHighGoingLow";
         }
     }
+    else if (signalName == "HardShutdownLowAlarmAsserted" ||
+             signalName == "HardShutdownLowAlarmDeasserted")
+    {
+        event = "HardShutdownLow";
+        thresholdInterface = "xyz.openbmc_project.Sensor.Threshold.HardShutdown";
+        eventData[0] =
+            static_cast<uint8_t>(thresholdEventOffsets::lowerNonRecvGoingLow);
+        threshold = "hardshutdown low";
+        if (signalName == "HardShutdownLowAlarmAsserted")
+        {
+            assert = true;
+            direction = "low";
+            redfishMessageID += ".SensorThresholdHardShutdownLowGoingLow";
+        }
+        else if (signalName == "HardShutdownLowAlarmDeasserted")
+        {
+            direction = "high";
+            redfishMessageID += ".SensorThresholdHardShutdownLowGoingHigh";
+        }
+    }
+    else if (signalName == "HardShutdownHighAlarmAsserted" ||
+             signalName == "HardShutdownHighAlarmDeasserted")
+    {
+        event = "HardShutdownHigh";
+        thresholdInterface = "xyz.openbmc_project.Sensor.Threshold.HardShutdown";
+        eventData[0] =
+            static_cast<uint8_t>(thresholdEventOffsets::upperNonRecvGoingHigh);
+        threshold = "hardshutdown high";
+        if (signalName == "HardShutdownHighAlarmAsserted")
+        {
+            assert = true;
+            direction = "high";
+            redfishMessageID += ".SensorThresholdHardShutdownHighGoingHigh";
+        }
+        else if (signalName == "HardShutdownHighAlarmDeasserted")
+        {
+            direction = "low";
+            redfishMessageID += ".SensorThresholdHardShutdownHighGoingLow";
+        }
+    }
+
     // Indicate that bytes 2 and 3 are threshold sensor trigger values
     eventData[0] |= thresholdEventDataTriggerReadingByte2 |
                     thresholdEventDataTriggerReadingByte3;
