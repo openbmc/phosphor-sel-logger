@@ -28,8 +28,10 @@ enum class thresholdEventOffsets : uint8_t
 {
     lowerNonCritGoingLow = 0x00,
     lowerCritGoingLow = 0x02,
+    lowerNonRecvGoingLow = 0x04,
     upperNonCritGoingHigh = 0x07,
     upperCritGoingHigh = 0x09,
+    upperNonRecvGoingHigh = 0x0b,
 };
 
 static constexpr const uint8_t thresholdEventDataTriggerReadingByte2 = (1 << 6);
@@ -91,7 +93,12 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
 
         // Set the IPMI threshold event type based on the event details from the
         // message
-        if (event == "CriticalAlarmLow")
+        if (event == "HardShutdownAlarmLow")
+        {
+            eventData[0] = static_cast<uint8_t>(
+                thresholdEventOffsets::lowerNonRecvGoingLow);
+        }
+        else if (event == "CriticalAlarmLow")
         {
             eventData[0] =
                 static_cast<uint8_t>(thresholdEventOffsets::lowerCritGoingLow);
@@ -110,6 +117,11 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
         {
             eventData[0] =
                 static_cast<uint8_t>(thresholdEventOffsets::upperCritGoingHigh);
+        }
+        else if (event == "HardShutdownAlarmHigh")
+        {
+            eventData[0] = static_cast<uint8_t>(
+                thresholdEventOffsets::upperNonRecvGoingHigh);
         }
         // Indicate that bytes 2 and 3 are threshold sensor trigger values
         eventData[0] |= thresholdEventDataTriggerReadingByte2 |
@@ -212,10 +224,27 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             eventNone,
             eventInfo,
             eventWarn,
-            eventErr
+            eventErr,
+            eventNonrecv
         };
         [[maybe_unused]] EventType eventType = eventNone;
-        if (event == "CriticalLow")
+        if (event == "HardShutdownLow")
+        {
+            threshold = "hardshutdown low";
+            if (assert)
+            {
+                eventType = eventNonrecv;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdCriticalLowGoingLow";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdCriticalLowGoingHigh";
+            }
+        }
+        else if (event == "CriticalLow")
         {
             threshold = "critical low";
             if (assert)
@@ -279,6 +308,22 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
                 redfishMessageID += ".SensorThresholdCriticalHighGoingLow";
             }
         }
+        else if (event == "HardShutdownHigh")
+        {
+            threshold = "hardshutdown high";
+            if (assert)
+            {
+                eventType = eventNonrecv;
+                direction = "high";
+                redfishMessageID += ".SensorThresholdCriticalHighGoingHigh";
+            }
+            else
+            {
+                eventType = eventInfo;
+                direction = "low";
+                redfishMessageID += ".SensorThresholdCriticalHighGoingLow";
+            }
+        }
 
         std::string journalMsg(
             std::string(sensorName) + " " + threshold + " threshold " +
@@ -304,6 +349,11 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             case eventErr:
             {
                 LogLevel = "xyz.openbmc_project.Logging.Entry.Level.Critical";
+                break;
+            }
+            case eventNonrecv:
+            {
+                LogLevel = "xyz.openbmc_project.Logging.Entry.Level.Error";
                 break;
             }
             default:
