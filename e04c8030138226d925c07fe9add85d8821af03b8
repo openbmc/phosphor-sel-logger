@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88758dcc_12937a3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002229
+      },
+      "writtenOn": "2025-06-23T08:34:27Z",
+      "side": 1,
+      "message": "Hi @patrick@stwcx.xyz, @pmb@meta.com,\n\n@jason.m.bills@linux.intel.com has already given a +1.\nCould you kindly help review and proceed with merging if there are no concerns?\nThank you very much!",
+      "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
