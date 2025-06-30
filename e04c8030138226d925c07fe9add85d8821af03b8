@@ -33,6 +33,24 @@
       "message": "p",
       "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f85850fd_504fe6e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002229
+      },
+      "writtenOn": "2025-06-30T06:06:31Z",
+      "side": 1,
+      "message": "\u003e p\n\nThe previous comment was incorrect; please ignore it.\n\nCould you kindly help review this change and proceed with merging if there are no further concerns?\nThank you very much!",
+      "parentUuid": "06c4e6d7_57be5ce9",
+      "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
