@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f8b962b_d3f77e58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-30T22:25:47Z",
+      "side": 1,
+      "message": "I\u0027m not a maintainer on this repository and neither is Pete.",
+      "parentUuid": "88758dcc_12937a3f",
+      "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac045f0d_519d5149",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "But I am ok if we want to keep this here to be consistent with DCPowerOn/Off and do the migration to the structured logs in a different commit.",
       "parentUuid": "ac045f0d_519d5149",
+      "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16d9e1ce_0cb4266e",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-30T22:25:47Z",
+      "side": 1,
+      "message": "ACPowerOff isn\u0027t a documented openbmc registry event anyhow.  So this shouldn\u0027t go in as-is.",
+      "parentUuid": "b935c6fe_0d7d77bc",
       "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
