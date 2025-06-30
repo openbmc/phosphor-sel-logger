@@ -68,6 +68,24 @@
       "message": "I think a Chassis.events very similar to https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/BMC.events.yaml might be better here to provide a structured log defined -- and using lg2::commit instead of forming a raw log to phosphor-logging.",
       "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b935c6fe_0d7d77bc",
+        "filename": "include/pulse_event_monitor.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-06-30T22:20:14Z",
+      "side": 1,
+      "message": "But I am ok if we want to keep this here to be consistent with DCPowerOn/Off and do the migration to the structured logs in a different commit.",
+      "parentUuid": "ac045f0d_519d5149",
+      "revId": "e04c8030138226d925c07fe9add85d8821af03b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
