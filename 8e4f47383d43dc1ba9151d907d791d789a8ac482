@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc10b9ef_1e2e4d16",
+        "filename": "include/threshold_alarm_event_monitor.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-07-02T19:14:16Z",
+      "side": 1,
+      "message": "These are not valid redfish message ids per bmcweb and they also do not correlate to the \"new style\" events.  We cannot just put arbitrary strings in without adding them to some Redfish registry.",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 74
+      },
+      "revId": "8e4f47383d43dc1ba9151d907d791d789a8ac482",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
