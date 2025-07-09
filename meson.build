@@ -51,6 +51,6 @@ systemd = dependency('systemd')
 if systemd.found()
     install_data(
         'service_files/xyz.openbmc_project.Logging.IPMI.service',
-        install_dir: systemd.get_variable('systemdsystemunitdir'),
+        install_dir: systemd.get_variable('systemd_system_unit_dir'),
     )
 endif
