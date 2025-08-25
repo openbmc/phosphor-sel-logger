@@ -15,7 +15,6 @@
 */
 #include <systemd/sd-journal.h>
 
-#include <boost/algorithm/string.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/container/flat_map.hpp>
 #include <boost/container/flat_set.hpp>
@@ -70,7 +69,7 @@ static bool getSELLogFiles(std::vector<std::filesystem::path>& selLogFiles)
          std::filesystem::directory_iterator(selLogDir))
     {
         std::string filename = dirEnt.path().filename();
-        if (boost::starts_with(filename, selLogFilename))
+        if (filename.starts_with(selLogFilename))
         {
             // If we find an ipmi_sel log file, save the path
             selLogFiles.emplace_back(selLogDir / filename);
