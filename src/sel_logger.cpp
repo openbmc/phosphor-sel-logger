@@ -33,11 +33,14 @@
 #include <host_error_event_monitor.hpp>
 #endif
 
+#include <algorithm>
+#include <charconv>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <string_view>
 
 struct DBusInternalError final : public sdbusplus::exception_t
 {
@@ -271,6 +274,45 @@ static void selDeleteRecord(const uint16_t& recordId)
     saveClearSelTimestamp();
 }
 #else
+static unsigned int parseRecordIdFromEntry(std::string_view entry)
+{
+    unsigned int recordId = 0;
+    size_t fieldCount = 0;
+
+    for (auto fieldBegin = entry.begin(); fieldBegin != entry.end();)
+    {
+        auto fieldEnd = std::ranges::find_first_of(
+            std::string_view(fieldBegin, entry.end()), std::string_view(" ,"));
+
+        // handle consecutive delimiters by skipping empty field
+        if (fieldBegin != fieldEnd)
+        {
+            if (fieldCount == 0)
+            {
+                // first field of entry
+                auto [ptr,
+                      ec] = std::from_chars(fieldBegin, fieldEnd, recordId);
+                if (ptr != fieldEnd or ec != std::errc{})
+                {
+                    // parse failed
+                    return 0;
+                }
+            }
+            fieldCount += 1;
+        }
+
+        // skip past the delimiter itself, bounded by the end
+        fieldBegin = std::ranges::next(fieldEnd, 1, entry.end());
+    }
+
+    if (fieldCount < 4)
+    {
+        return 0;
+    }
+
+    return recordId;
+}
+
 static unsigned int initializeRecordId()
 {
     std::vector<std::filesystem::path> selLogFiles;
@@ -290,15 +332,7 @@ static unsigned int initializeRecordId()
         newestEntry = line;
     }
 
-    std::vector<std::string> newestEntryFields;
-    boost::split(newestEntryFields, newestEntry, boost::is_any_of(" ,"),
-                 boost::token_compress_on);
-    if (newestEntryFields.size() < 4)
-    {
-        return 0;
-    }
-
-    return std::stoul(newestEntryFields[1]);
+    return parseRecordIdFromEntry(newestEntry);
 }
 
 static unsigned int recordId = initializeRecordId();
