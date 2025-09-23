@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "94764a07_b61b8ff2",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2025-09-23T13:41:15Z",
+      "side": 1,
+      "message": "That is helpful, thanks",
+      "parentUuid": "7d4900c1_8c997dd0",
+      "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f2b2b4f_a82aee5b",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
@@ -82,6 +100,24 @@
       "writtenOn": "2025-09-23T13:32:19Z",
       "side": 1,
       "message": "Does this find the string ` ,` or does it find either character \u0027 \u0027 or \u0027,\u0027?  It needs to split on either character.",
+      "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cadae74_590614a5",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2025-09-23T13:41:15Z",
+      "side": 1,
+      "message": "It splits on either character, yes",
+      "parentUuid": "4f2b2b4f_a82aee5b",
       "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -99,6 +135,24 @@
       "writtenOn": "2025-09-23T13:32:19Z",
       "side": 1,
       "message": "The record ID should be the second field (after the timestamp).",
+      "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277f1038_82e0d182",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2025-09-23T13:41:15Z",
+      "side": 1,
+      "message": "I see, my bad. I believe that is the only bug though, but IMO bringing back the boost headers, introducing tests in this repo, then add back the change should be more preferrable.",
+      "parentUuid": "3b0d7cf5_172fafa5",
       "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
