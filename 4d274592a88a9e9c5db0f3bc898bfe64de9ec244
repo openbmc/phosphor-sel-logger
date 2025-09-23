@@ -16,6 +16,40 @@
       "message": "Hello, is there anything else I should do on this change?",
       "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d950182_5fc358a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-23T03:10:46Z",
+      "side": 1,
+      "message": "The patch set looks good to me. Just small concern about the hardcode value.",
+      "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d060c6f_f25195bc",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-23T03:10:46Z",
+      "side": 1,
+      "message": "What is 4 value? Do we have any definition for that?",
+      "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
