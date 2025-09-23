@@ -50,6 +50,24 @@
       "message": "What is 4 value? Do we have any definition for that?",
       "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f14c01bd_980af977",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2025-09-23T03:36:19Z",
+      "side": 1,
+      "message": "\u003e What is 4 value? Do we have any definition for that?\n\nI believe it is the number of fields for each entry. However, the goal of this patch is to just fix the compile error and keep the original behavior, so I don\u0027t want to make any false assumptions here and extract to a constant macro, just in case `4` is defined to be something else.",
+      "parentUuid": "8d060c6f_f25195bc",
+      "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
