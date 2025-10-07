@@ -177,6 +177,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29c9ba60_e170f99b",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2025-10-07T16:58:31Z",
+      "side": 1,
+      "message": "I submitted this patch to restore the boost headers: https://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/84289",
+      "parentUuid": "277f1038_82e0d182",
+      "revId": "4d274592a88a9e9c5db0f3bc898bfe64de9ec244",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8d060c6f_f25195bc",
         "filename": "src/sel_logger.cpp",
         "patchSetId": 1
