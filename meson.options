@@ -31,5 +31,6 @@ option(
 option(
     'sel-delete',
     type: 'boolean',
+    value: 'false',
     description: 'Enables ability to delete SEL entries given a record ID',
 )
