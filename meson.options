@@ -1,35 +1,42 @@
 option(
     'log-threshold',
     type: 'boolean',
+    value: 'false',
     description: 'Automatically log SEL records for threshold sensor events',
 )
 option(
     'log-pulse',
     type: 'boolean',
+    value: 'false',
     description: 'Automatically log events to Redfish for pulse type assert-deassert sensor events',
 )
 option(
     'log-watchdog',
     type: 'boolean',
+    value: 'false',
     description: 'Automatically log SEL records for watchdog events',
 )
 option(
     'log-alarm',
     type: 'boolean',
+    value: 'false',
     description: 'Monitor threshold alarm signals and log SEL records for threshold sensor events',
 )
 option(
     'log-host',
     type: 'boolean',
+    value: 'false',
     description: 'Automatically log SEL records for host error events',
 )
 option(
     'send-to-logger',
     type: 'boolean',
+    value: 'false',
     description: 'Automatically log events to Redfish for pulse type assert-deassert sensor events',
 )
 option(
     'sel-delete',
     type: 'boolean',
+    value: 'false',
     description: 'Enables ability to delete SEL entries given a record ID',
 )
