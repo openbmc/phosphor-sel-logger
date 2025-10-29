@@ -16,6 +16,24 @@
       "message": "This is counter to what is done elsewhere.  I think for maximum coverage, as much as possible should be enabled by default.\n\nTaking it a step further...I sort of wonder why more of these things can\u0027t be enabled by default on the yocto side?",
       "revId": "46c9580ee82b1113e2038b8aa1e547a90fbdeebe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77784c90_6cded988",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2025-10-29T14:31:58Z",
+      "side": 1,
+      "message": "I agree.  The main issue is with the SEL Delete which was supposed to be a special case that was only enabled when desired.  However, because of this convention of enabling options by default and disabling in Yocto, CI is building only the non-standard config.\n\nIf we want to limit this to just disabling the SEL Delete, I\u0027m okay with that.  I was trying not to play favorites. 😊",
+      "parentUuid": "f538e6cc_1732bc4e",
+      "revId": "46c9580ee82b1113e2038b8aa1e547a90fbdeebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
