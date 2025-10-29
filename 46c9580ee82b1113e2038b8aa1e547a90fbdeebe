@@ -88,6 +88,24 @@
       "parentUuid": "f1304c7c_b8c174c7",
       "revId": "46c9580ee82b1113e2038b8aa1e547a90fbdeebe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f2a84bd_95cf71ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2025-10-29T15:17:19Z",
+      "side": 1,
+      "message": "\u003e without disrupting current users who didn\u0027t need SEL Delete\n\nThis can be problematic depending on the definition of disruption.  I don\u0027t know if it is the case here or not but if \"disruption\" simply means possible introduction of bugs...that probably introduces complexity to users that want the codebase to evolve and progress.  That isn\u0027t tolerated in OSS in my experience.\n\nMy point is I can\u0027t think ofis going to get upset with you for enabling sel-delete by default, if you wanted to.",
+      "parentUuid": "5afb4504_4b08268f",
+      "revId": "46c9580ee82b1113e2038b8aa1e547a90fbdeebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
