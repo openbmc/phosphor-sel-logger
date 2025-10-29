@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8838a561_af74030b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2025-10-29T14:28:16Z",
+      "side": 1,
+      "message": "Build fix change with no feedback for a few weeks, so going ahead with merge.",
+      "revId": "4c099f47f26369d52592ef209a21e7f01ca441b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
