@@ -54,3 +54,10 @@ if systemd.found()
         install_dir: systemd.get_variable('systemd_system_unit_dir'),
     )
 endif
+
+if not get_option('send-to-logger') and get_option('rsyslog-conf-d') != ''
+    install_data(
+        'rsyslog/phosphor-sel-logger.conf',
+        install_dir: get_option('rsyslog-conf-d'),
+    )
+endif

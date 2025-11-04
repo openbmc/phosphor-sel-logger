@@ -33,3 +33,9 @@ option(
     type: 'boolean',
     description: 'Enables ability to delete SEL entries given a record ID',
 )
+option(
+    'rsyslog-conf-d',
+    type: 'string',
+    description: 'Absolute path to rsyslog configuration snippets directory',
+    value: '',
+)
