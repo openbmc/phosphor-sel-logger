@@ -241,8 +241,7 @@ inline static sdbusplus::bus::match_t startWatchdogEventMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto watchdogEventMatcherCallback = [conn](sdbusplus::message_t& msg) {
-        std::string expiredAction;
-        msg.read(expiredAction);
+        auto expiredAction = msg.unpack<std::string>();
 
         std::string_view action = expiredAction;
         action.remove_prefix(
