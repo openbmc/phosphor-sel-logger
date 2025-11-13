@@ -26,7 +26,7 @@ option(
 option(
     'send-to-logger',
     type: 'boolean',
-    description: 'Automatically log events to Redfish for pulse type assert-deassert sensor events',
+    description: 'Write log via phosphor-logging instead of calling the system journal API directly.',
 )
 option(
     'sel-delete',
