@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bef4175_ed1d2c14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2025-11-20T18:58:41Z",
+      "side": 1,
+      "message": "Is there a reason that `log-pulse` is different now, or should it also be updated?",
+      "range": {
+        "startLine": 9,
+        "startChar": 69,
+        "endLine": 9,
+        "endChar": 80
+      },
+      "revId": "543f0d2985ea792e9052c2b3edf8da2dfe562dbd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42893eaf_cf28fea0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2025-11-20T18:58:41Z",
+      "side": 1,
+      "message": "You will need to have a CLA and be added to an authorized group to trigger CI. You can find information in the docs repo: https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md?plain\u003d1#L38. And you can reach out on the mailing list or discord if you run into issues or have questions.",
+      "revId": "543f0d2985ea792e9052c2b3edf8da2dfe562dbd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
