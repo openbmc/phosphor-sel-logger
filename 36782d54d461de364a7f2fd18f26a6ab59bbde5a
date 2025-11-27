@@ -16,6 +16,24 @@
       "message": "Thanks for this commit!\nTry to use your full name here.\nFrom https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#formatting-commit-messages\n\n\"All commit messages must include a \"Signed-off-by\" line, which indicates that you the contributor have agreed to the Developer Certificate of Origin (see below). This line must include the full name you commonly use, often a given name and a family name or surname. (ok: Sam Samuelsson, Robert A. Heinlein; not ok: xXthorXx, Sam, RAH)\"\n\nPlease fix your git-config and `git commit --amend --reset-author`. Thanks!",
       "revId": "36782d54d461de364a7f2fd18f26a6ab59bbde5a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41272ae3_2b554c9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2025-11-27T01:38:21Z",
+      "side": 1,
+      "message": "I have already updated my full name to match the full name in my submitted Individual CLA.\nPlease check whether you have received the email.\nThank you!",
+      "parentUuid": "3377bda6_72077673",
+      "revId": "36782d54d461de364a7f2fd18f26a6ab59bbde5a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
