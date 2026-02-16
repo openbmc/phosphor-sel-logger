@@ -317,13 +317,16 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             sdbusplus::message_t AddToLog = conn->new_method_call(
                 "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
                 "xyz.openbmc_project.Logging.Create", "Create");
+            std::string selDataStr;
+            toHexStr(eventData, selDataStr);
+
             AddToLog.append(journalMsg, LogLevel,
                             std::map<std::string, std::string>(
                                 {{"SENSOR_PATH", std::string(msg.get_path())},
-                                 {"EVENT", threshold},
-                                 {"DIRECTION", direction},
-                                 {"THRESHOLD", std::to_string(thresholdVal)},
-                                 {"READING", std::to_string(assertValue)}}));
+                                 {"GENERATOR_ID", std::to_string(selBMCGenID)},
+                                 {"RECORD_TYPE", std::to_string(selSystemType)},
+                                 {"EVENT_DIR", std::to_string(assert)},
+                                 {"SENSOR_DATA", selDataStr}}));
             conn->call(AddToLog);
         }
 #else
