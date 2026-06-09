@@ -109,7 +109,7 @@ std::vector<uint16_t> nextRecordsCache;
 static void backupCacheToFile()
 {
     std::ofstream nextRecordStream(selLogDir / nextRecordFilename);
-    for (auto recordIds : nextRecordsCache)
+    for (const auto& recordIds : nextRecordsCache)
     {
         nextRecordStream << recordIds << '\n';
     }
