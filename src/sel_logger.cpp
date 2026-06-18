@@ -384,15 +384,22 @@ static uint16_t selAddOemRecord(
         ", GeneratorID=" + std::to_string(0) +
         ", EventDir=" + std::to_string(0) + ", EventData=" + selDataStr);
 
-    AddToLog.append(
-        journalMsg, "xyz.openbmc_project.Logging.Entry.Level.Informational",
-        std::map<std::string, std::string>(
-            {{"SENSOR_PATH", ""},
-             {"GENERATOR_ID", std::to_string(0)},
-             {"RECORD_TYPE", std::to_string(recordType)},
-             {"EVENT_DIR", std::to_string(0)},
-             {"SENSOR_DATA", selDataStr}}));
-    conn->call(AddToLog);
+    try
+    {
+        AddToLog.append(
+            journalMsg, "xyz.openbmc_project.Logging.Entry.Level.Informational",
+            std::map<std::string, std::string>(
+                {{"SENSOR_PATH", ""},
+                 {"GENERATOR_ID", std::to_string(0)},
+                 {"RECORD_TYPE", std::to_string(recordType)},
+                 {"EVENT_DIR", std::to_string(0)},
+                 {"SENSOR_DATA", selDataStr}}));
+        conn->call(AddToLog);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed adding this event: " << e.what() << "\n";
+    }
     return 0;
 #else
     unsigned int recordId = getNewRecordId();
