@@ -21,7 +21,7 @@
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 
-using sdbusMatch = std::shared_ptr<sdbusplus::bus::match_t>;
+using sdbusMatch = std::shared_ptr<sdbusplus::match>;
 static sdbusMatch thermTripEventMatcher;
 static sdbusMatch ierrEventMatcher;
 
@@ -82,7 +82,7 @@ inline static void startHostErrorEventMonitor(
     for (auto iter = hostErrorMatches.begin(); iter != hostErrorMatches.end();
          iter++)
     {
-        iter->second = std::make_shared<sdbusplus::bus::match_t>(
+        iter->second = std::make_shared<sdbusplus::match>(
             static_cast<sdbusplus::bus_t&>(*conn),
             "type='signal',interface='org.freedesktop.DBus.Properties',member='"
             "PropertiesChanged',arg0namespace='xyz.openbmc_project."
