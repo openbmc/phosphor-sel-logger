@@ -48,6 +48,23 @@ uint16_t getNewRecordId();
 unsigned int getNewRecordId();
 #endif
 
+#ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+constexpr const char* informationalLevel =
+    "xyz.openbmc_project.Logging.Entry.Level.Informational";
+constexpr const char* warningLevel =
+    "xyz.openbmc_project.Logging.Entry.Level.Warning";
+constexpr const char* errorLevel =
+    "xyz.openbmc_project.Logging.Entry.Level.Critical";
+
+enum class eventReading : uint8_t
+{
+    lowerNonCritGoingLow = 0x00,
+    lowerCritGoingLow = 0x02,
+    upperNonCritGoingHigh = 0x07,
+    upperCritGoingHigh = 0x09
+};
+#endif
+
 void toHexStr(const std::vector<uint8_t>& data, std::string& hexStr);
 
 template <typename... T>
@@ -66,6 +83,25 @@ uint16_t selAddSystemRecord(
     toHexStr(selData, selDataStr);
 
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
+    std::string severity;
+    switch (static_cast<eventReading>(selData[0]))
+    {
+        case eventReading::lowerCritGoingLow:
+        case eventReading::upperCritGoingHigh:
+            severity = errorLevel;
+            break;
+        case eventReading::lowerNonCritGoingLow:
+        case eventReading::upperNonCritGoingHigh:
+            severity = warningLevel;
+            break;
+        default:
+            severity = informationalLevel;
+    }
+    if (!assert)
+    {
+        severity = informationalLevel;
+    }
+
     sdbusplus::message_t AddToLog = conn->new_method_call(
         "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
         "xyz.openbmc_project.Logging.Create", "Create");
@@ -76,14 +112,13 @@ uint16_t selAddSystemRecord(
         ", GeneratorID=" + std::to_string(genId) +
         ", EventDir=" + std::to_string(assert) + ", EventData=" + selDataStr);
 
-    AddToLog.append(
-        journalMsg, "xyz.openbmc_project.Logging.Entry.Level.Informational",
-        std::map<std::string, std::string>(
-            {{"SENSOR_PATH", path},
-             {"GENERATOR_ID", std::to_string(genId)},
-             {"RECORD_TYPE", std::to_string(selSystemType)},
-             {"EVENT_DIR", std::to_string(assert)},
-             {"SENSOR_DATA", selDataStr}}));
+    AddToLog.append(journalMsg, severity,
+                    std::map<std::string, std::string>(
+                        {{"SENSOR_PATH", path},
+                         {"GENERATOR_ID", std::to_string(genId)},
+                         {"RECORD_TYPE", std::to_string(selSystemType)},
+                         {"EVENT_DIR", std::to_string(assert)},
+                         {"SENSOR_DATA", selDataStr}}));
     conn->call(AddToLog);
     return 0;
 #else
