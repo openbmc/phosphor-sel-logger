@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f0eecdd_b6ed8849",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-06-23T12:07:05Z",
+      "side": 1,
+      "message": "Do you need to catch both?\n\nin the sdbusplus code the exception is already derived from `std::exception`\n```\nstruct exception : public std::exception\n```\n\nhttps://en.cppreference.com/cpp/language/catch\n\nsection \"Matching exceptions\" suggests to me that the catch for base class should be sufficient.",
+      "range": {
+        "startLine": 399,
+        "startChar": 4,
+        "endLine": 406,
+        "endChar": 5
+      },
+      "revId": "51cf7972b703e8b5327689af3025f6063bffd468",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
