@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e89c7e3_f05bfdac",
+        "filename": "include/sel_logger.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-06-23T12:19:10Z",
+      "side": 1,
+      "message": "IMO we should not be hardcoding these internal representations.\n\nYou can use the generated headers which already define all the functions to go from the string to enum and back again\n\n```\ninline auto Entry::convertStringToLevel(const std::string\u0026 s) noexcept\n    -\u003e std::optional\u003cLevel\u003e;\n\ninline auto Entry::convertLevelFromString(const std::string\u0026 s) -\u003e Level;\n\n\ninline std::string Entry::convertLevelToString(\n    Entry::Level v);\n\n```",
+      "range": {
+        "startLine": 51,
+        "startChar": 41,
+        "endLine": 57,
+        "endChar": 55
+      },
+      "revId": "00e7325a99f7618151311b0e9397c2e220df9bc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b25e1af7_c43c7856",
+        "filename": "include/sel_logger.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-06-23T12:19:10Z",
+      "side": 1,
+      "message": "nit: This is just mapping the error, maybe it would be good to write it as a separate function.",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 1
+      },
+      "revId": "00e7325a99f7618151311b0e9397c2e220df9bc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
