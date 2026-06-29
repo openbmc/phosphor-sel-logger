@@ -237,7 +237,7 @@ inline static void sendWatchdogEventLog(
     }
 }
 
-inline static sdbusplus::bus::match_t startWatchdogEventMonitor(
+inline static sdbusplus::match startWatchdogEventMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto watchdogEventMatcherCallback = [conn](sdbusplus::message_t& msg) {
@@ -250,7 +250,7 @@ inline static sdbusplus::bus::match_t startWatchdogEventMonitor(
         sendWatchdogEventLog(conn, msg, true, action);
     };
 
-    sdbusplus::bus::match_t watchdogEventMatcher(
+    sdbusplus::match watchdogEventMatcher(
         static_cast<sdbusplus::bus_t&>(*conn),
         "type='signal',interface='xyz.openbmc_project.Watchdog',"
         "member='Timeout'",

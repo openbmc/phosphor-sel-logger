@@ -464,17 +464,15 @@ int main(int, char*[])
     ifaceAddSel->initialize();
 
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_EVENTS
-    sdbusplus::bus::match_t thresholdAssertMonitor =
-        startThresholdAssertMonitor(conn);
+    sdbusplus::match thresholdAssertMonitor = startThresholdAssertMonitor(conn);
 #endif
 
 #ifdef REDFISH_LOG_MONITOR_PULSE_EVENTS
-    sdbusplus::bus::match_t pulseEventMonitor = startPulseEventMonitor(conn);
+    sdbusplus::match pulseEventMonitor = startPulseEventMonitor(conn);
 #endif
 
 #ifdef SEL_LOGGER_MONITOR_WATCHDOG_EVENTS
-    sdbusplus::bus::match_t watchdogEventMonitor =
-        startWatchdogEventMonitor(conn);
+    sdbusplus::match watchdogEventMonitor = startWatchdogEventMonitor(conn);
 #endif
 
 #ifdef SEL_LOGGER_MONITOR_THRESHOLD_ALARM_EVENTS

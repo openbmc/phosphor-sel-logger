@@ -37,7 +37,7 @@ static constexpr const uint8_t thresholdEventDataTriggerReadingByte3 = (1 << 4);
 
 static const std::string openBMCMessageRegistryVersion("0.1");
 
-inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
+inline static sdbusplus::match startThresholdAssertMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto thresholdAssertMatcherCallback = [conn](sdbusplus::message_t& msg) {
@@ -334,7 +334,7 @@ inline static sdbusplus::bus::match_t startThresholdAssertMonitor(
             sensorName.data(), assertValue, thresholdVal);
 #endif
     };
-    sdbusplus::bus::match_t thresholdAssertMatcher(
+    sdbusplus::match thresholdAssertMatcher(
         static_cast<sdbusplus::bus_t&>(*conn),
         "type='signal', member='ThresholdAsserted'",
         std::move(thresholdAssertMatcherCallback));
