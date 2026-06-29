@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Alexander <alexander.hansen@9elements.com>
+Code-Review+2: Jason Bills <jason.m.bills@linux.intel.com>
+Submitted-by: Joel P J <joelpj@ami.com>
+Submitted-at: Mon, 29 Jun 2026 12:24:02 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-sel-logger/+/91465
+Comments-Total: 3
+Project: openbmc/phosphor-sel-logger
+Branch: refs/heads/master
