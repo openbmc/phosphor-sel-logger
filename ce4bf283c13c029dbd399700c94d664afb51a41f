@@ -16,6 +16,24 @@
       "message": "If the journalMsg isn\u0027t already printed to std::cerr, it may be useful to include it in this print to indicate exactly what event failed.",
       "revId": "ce4bf283c13c029dbd399700c94d664afb51a41f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7480257_5e73837a",
+        "filename": "src/sel_logger.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1003017
+      },
+      "writtenOn": "2026-06-29T04:59:49Z",
+      "side": 1,
+      "message": "Will do as a next PR since it is already merged, thanks for reviewing.",
+      "parentUuid": "ea6299c8_24d84a7c",
+      "revId": "ce4bf283c13c029dbd399700c94d664afb51a41f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
