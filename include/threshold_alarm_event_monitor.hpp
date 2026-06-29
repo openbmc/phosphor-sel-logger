@@ -26,7 +26,7 @@
 #include <string_view>
 #include <variant>
 
-using sdbusMatch = std::shared_ptr<sdbusplus::bus::match_t>;
+using sdbusMatch = std::shared_ptr<sdbusplus::match>;
 static sdbusMatch warningLowAssertedMatcher;
 static sdbusMatch warningLowDeassertedMatcher;
 static sdbusMatch warningHighAssertedMatcher;
@@ -253,7 +253,7 @@ inline static void startThresholdAlarmMonitor(
 {
     for (auto iter = matchers.begin(); iter != matchers.end(); iter++)
     {
-        iter->second = std::make_shared<sdbusplus::bus::match_t>(
+        iter->second = std::make_shared<sdbusplus::match>(
             static_cast<sdbusplus::bus_t&>(*conn),
             "type='signal',member=" + iter->first,
             [conn, iter](sdbusplus::message_t& msg) {

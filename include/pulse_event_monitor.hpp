@@ -21,7 +21,7 @@
 #include <sel_logger.hpp>
 #include <sensorutils.hpp>
 
-inline static sdbusplus::bus::match_t startPulseEventMonitor(
+inline static sdbusplus::match startPulseEventMonitor(
     std::shared_ptr<sdbusplus::asio::connection> conn)
 {
     auto pulseEventMatcherCallback = [conn](sdbusplus::message_t& msg) {
@@ -94,7 +94,7 @@ inline static sdbusplus::bus::match_t startPulseEventMonitor(
         }
     };
 
-    sdbusplus::bus::match_t pulseEventMatcher(
+    sdbusplus::match pulseEventMatcher(
         static_cast<sdbusplus::bus_t&>(*conn),
         "type='signal',interface='org.freedesktop.DBus.Properties',member='"
         "PropertiesChanged',arg0namespace='xyz.openbmc_project.State.Host'",
