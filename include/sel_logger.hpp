@@ -82,18 +82,21 @@ uint16_t selAddSystemRecord(
 
 #ifdef SEL_LOGGER_SEND_TO_LOGGING_SERVICE
     auto severity = LoggingEntry::Level::Informational;
-    switch (static_cast<eventReading>(selData[0]))
+    if (path.find("sensor") != std::string::npos)
     {
-        case eventReading::lowerCritGoingLow:
-        case eventReading::upperCritGoingHigh:
-            severity = LoggingEntry::Level::Critical;
-            break;
-        case eventReading::lowerNonCritGoingLow:
-        case eventReading::upperNonCritGoingHigh:
-            severity = LoggingEntry::Level::Warning;
-            break;
-        default:
-            severity = LoggingEntry::Level::Informational;
+        switch (static_cast<eventReading>(selData[0]))
+        {
+            case eventReading::lowerCritGoingLow:
+            case eventReading::upperCritGoingHigh:
+                severity = LoggingEntry::Level::Critical;
+                break;
+            case eventReading::lowerNonCritGoingLow:
+            case eventReading::upperNonCritGoingHigh:
+                severity = LoggingEntry::Level::Warning;
+                break;
+            default:
+                severity = LoggingEntry::Level::Informational;
+        }
     }
     if (!assert)
     {
