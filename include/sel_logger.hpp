@@ -95,6 +95,10 @@ uint16_t selAddSystemRecord(
         default:
             severity = LoggingEntry::Level::Informational;
     }
+    if (path.find("watchdog") != std::string::npos)
+    {
+        severity = LoggingEntry::Level::Informational;
+    }
     if (!assert)
     {
         severity = LoggingEntry::Level::Informational;
