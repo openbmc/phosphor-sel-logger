@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb31ba92_77c9a5fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000276
+      },
+      "writtenOn": "2026-08-12T13:20:06Z",
+      "side": 1,
+      "message": "This seems okay to me.  Did you do a quick check or test to verify that all other sensors include `sensor` in the path?\n\nI\u0027ll leave it at +1 for a bit in case there is any other feedback.",
+      "revId": "3c6b9c3a873f7624a6bbf6ebb10482d7a167c0a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
