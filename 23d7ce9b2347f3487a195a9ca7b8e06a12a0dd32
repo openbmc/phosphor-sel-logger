@@ -16,6 +16,24 @@
       "message": "This isn\u0027t a very scalable solution if any other discrete sensors get added in the future.  Is there another indicator that it\u0027s a threshold vs. discrete sensor that we can use to just set Informational for all discrete sensors?",
       "revId": "23d7ce9b2347f3487a195a9ca7b8e06a12a0dd32",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31c39af0_2d5f60f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002462
+      },
+      "writtenOn": "2026-08-12T11:04:33Z",
+      "side": 1,
+      "message": "Good point. I agree that hardcoding \"watchdog\" wasn\u0027t scalable.\n\nIn the latest patchset, I changed the logic to only apply the threshold severity evaluation if the dbus path contains \"sensor\". For all other paths, it will now naturally default to Informational. Since we don\u0027t currently pass an explicit event type indicator to selAddSystemRecord, this path-based check acts as a more scalable filter for discrete events. Please let me know what you think.",
+      "parentUuid": "d07876c2_3f901462",
+      "revId": "23d7ce9b2347f3487a195a9ca7b8e06a12a0dd32",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
